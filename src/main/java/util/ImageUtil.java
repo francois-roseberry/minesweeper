@@ -15,8 +15,7 @@ public abstract class ImageUtil {
 		try {
 			return ImageIO.read(clazz.getResource("resource/" + path));
 		} catch (Exception ex) {
-			System.out.println("L'image n'a pas pu �tre charg�e : " + ex.getMessage());
-			return null;
+			throw new RuntimeException("L'image n'a pas pu �tre charg�e : " + ex.getMessage());
 		}
 	}
 

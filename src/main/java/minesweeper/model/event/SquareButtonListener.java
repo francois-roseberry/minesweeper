@@ -1,7 +1,8 @@
 package minesweeper.model.event;
 
-public interface SquareButtonListener
-{
-	public void squareMarked(GameEvent e);
-	public void squareUnmarked(GameEvent e);
+public interface SquareButtonListener {
+
+	void squareMarked(GameEvent e);
+
+	void squareUnmarked(GameEvent e);
 }

@@ -1,21 +1,19 @@
 package minesweeper.model;
 
 /**
- * L'énumération DifficultyLevel contient les niveaux de
- * difficulté possibles.
+ * L'ï¿½numï¿½ration DifficultyLevel contient les niveaux de difficultï¿½ possibles.
  * 
  * @author David Maltais
- * @author François Roseberry
- *
+ * @author Franï¿½ois Roseberry
+ * 
  */
-public enum DifficultyLevel
-{
+public enum DifficultyLevel {
 	/**
-	 * Niveau débutant.
+	 * Niveau dï¿½butant.
 	 */
 	BEGINNER,
 	/**
-	 * Niveau intermédiaire.
+	 * Niveau intermï¿½diaire.
 	 */
 	MEDIUM,
 	/**
@@ -23,7 +21,7 @@ public enum DifficultyLevel
 	 */
 	EXPERT,
 	/**
-	 * Grille de jeu personnalisée.
+	 * Grille de jeu personnalisï¿½e.
 	 */
 	CUSTOM
 }

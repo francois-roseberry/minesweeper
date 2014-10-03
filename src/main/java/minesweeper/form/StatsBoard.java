@@ -38,18 +38,18 @@ public class StatsBoard extends JPanel implements ActionListener {
 	private void initializeComponent() {
 		// Cette ligne n'a aucun rapport mais doit �tre l�
 		// pour que �a fonctionne
-		this.setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 		Box vbMain = Box.createVerticalBox();
 		Box hbMain = Box.createHorizontalBox();
 
-		this.btnSmiley.addActionListener(this);
+		btnSmiley.addActionListener(this);
 
 		hbMain.add(Box.createHorizontalStrut(5));
-		hbMain.add(this.lblMines);
+		hbMain.add(lblMines);
 		hbMain.add(Box.createHorizontalGlue());
-		hbMain.add(this.btnSmiley);
+		hbMain.add(btnSmiley);
 		hbMain.add(Box.createHorizontalGlue());
-		hbMain.add(this.lblTime);
+		hbMain.add(lblTime);
 		hbMain.add(Box.createHorizontalStrut(5));
 
 		vbMain.add(Box.createVerticalStrut(5));
@@ -61,39 +61,39 @@ public class StatsBoard extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		if (e.getSource() == this.timer) {
-			if (this.secondsElapsed < 999) {
-				this.secondsElapsed++;
-				this.lblTime.displayNumber(this.secondsElapsed);
+		if (e.getSource() == timer) {
+			if (secondsElapsed < 999) {
+				secondsElapsed++;
+				lblTime.displayNumber(secondsElapsed);
 			} else {
-				this.timer.stop();
+				timer.stop();
 			}
-		} else if (e.getSource() == this.btnSmiley) {
+		} else if (e.getSource() == btnSmiley) {
 			AppFrame.getInstance().startGame();
 		}
 	}
 
 	public void resetTimer() {
-		if (this.timer.isRunning()) {
-			this.timer.stop();
+		if (timer.isRunning()) {
+			timer.stop();
 		}
-		this.secondsElapsed = 0;
-		this.lblTime.displayNumber(this.secondsElapsed);
+		secondsElapsed = 0;
+		lblTime.displayNumber(this.secondsElapsed);
 	}
 
 	public void stopTimer() {
-		if (this.timer.isRunning()) {
-			this.timer.stop();
+		if (timer.isRunning()) {
+			timer.stop();
 		}
 	}
 
 	public int getTimeElapsed() {
-		return this.secondsElapsed;
+		return secondsElapsed;
 	}
 
 	public void startTimer() {
-		if (!this.timer.isRunning()) {
-			this.timer.start();
+		if (!timer.isRunning()) {
+			timer.start();
 		}
 	}
 

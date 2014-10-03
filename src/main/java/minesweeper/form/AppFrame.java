@@ -36,7 +36,7 @@ public class AppFrame extends JFrame implements WindowListener {
 	private AppMenu mb = new AppMenu();
 	private int squaresPerRow = 0;
 	private int squaresPerColumn = 0;
-	private int nbMines = 0;
+	private int mines = 0;
 
 	/**
 	 * Constructeur.
@@ -44,13 +44,13 @@ public class AppFrame extends JFrame implements WindowListener {
 	 */
 	public AppFrame() {
 		super(AppFrame.TITLE);
-		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		this.setResizable(false);
-		this.addWindowListener(this);
-		this.initializeComponent();
-		//this.pack();
-		this.centerWindow();
-		this.startGame(DifficultyLevel.BEGINNER, 0, 0, 0);
+
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		setResizable(false);
+		addWindowListener(this);
+		initializeComponent();
+		centerWindow();
+		startGame(DifficultyLevel.BEGINNER, 0, 0, 0);
 	}
 
 	/**
@@ -88,8 +88,8 @@ public class AppFrame extends JFrame implements WindowListener {
 	 * 
 	 */
 	private void initializeComponent() {
-		this.setJMenuBar(this.mb);
-		this.add(this.gamePanel);
+		setJMenuBar(mb);
+		add(gamePanel);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class AppFrame extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(final WindowEvent e) {
-		this.askExitQuestion();
+		askExitQuestion();
 	}
 
 	@Override
@@ -132,9 +132,9 @@ public class AppFrame extends JFrame implements WindowListener {
 	public void startGame() {
 		DifficultyLevel level = mb.getSelectedGameLevel();
 		if (level != DifficultyLevel.CUSTOM) {
-			this.startGame(level, 0, 0, 0);
+			startGame(level, 0, 0, 0);
 		} else {
-			this.startGame(level, this.squaresPerRow, this.squaresPerColumn, this.nbMines);
+			startGame(level, squaresPerRow, squaresPerColumn, mines);
 		}
 	}
 
@@ -152,18 +152,14 @@ public class AppFrame extends JFrame implements WindowListener {
 	 * 
 	 */
 	public void startGame(final DifficultyLevel level, final int squaresPerRow, final int squaresPerColumn, final int mines) {
-		// Commence une nouvelle partie (dans le panneau de jeu).
-		this.gamePanel.startGame(level, squaresPerRow, squaresPerColumn, mines);
+		gamePanel.startGame(level, squaresPerRow, squaresPerColumn, mines);
 		if ((squaresPerRow == 0 && squaresPerColumn == 0) ||
 				(squaresPerRow != this.squaresPerRow && squaresPerColumn != this.squaresPerColumn)) {
 			this.squaresPerRow = squaresPerRow;
 			this.squaresPerColumn = squaresPerColumn;
-			// Redimensionner tous les composants en fonction de la grille de jeu.
-			//System.out.println("R�ajustement et centrage de la fen�tre");
-			this.pack();
-			// Re-centrer la fen�tre.
-			this.centerWindow();
+			pack();
+			centerWindow();
 		}
-		this.nbMines = mines;
+		this.mines = mines;
 	}
 }

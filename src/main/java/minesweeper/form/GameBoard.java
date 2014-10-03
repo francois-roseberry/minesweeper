@@ -118,7 +118,7 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 * 
 	 */
 	private void initializeComponent() {
-		this.grid.addGameListener(this);
+		grid.addGameListener(this);
 
 		// Cr�e des Box (Layout).
 		Box hbMain = Box.createHorizontalBox();
@@ -129,9 +129,9 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 
 		// Dispose les composants selon un BoxLayout.
 		vbMain.add(Box.createVerticalStrut(5));
-		vbMain.add(this.statsPanel);
+		vbMain.add(statsPanel);
 		vbMain.add(Box.createVerticalStrut(5));
-		vbMain.add(this.grid);
+		vbMain.add(grid);
 		vbMain.add(Box.createVerticalStrut(5));
 
 		this.add(hbMain);
@@ -143,7 +143,7 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 * @return Bool�en indiquant si la triche est activ�e.
 	 */
 	public boolean isCheating() {
-		return this.cheating;
+		return cheating;
 	}
 
 	/**
@@ -151,11 +151,11 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 * 
 	 */
 	public void cheat() {
-		this.cheating = true;
-		if (this.firstClicked) {
-			this.statsPanel.stopTimer();
-			this.grid.cheat();
-			this.statsPanel.displayMineCount(0);
+		cheating = true;
+		if (firstClicked) {
+			statsPanel.stopTimer();
+			grid.cheat();
+			statsPanel.displayMineCount(0);
 		}
 	}
 
@@ -172,34 +172,29 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 *            Le nombre de mines de la grille. Ignor� si level != DifficultyLevel.CUSTOM.
 	 */
 	public void startGame(final DifficultyLevel level, int squaresPerRow, int squaresPerColumn, int mines) {
-		//System.out.println("Nouvelle partie dans GameBoard");
-		//System.out.println("Niveau de difficult� : " + level.toString());
-		//System.out.println(squaresPerRow + " cases par rang�e, " + squaresPerColumn + " cases par colonne, " + mines + " mines");
-		this.cheating = false;
-		this.inGame = true;
-		this.firstClicked = false;
-		this.gameLevel = level;
+		cheating = false;
+		inGame = true;
+		firstClicked = false;
+		gameLevel = level;
 		if (level != DifficultyLevel.CUSTOM) {
 			squaresPerRow = GameBoard.GRID_WIDTH_LEVELS[level.ordinal()];
 			squaresPerColumn = GameBoard.GRID_HEIGHT_LEVELS[level.ordinal()];
 			mines = GameGrid.MINES_PER_LEVEL[this.gameLevel.ordinal()];
 		}
-		this.statsPanel.startGame(mines);
-		this.grid.startGame(squaresPerRow, squaresPerColumn, mines);
+		statsPanel.startGame(mines);
+		grid.startGame(squaresPerRow, squaresPerColumn, mines);
 	}
 
 	public void indicateMousePressed() {
-		// Arr�ter le temps.
-		this.statsPanel.stopTimer();
-		this.statsPanel.indicateMousePressed();
+		statsPanel.stopTimer();
+		statsPanel.indicateMousePressed();
 	}
 
 	public void indicateMouseReleased() {
-		if (!this.cheating) {
-			// Red�marrer le temps.
-			this.statsPanel.startTimer();
+		if (!cheating) {
+			statsPanel.startTimer();
 		}
-		this.statsPanel.indicateMouseReleased();
+		statsPanel.indicateMouseReleased();
 	}
 
 	/**
@@ -221,7 +216,7 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 * @return Vrai si une partie est en cours, faux sinon.
 	 */
 	public boolean isInGame() {
-		return this.inGame;
+		return inGame;
 	}
 
 	/**
@@ -230,7 +225,7 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 * @return Vrai si le premier clique a �t� r�alis�, faux sinon.
 	 */
 	public boolean isFirstClicked() {
-		return this.firstClicked;
+		return firstClicked;
 	}
 
 	/**
@@ -238,30 +233,27 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 * 
 	 */
 	public void firstClicked() {
-		this.firstClicked = true;
-		if (this.cheating) {
-			this.grid.cheat();
-			this.statsPanel.displayMineCount(0);
+		firstClicked = true;
+		if (cheating) {
+			grid.cheat();
+			statsPanel.displayMineCount(0);
 		} else {
-			//System.out.println("Temps d�marr�");
-			this.statsPanel.startTimer();
+			statsPanel.startTimer();
 		}
 	}
 
 	@Override
 	public void gameLost(final GameEvent e) {
-		//System.out.println("Partie perdue");
-		this.inGame = false;
-		this.statsPanel.indicateGameLost();
+		inGame = false;
+		statsPanel.indicateGameLost();
 	}
 
 	@Override
 	public void gameWon(final GameEvent e) {
-		//System.out.println("Partie gagn�e");
-		this.inGame = false;
-		this.statsPanel.indicateGameWon();
-		if (this.gameLevel != DifficultyLevel.CUSTOM) {
-			if (this.statsPanel.getTimeElapsed() < ScoreManager.getScore(gameLevel).getScore()) {
+		inGame = false;
+		statsPanel.indicateGameWon();
+		if (gameLevel != DifficultyLevel.CUSTOM) {
+			if (statsPanel.getTimeElapsed() < ScoreManager.getScore(gameLevel).getScore()) {
 				HighScoreDialog.showDialog(this);
 			}
 		}
@@ -269,20 +261,19 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 
 	@Override
 	public void squareMarked(final GameEvent e) {
-		this.statsPanel.decrementMineCount();
+		statsPanel.decrementMineCount();
 	}
 
 	@Override
 	public void squareUnmarked(final GameEvent e) {
-		this.statsPanel.incrementMineCount();
+		statsPanel.incrementMineCount();
 	}
 
 	@Override
 	public void validated(final ValidationEvent e) {
 		if (e.getValidatedClass() == HighScoreDialog.class) {
 			ScoreManager scoreMan = new ScoreManager();
-			System.out.println("Score sauvegard�");
-			scoreMan.saveScore(gameLevel, new Score(this.statsPanel.getTimeElapsed(), (String) e.getData()));
+			scoreMan.saveScore(gameLevel, new Score(statsPanel.getTimeElapsed(), (String) e.getData()));
 		}
 	}
 }

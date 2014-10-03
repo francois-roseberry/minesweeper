@@ -27,8 +27,8 @@ public class SquareButton extends JButton {
 
 	private List<SquareButtonListener> listeners = new ArrayList<SquareButtonListener>();
 	private boolean hasMine = false;
-	private int xSquare;
-	private int ySquare;
+	private int x;
+	private int y;
 	private int neighboorMinesCount = 0;
 	private ImageIcon iconFlag = ImageUtil.getImageIcon(getClass(), "flag.gif");
 	private ImageIcon iconQuestion = ImageUtil.getImageIcon(getClass(), "question.gif");
@@ -39,49 +39,50 @@ public class SquareButton extends JButton {
 	public SquareButton(final int x, final int y) {
 		super();
 
-		this.setPreferredSize(SquareButton.SQUARE_SIZE);
-		this.xSquare = x;
-		this.ySquare = y;
+		this.x = x;
+		this.y = y;
+
+		setPreferredSize(SquareButton.SQUARE_SIZE);
 	}
 
 	public int getNeighboorMinesCount() {
-		return this.neighboorMinesCount;
+		return neighboorMinesCount;
 	}
 
 	public void incrementNeighboorMinesCount() {
-		if (this.neighboorMinesCount < 8) {
-			this.neighboorMinesCount++;
+		if (neighboorMinesCount < 8) {
+			neighboorMinesCount++;
 		}
 	}
 
 	public boolean wasFlagged() {
-		return this.wasFlagged;
+		return wasFlagged;
 	}
 
 	public void setWasFlagged() {
-		this.wasFlagged = true;
+		wasFlagged = true;
 	}
 
 	public void reset() {
-		this.state = SquareButtonState.HIDDEN;
-		this.setVisible(true);
-		this.hasMine = false;
-		this.neighboorMinesCount = 0;
-		this.setIcon(null);
-		this.wasFlagged = false;
+		state = SquareButtonState.HIDDEN;
+		setVisible(true);
+		hasMine = false;
+		neighboorMinesCount = 0;
+		setIcon(null);
+		wasFlagged = false;
 	}
 
 	public void reveal() {
-		this.state = SquareButtonState.REVEALED;
-		this.setVisible(false);
+		state = SquareButtonState.REVEALED;
+		setVisible(false);
 	}
 
 	public int getXSquare() {
-		return this.xSquare;
+		return this.x;
 	}
 
 	public int getYSquare() {
-		return this.ySquare;
+		return this.y;
 	}
 
 	public SquareButtonState getState() {
@@ -146,7 +147,7 @@ public class SquareButton extends JButton {
 
 	public boolean equalCoords(final int x, final int y) {
 		boolean equals = false;
-		if (x == this.xSquare && y == this.ySquare) {
+		if (x == this.x && y == this.y) {
 			equals = true;
 		}
 		return equals;
@@ -154,6 +155,6 @@ public class SquareButton extends JButton {
 
 	@Override
 	public String toString() {
-		return "x = " + this.xSquare + ", y = " + this.ySquare;
+		return "x = " + this.x + ", y = " + this.y;
 	}
 }

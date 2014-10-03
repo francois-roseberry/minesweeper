@@ -3,66 +3,56 @@ package minesweeper.model;
 import minesweeper.form.GameGrid;
 
 /**
- * La classe SquareButton représente une case de la grille
- * de jeu.
+ * La classe SquareButton reprï¿½sente une case de la grille de jeu.
  * 
  * @author David Maltais
- * @author François Roseberry
- *
+ * @author Franï¿½ois Roseberry
+ * 
  */
-public class CustomGridObject
-{
+public class CustomGridObject {
+
 	private static final int MIN_MINES_PERCENTAGE = 10;
 	private static final int MAX_MINES_PERCENTAGE = 70;
-	
-	// Nombre de cases dans une rangée, ou nombre de colonnes.
+
+	// Nombre de cases dans une rangï¿½e, ou nombre de colonnes.
 	private int rows;
-	// Nombre de cases dans une colonne, ou nombre de rangées.
+	// Nombre de cases dans une colonne, ou nombre de rangï¿½es.
 	private int columns;
 	private int mines;
-	
-	private CustomGridObject(int rows, int columns, int mines)
-	{
+
+	private CustomGridObject(final int rows, final int columns, int mines) {
 		int nbSquares = rows * columns;
-		int maxMines = (int)(nbSquares * CustomGridObject.MAX_MINES_PERCENTAGE / 100.0f);
-		int minMines = (int)(nbSquares * CustomGridObject.MIN_MINES_PERCENTAGE / 100.0f);
-		if (mines > maxMines)
-		{
+		int maxMines = (int) (nbSquares * CustomGridObject.MAX_MINES_PERCENTAGE / 100.0f);
+		int minMines = (int) (nbSquares * CustomGridObject.MIN_MINES_PERCENTAGE / 100.0f);
+		if (mines > maxMines) {
 			mines = maxMines;
-		}
-		else if (mines < minMines)
-		{
+		} else if (mines < minMines) {
 			mines = minMines;
 		}
 		this.rows = rows;
 		this.columns = columns;
 		this.mines = mines;
 	}
-	
-	public static CustomGridObject createCustomGridObject(int rows, int columns, int mines)
-	{
+
+	public static CustomGridObject createCustomGridObject(final int rows, final int columns, final int mines) {
 		CustomGridObject c = null;
 		if (rows >= GameGrid.MIN_SQUARES_IN_A_LINE && rows <= GameGrid.MAX_SQUARES_IN_A_LINE
 				&& columns >= GameGrid.MIN_SQUARES_IN_A_LINE && columns <= GameGrid.MAX_SQUARES_IN_A_LINE
-				&& mines >= GameGrid.MIN_MINES && mines <= GameGrid.MAX_MINES)
-		{
+				&& mines >= GameGrid.MIN_MINES && mines <= GameGrid.MAX_MINES) {
 			c = new CustomGridObject(rows, columns, mines);
 		}
 		return c;
 	}
-	
-	public int getMinesPerRow()
-	{
-		return this.rows;
+
+	public int getMinesPerRow() {
+		return rows;
 	}
-	
-	public int getMinesPerColumn()
-	{
-		return this.columns;
+
+	public int getMinesPerColumn() {
+		return columns;
 	}
-	
-	public int getNbMines()
-	{
-		return this.mines;
+
+	public int getNbMines() {
+		return mines;
 	}
 }

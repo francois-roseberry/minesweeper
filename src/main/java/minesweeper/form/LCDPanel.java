@@ -106,11 +106,11 @@ public class LCDPanel extends JPanel {
 			display = display + "0";
 		}
 
-		this.setPreferredSize(new Dimension(LCDPanel.DIGIT_WIDTH * digits, LCDPanel.HEIGHT));
-		this.setMaximumSize(this.getPreferredSize());
-		this.buffer = new BufferedImage((int) this.getPreferredSize().getWidth(), (int) this.getPreferredSize().getHeight(),
+		setPreferredSize(new Dimension(LCDPanel.DIGIT_WIDTH * digits, LCDPanel.HEIGHT));
+		setMaximumSize(getPreferredSize());
+		buffer = new BufferedImage((int) this.getPreferredSize().getWidth(), (int) this.getPreferredSize().getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
-		this.gBuf = this.buffer.createGraphics();
+		gBuf = buffer.createGraphics();
 	}
 
 	/**
@@ -162,28 +162,28 @@ public class LCDPanel extends JPanel {
 	}
 
 	public void displayNumber(final int number) {
-		this.display = "" + number;
-		while (this.display.length() < this.digits) {
-			this.display = "0" + this.display;
+		display = "" + number;
+		while (display.length() < digits) {
+			display = "0" + display;
 		}
-		this.repaint();
+		repaint();
 	}
 
 	@Override
 	public void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 
-		this.gBuf.setColor(Color.BLACK);
-		this.gBuf.fillRect(0, 0, this.getWidth(), this.getHeight());
-		this.gBuf.setColor(this.displayColor);
-		this.drawDigits(this.gBuf);
+		gBuf.setColor(Color.BLACK);
+		gBuf.fillRect(0, 0, this.getWidth(), this.getHeight());
+		gBuf.setColor(this.displayColor);
+		drawDigits(this.gBuf);
 
 		g.drawImage(this.buffer, 0, 0, null);
 	}
 
 	private void drawDigits(final Graphics g) {
 		for (int i = 0; i < this.digits; i++) {
-			this.drawDigit(i, g);
+			drawDigit(i, g);
 		}
 	}
 
@@ -194,15 +194,15 @@ public class LCDPanel extends JPanel {
 			value = Integer.valueOf("" + ch);
 		} catch (NumberFormatException ex) {}
 		if (value == 0) {
-			if ((this.paddingZeros) ||
-					(!this.paddingZeros && !this.IsLeftZero(numDigit))) {
+			if ((paddingZeros) ||
+					(!paddingZeros && !isLeftZero(numDigit))) {
 				for (int n : LCDPanel.NUMS_CRISTAL_DIGIT_0) {
-					this.drawCristal(n, numDigit, g);
+					drawCristal(n, numDigit, g);
 				}
 			}
 		} else {
 			for (int n : LCDPanel.NUMS_CRISTAL_DIGITS[value]) {
-				this.drawCristal(n, numDigit, g);
+				drawCristal(n, numDigit, g);
 			}
 		}
 	}
@@ -373,13 +373,13 @@ public class LCDPanel extends JPanel {
 		g.fillPolygon(poly);
 	}
 
-	private boolean IsLeftZero(int numDigit) {
+	private boolean isLeftZero(int numDigit) {
 		char ch;
 		boolean isLeftZero = true;
 		while (numDigit > 0 && isLeftZero) {
 			numDigit--;
 			// On obtient le caract�re situ� � gauche.
-			ch = this.display.charAt(numDigit);
+			ch = display.charAt(numDigit);
 			// Si celui-ci est un z�ro, faut v�rifier les autres.
 			// Sinon, arr�ter de boucler, ce n'est pas un z�ro �
 			// gauche.

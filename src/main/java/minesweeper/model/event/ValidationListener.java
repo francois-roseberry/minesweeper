@@ -1,6 +1,6 @@
 package minesweeper.model.event;
 
-public interface ValidationListener
-{
-	public void validated(ValidationEvent e);
+public interface ValidationListener {
+
+	void validated(ValidationEvent e);
 }

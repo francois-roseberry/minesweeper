@@ -1,7 +1,8 @@
 package minesweeper.model.event;
 
-public interface GameListener extends SquareButtonListener
-{
-	public void gameLost(GameEvent e);
-	public void gameWon(GameEvent e);
+public interface GameListener extends SquareButtonListener {
+
+	void gameLost(GameEvent e);
+
+	void gameWon(GameEvent e);
 }

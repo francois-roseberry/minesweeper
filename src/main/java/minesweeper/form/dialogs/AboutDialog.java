@@ -28,20 +28,20 @@ public class AboutDialog extends JDialog implements ActionListener {
 	public AboutDialog() {
 		super();
 
-		this.setTitle(AboutDialog.TITLE);
-		this.setResizable(false);
-		this.setModal(true);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.initializeComponent();
-		this.pack();
-		this.centerWindow();
+		setTitle(AboutDialog.TITLE);
+		setResizable(false);
+		setModal(true);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		initializeComponent();
+		pack();
+		centerWindow();
 	}
 
 	private void centerWindow() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenWidth = (int) screenSize.getWidth();
 		int screenHeight = (int) screenSize.getHeight();
-		this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
+		setLocation((screenWidth - getWidth()) / 2, (screenHeight - getHeight()) / 2);
 	}
 
 	/*
@@ -79,7 +79,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 		hbButton.add(btnOK);
 		hbButton.add(Box.createHorizontalGlue());
 
-		this.add(hbMain);
+		add(hbMain);
 	}
 
 	public static void showDialog() {
@@ -88,7 +88,6 @@ public class AboutDialog extends JDialog implements ActionListener {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		// Un seul bouton donc pas besoin de tester l'ActionCommand.
-		this.dispose();
+		dispose();
 	}
 }

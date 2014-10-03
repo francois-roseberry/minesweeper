@@ -1,34 +1,31 @@
 package minesweeper.model;
 
 /**
- * L'énumération SquareButtonState contient les états
- * possibles d'une case de la grille de jeu.
+ * L'ï¿½numï¿½ration SquareButtonState contient les ï¿½tats possibles d'une case de la grille de jeu.
  * 
  * @author David Maltais
- * @author François Roseberry
- *
+ * @author Franï¿½ois Roseberry
+ * 
  */
-public enum SquareButtonState
-{
+public enum SquareButtonState {
 	/**
-	 * La case est marquée minée à l'aide d'un drapeau.
+	 * La case est marquï¿½e minï¿½e ï¿½ l'aide d'un drapeau.
 	 */
 	MARKED,
 	/**
-	 * La case a été découverte en cliquant dessus.
+	 * La case a ï¿½tï¿½ dï¿½couverte en cliquant dessus.
 	 */
 	REVEALED,
 	/**
-	 * La case est marquée "?" pour indiquer un doute.
+	 * La case est marquï¿½e "?" pour indiquer un doute.
 	 */
 	UNSURE,
 	/**
-	 * La case est cachée, l'état intial.
+	 * La case est cachï¿½e, l'ï¿½tat intial.
 	 */
 	HIDDEN,
 	/**
-	 * La case est en mode triche, c'est-à-dire qu'elle
-	 * révèle au joueur si elle contient une mine.
+	 * La case est en mode triche, c'est-ï¿½-dire qu'elle rï¿½vï¿½le au joueur si elle contient une mine.
 	 */
 	CHEATED
 }

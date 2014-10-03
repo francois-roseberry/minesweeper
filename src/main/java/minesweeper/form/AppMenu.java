@@ -77,7 +77,7 @@ public class AppMenu extends JMenuBar implements ActionListener, ValidationListe
 		// Menu Partie.
 		JMenu mnuGame = new JMenu(AppMenu.GAME_MENU_TITLE);
 		mnuGame.setMnemonic(AppMenu.GAME_MNEMONIC);
-		this.add(mnuGame);
+		add(mnuGame);
 
 		// Item de menu Partie/Nouveau.
 		JMenuItem mniNewGame = new JMenuItem(AppMenu.NEW_GAME_ACTION_COMMAND, AppMenu.NEW_GAME_MNEMONIC);
@@ -148,7 +148,7 @@ public class AppMenu extends JMenuBar implements ActionListener, ValidationListe
 		// Menu "?".
 		JMenu mnuHelp = new JMenu(AppMenu.HELP_MENU_TITLE);
 		mnuHelp.setMnemonic(AppMenu.HELP_MENU_MNEMONIC);
-		this.add(mnuHelp);
+		add(mnuHelp);
 
 		// Item de menu Aide.
 		JMenuItem mniHelp = new JMenuItem(AppMenu.HELP_ACTION_COMMAND, AppMenu.HELP_MNEMONIC);
@@ -167,40 +167,42 @@ public class AppMenu extends JMenuBar implements ActionListener, ValidationListe
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals(AppMenu.EXIT_ACTION_COMMAND)) {
-			this.exit_Clicked();
+			exit_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.ABOUT_ACTION_COMMAND)) {
-			this.about_Clicked();
+			about_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.NEW_GAME_ACTION_COMMAND)) {
-			this.newGame_Clicked();
+			newGame_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.BEGINNER_ACTION_COMMAND)) {
-			this.beginner_Clicked();
+			beginner_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.MEDIUM_ACTION_COMMAND)) {
-			this.medium_Clicked();
+			medium_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.EXPERT_ACTION_COMMAND)) {
-			this.expert_Clicked();
+			expert_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.CUSTOM_ACTION_COMMAND)) {
-			this.custom_Clicked();
+			custom_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.CHEAT_ACTION_COMMAND)) {
-			this.cheat_Clicked();
+			cheat_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.BEST_SCORES_ACTION_COMMAND)) {
-			this.bestTimes_Clicked();
+			bestTimes_Clicked();
 		} else if (e.getActionCommand().equals(AppMenu.HELP_ACTION_COMMAND)) {
-			this.help_Clicked();
+			help_Clicked();
 		}
 	}
 
 	public DifficultyLevel getSelectedGameLevel() {
-		DifficultyLevel level;
-		if (this.levelBeginnerChosen) {
-			level = DifficultyLevel.BEGINNER;
-		} else if (this.levelMediumChosen) {
-			level = DifficultyLevel.MEDIUM;
-		} else if (this.levelExpertChosen) {
-			level = DifficultyLevel.EXPERT;
-		} else {
-			level = DifficultyLevel.CUSTOM;
+		if (levelBeginnerChosen) {
+			return DifficultyLevel.BEGINNER;
 		}
-		return level;
+
+		if (levelMediumChosen) {
+			return DifficultyLevel.MEDIUM;
+		}
+
+		if (levelExpertChosen) {
+			return DifficultyLevel.EXPERT;
+		}
+
+		return DifficultyLevel.CUSTOM;
 	}
 
 	private void help_Clicked() {
@@ -246,30 +248,30 @@ public class AppMenu extends JMenuBar implements ActionListener, ValidationListe
 	}
 
 	private void beginner_Clicked() {
-		this.levelBeginnerChosen = true;
-		this.levelMediumChosen = false;
-		this.levelExpertChosen = false;
-		this.newGame_Clicked();
+		levelBeginnerChosen = true;
+		levelMediumChosen = false;
+		levelExpertChosen = false;
+		newGame_Clicked();
 	}
 
 	private void medium_Clicked() {
-		this.levelBeginnerChosen = false;
-		this.levelMediumChosen = true;
-		this.levelExpertChosen = false;
-		this.newGame_Clicked();
+		levelBeginnerChosen = false;
+		levelMediumChosen = true;
+		levelExpertChosen = false;
+		newGame_Clicked();
 	}
 
 	private void expert_Clicked() {
-		this.levelBeginnerChosen = false;
-		this.levelMediumChosen = false;
-		this.levelExpertChosen = true;
-		this.newGame_Clicked();
+		levelBeginnerChosen = false;
+		levelMediumChosen = false;
+		levelExpertChosen = true;
+		newGame_Clicked();
 	}
 
 	private void custom_Clicked() {
-		this.levelBeginnerChosen = false;
-		this.levelMediumChosen = false;
-		this.levelExpertChosen = false;
+		levelBeginnerChosen = false;
+		levelMediumChosen = false;
+		levelExpertChosen = false;
 		CustomGridDialog.showDialog(this);
 	}
 
