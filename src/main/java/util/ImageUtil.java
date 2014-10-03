@@ -5,33 +5,25 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public abstract class ImageUtil
-{
-	public static ImageIcon getImageIcon(Object obj, String path)
-	{
-		return new ImageIcon(obj.getClass().getResource("resource/" + path));
+public abstract class ImageUtil {
+
+	public static ImageIcon getImageIcon(final Class<?> clazz, final String path) {
+		return new ImageIcon(clazz.getResource("resource/" + path));
 	}
-	
-	public static BufferedImage getImage(Object obj, String path)
-	{
-		try
-		{
-			return ImageIO.read(obj.getClass().getResource("resource/" + path));
-		}
-		catch (Exception ex)
-		{
-			System.out.println("L'image n'a pas pu être chargée : " + ex.getMessage());
+
+	public static BufferedImage getImage(final Class<?> clazz, final String path) {
+		try {
+			return ImageIO.read(clazz.getResource("resource/" + path));
+		} catch (Exception ex) {
+			System.out.println("L'image n'a pas pu ï¿½tre chargï¿½e : " + ex.getMessage());
 			return null;
 		}
 	}
 
 	/**
-	 * les fichiers ressources sont stockés dans un dossier séparé
-	 * ces fichiers ne font pas partie des fichiers de classes
-	 * Chaque classe a la charge d'y accéder et d'interpréter les données de la ressource.
-	 * Où se trouvent les ressources???
-	 * 1- Chargeur de classes -> this.getClass() sait comment trouver le .class
-	 *                           charge la classe qui doit accèder à la ressource
-	 * 2- Chargeur de ressources -> getRessource() interprète le path relatif
-	 */ 
+	 * les fichiers ressources sont stockï¿½s dans un dossier sï¿½parï¿½ ces fichiers ne font pas partie des fichiers de classes Chaque classe a
+	 * la charge d'y accï¿½der et d'interprï¿½ter les donnï¿½es de la ressource. Oï¿½ se trouvent les ressources??? 1- Chargeur de classes ->
+	 * this.getClass() sait comment trouver le .class charge la classe qui doit accï¿½der ï¿½ la ressource 2- Chargeur de ressources ->
+	 * getRessource() interprï¿½te le path relatif
+	 */
 }

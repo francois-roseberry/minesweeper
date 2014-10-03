@@ -1,37 +1,35 @@
 package minesweeper.form;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import minesweeper.model.DifficultyLevel;
 
-
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
 /**
- * La classe AppFrame représente la fenêtre de jeu. Elle
- * ne peut être instanciée plus qu'une fois. On obtient
- * la référence à l'objet du singleton par getInstance().
+ * La classe AppFrame reprï¿½sente la fenï¿½tre de jeu. Elle ne peut ï¿½tre instanciï¿½e plus qu'une fois. On obtient la rï¿½fï¿½rence ï¿½ l'objet du
+ * singleton par getInstance().
  * 
  * @author David Maltais
- * @author François Roseberry
- *
+ * @author Franï¿½ois Roseberry
+ * 
  */
-public class AppFrame extends JFrame implements WindowListener
-{
-	// Titre de la fenêtre.
-	private static final String TITLE = "Démineur";	
-	// Question demandée lorsque l'utilisateur essaie de quitter.
+@SuppressWarnings("serial")
+public class AppFrame extends JFrame implements WindowListener {
+
+	// Titre de la fenï¿½tre.
+	private static final String TITLE = "Dï¿½mineur";
+	// Question demandï¿½e lorsque l'utilisateur essaie de quitter.
 	private static final String EXIT_QUESTION = "Voulez-vous quitter?";
 	private static final String EXIT_TITLE = "Question";
 	// Instance unique de cette classe (singleton).
 	private static AppFrame instance = null;
-	
+
 	// Panneau de jeu.
 	private GameBoard gamePanel = new GameBoard();
 	// Barre de menus.
@@ -39,13 +37,12 @@ public class AppFrame extends JFrame implements WindowListener
 	private int squaresPerRow = 0;
 	private int squaresPerColumn = 0;
 	private int nbMines = 0;
-	
+
 	/**
 	 * Constructeur.
-	 *
+	 * 
 	 */
-	public AppFrame()
-	{
+	public AppFrame() {
 		super(AppFrame.TITLE);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setResizable(false);
@@ -55,133 +52,116 @@ public class AppFrame extends JFrame implements WindowListener
 		this.centerWindow();
 		this.startGame(DifficultyLevel.BEGINNER, 0, 0, 0);
 	}
-	
+
 	/**
-	 * Obtient l'insatance unique du AppFrame.
-	 * Implémentation du singleton.
+	 * Obtient l'insatance unique du AppFrame. Implï¿½mentation du singleton.
 	 * 
-	 * @return	L'instance de AppFrame.
+	 * @return L'instance de AppFrame.
 	 */
-	public static AppFrame getInstance()
-	{
-		if (instance == null)
-		{
+	public static AppFrame getInstance() {
+		if (instance == null) {
 			instance = new AppFrame();
 		}
 		return instance;
 	}
-	
+
 	/*
-	 * Centre la fenêtre à l'écran.
+	 * Centre la fenï¿½tre ï¿½ l'ï¿½cran.
 	 */
-	private void centerWindow()
-	{
+	private void centerWindow() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = (int)screenSize.getWidth();
-		int screenHeight = (int)screenSize.getHeight();
+		int screenWidth = (int) screenSize.getWidth();
+		int screenHeight = (int) screenSize.getHeight();
 		this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
 	}
-	
-	public GameBoard getGameBoard()
-	{
-		if (instance != null)
-		{
-			return this.gamePanel;
+
+	public GameBoard getGameBoard() {
+		if (instance != null) {
+			return gamePanel;
 		}
-		else
-		{
-			return null;
-		}
+
+		return null;
 	}
-	
+
 	/*
-	 * Crée et dispose les composants.
+	 * Crï¿½e et dispose les composants.
 	 * 
 	 */
-	private void initializeComponent()
-	{
+	private void initializeComponent() {
 		this.setJMenuBar(this.mb);
 		this.add(this.gamePanel);
 	}
-	
+
 	/**
-	 * Demande à l'utilisateur une confirmation pour quitter.
-	 *
+	 * Demande ï¿½ l'utilisateur une confirmation pour quitter.
+	 * 
 	 */
-	public void askExitQuestion()
-	{
-		if (JOptionPane.showConfirmDialog(null, AppFrame.EXIT_QUESTION, AppFrame.EXIT_TITLE, 0)
-				== JOptionPane.YES_OPTION)
-		{
+	public void askExitQuestion() {
+		if (JOptionPane.showConfirmDialog(null, AppFrame.EXIT_QUESTION, AppFrame.EXIT_TITLE, 0) == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
 	}
 
-	public void windowActivated(WindowEvent e)
-	{}
+	@Override
+	public void windowActivated(final WindowEvent e) {}
 
-	public void windowClosed(WindowEvent e)
-	{}
+	@Override
+	public void windowClosed(final WindowEvent e) {}
 
-	public void windowClosing(WindowEvent e)
-	{
+	@Override
+	public void windowClosing(final WindowEvent e) {
 		this.askExitQuestion();
 	}
 
-	public void windowDeactivated(WindowEvent e)
-	{}
+	@Override
+	public void windowDeactivated(final WindowEvent e) {}
 
-	public void windowDeiconified(WindowEvent e)
-	{}
+	@Override
+	public void windowDeiconified(final WindowEvent e) {}
 
-	public void windowIconified(WindowEvent e)
-	{}
+	@Override
+	public void windowIconified(final WindowEvent e) {}
 
-	public void windowOpened(WindowEvent e)
-	{}
-	
+	@Override
+	public void windowOpened(final WindowEvent e) {}
+
 	/**
 	 * Commence une nouvelle partie.
-	 *
+	 * 
 	 */
-	public void startGame()
-	{
+	public void startGame() {
 		DifficultyLevel level = mb.getSelectedGameLevel();
-		if (level != DifficultyLevel.CUSTOM)
-		{
+		if (level != DifficultyLevel.CUSTOM) {
 			this.startGame(level, 0, 0, 0);
-		}
-		else
-		{
+		} else {
 			this.startGame(level, this.squaresPerRow, this.squaresPerColumn, this.nbMines);
 		}
 	}
-	
+
 	/**
 	 * Commence une nouvelle partie.
 	 * 
-	 * @param level				Le niveau de difficulté.
-	 * @param squaresPerRow		Nombre de cases par rangée. Inutile
-	 * 							si level != DifficultyLevel.CUSTOM.
-	 * @param squaresPerColumn	Nombre de cases par colonne. Inutile
-	 * 							si level != DifficultyLevel.CUSTOM.
-	 * @param mines				Nombre de mines de la grille. Inutile
-	 * 							si level != DifficultyLevel.CUSTOM.
+	 * @param level
+	 *            Le niveau de difficultï¿½.
+	 * @param squaresPerRow
+	 *            Nombre de cases par rangï¿½e. Inutile si level != DifficultyLevel.CUSTOM.
+	 * @param squaresPerColumn
+	 *            Nombre de cases par colonne. Inutile si level != DifficultyLevel.CUSTOM.
+	 * @param mines
+	 *            Nombre de mines de la grille. Inutile si level != DifficultyLevel.CUSTOM.
 	 * 
 	 */
-	public void startGame(DifficultyLevel level, int squaresPerRow, int squaresPerColumn, int mines)
-	{
+	public void startGame(final DifficultyLevel level, final int squaresPerRow, final int squaresPerColumn, final int mines) {
 		// Commence une nouvelle partie (dans le panneau de jeu).
 		this.gamePanel.startGame(level, squaresPerRow, squaresPerColumn, mines);
 		if ((squaresPerRow == 0 && squaresPerColumn == 0) ||
-			(squaresPerRow != this.squaresPerRow && squaresPerColumn != this.squaresPerColumn))
-		{
+				(squaresPerRow != this.squaresPerRow && squaresPerColumn != this.squaresPerColumn)) {
 			this.squaresPerRow = squaresPerRow;
 			this.squaresPerColumn = squaresPerColumn;
 			// Redimensionner tous les composants en fonction de la grille de jeu.
-			//System.out.println("Réajustement et centrage de la fenêtre");
+			//System.out.println("Rï¿½ajustement et centrage de la fenï¿½tre");
 			this.pack();
-			// Re-centrer la fenêtre.
+			// Re-centrer la fenï¿½tre.
 			this.centerWindow();
 		}
 		this.nbMines = mines;

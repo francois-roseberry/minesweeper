@@ -13,20 +13,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-public class AboutDialog extends JDialog implements ActionListener
-{
-	private static final String TITLE = "À propos de Démineur";
-	
-	private static final String NAME = "Démineur";
-	private static final String DESCRIPTION = "Jeu de démineur";
-	private static final String AUTHOR = "Développé par David Maltais et François Roseberry";
+@SuppressWarnings("serial")
+public class AboutDialog extends JDialog implements ActionListener {
+
+	private static final String TITLE = "ï¿½ propos de Dï¿½mineur";
+
+	private static final String NAME = "Dï¿½mineur";
+	private static final String DESCRIPTION = "Jeu de dï¿½mineur";
+	private static final String AUTHOR = "Dï¿½veloppï¿½ par David Maltais et Franï¿½ois Roseberry";
 	private static final String VERSION = "Version 1.0";
-	
+
 	private static final String BTN_CLOSE_ACTION_COMMAND = "Fermer";
-	
-	public AboutDialog()
-	{
+
+	public AboutDialog() {
 		super();
+
 		this.setTitle(AboutDialog.TITLE);
 		this.setResizable(false);
 		this.setModal(true);
@@ -35,30 +36,28 @@ public class AboutDialog extends JDialog implements ActionListener
 		this.pack();
 		this.centerWindow();
 	}
-	
-	private void centerWindow()
-	{
+
+	private void centerWindow() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = (int)screenSize.getWidth();
-		int screenHeight = (int)screenSize.getHeight();
+		int screenWidth = (int) screenSize.getWidth();
+		int screenHeight = (int) screenSize.getHeight();
 		this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
 	}
-	
+
 	/*
-	 * Crée et dispose les composants.
+	 * Crï¿½e et dispose les composants.
 	 * 
 	 */
-	private void initializeComponent()
-	{
+	private void initializeComponent() {
 		Box hbMain = Box.createHorizontalBox();
 		Box vbMain = Box.createVerticalBox();
 		JPanel pan = new JPanel(new BorderLayout());
 		Box hbButton = Box.createHorizontalBox();
-		
+
 		hbMain.add(Box.createHorizontalStrut(10));
 		hbMain.add(vbMain);
 		hbMain.add(Box.createHorizontalStrut(10));
-		
+
 		vbMain.add(Box.createVerticalStrut(10));
 		vbMain.add(new JLabel(AboutDialog.NAME));
 		vbMain.add(Box.createVerticalStrut(10));
@@ -70,26 +69,25 @@ public class AboutDialog extends JDialog implements ActionListener
 		vbMain.add(Box.createVerticalStrut(10));
 		vbMain.add(pan);
 		vbMain.add(Box.createVerticalStrut(10));
-		
+
 		pan.add(hbButton);
-		
+
 		JButton btnOK = new JButton(AboutDialog.BTN_CLOSE_ACTION_COMMAND);
 		btnOK.addActionListener(this);
-		
+
 		hbButton.add(Box.createHorizontalGlue());
 		hbButton.add(btnOK);
 		hbButton.add(Box.createHorizontalGlue());
-		
+
 		this.add(hbMain);
 	}
-	
-	public static void showDialog()
-	{
+
+	public static void showDialog() {
 		new AboutDialog().setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent e)
-	{
+	@Override
+	public void actionPerformed(final ActionEvent e) {
 		// Un seul bouton donc pas besoin de tester l'ActionCommand.
 		this.dispose();
 	}

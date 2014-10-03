@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -22,40 +23,39 @@ import javax.swing.WindowConstants;
 import minesweeper.model.event.ValidationEvent;
 import minesweeper.model.event.ValidationListener;
 
+@SuppressWarnings("serial")
+public class CheatDialog extends JDialog implements ActionListener, KeyListener {
 
-public class CheatDialog extends JDialog implements ActionListener, KeyListener
-{
-	// Titre de la boîte de dialogue.
+	// Titre de la boï¿½te de dialogue.
 	private static final String TITLE = "Triche";
-	// Texte inscrit dans la boîte de dialogue.
+	// Texte inscrit dans la boï¿½te de dialogue.
 	private static final String DIRECTIVE = "Entrez le code de triche ci-dessous :";
 	private static final String OK_ACTION_COMMAND = "OK";
 	private static final String CANCEL_ACTION_COMMAND = "Annuler";
-	// Message qui indique que le mot de passe entré est le bon.
-	private static final String RIGHT_PASSWORD_MESSAGE = "Vous avez entré le bon mot de passe !";
-	// Message qui indique que le mot de passe entré est incorrect.
-	private static final String WRONG_PASSWORD_MESSAGE = "Code invalide. Réessayez.";
-	
+	// Message qui indique que le mot de passe entrï¿½ est le bon.
+	private static final String RIGHT_PASSWORD_MESSAGE = "Vous avez entrï¿½ le bon mot de passe !";
+	// Message qui indique que le mot de passe entrï¿½ est incorrect.
+	private static final String WRONG_PASSWORD_MESSAGE = "Code invalide. Rï¿½essayez.";
+
 	/**
-	 * Nombre maximum de caractères pouvant être contenus dans
-	 * un mot de passe.
+	 * Nombre maximum de caractï¿½res pouvant ï¿½tre contenus dans un mot de passe.
 	 */
 	public static final int MAX_CHARS_PASSWORD = 15;
-	
+
 	// Champ de texte de type Mot de passe.
 	private JPasswordField txtPass = new JPasswordField(CheatDialog.MAX_CHARS_PASSWORD);
-	// Mot de passe à vérifier.
+	// Mot de passe ï¿½ vï¿½rifier.
 	private char[] correctPassword;
-	// Liste des écouteurs d'évènement Validation.
-	private ArrayList<ValidationListener> listeners = new ArrayList<ValidationListener>();
-	
+	// Liste des ï¿½couteurs d'ï¿½vï¿½nement Validation.
+	private List<ValidationListener> listeners = new ArrayList<ValidationListener>();
+
 	/*
 	 * Constructeur.
 	 * 
 	 */
-	private CheatDialog(ValidationListener listener, char[] password)
-	{
+	private CheatDialog(final ValidationListener listener, final char[] password) {
 		super();
+
 		this.setTitle(CheatDialog.TITLE);
 		this.setModal(true);
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -65,25 +65,23 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener
 		this.correctPassword = password;
 		this.centerWindow();
 	}
-	
+
 	/*
-	 * Centre la boîte de dialogue.
+	 * Centre la boï¿½te de dialogue.
 	 * 
 	 */
-	private void centerWindow()
-	{
+	private void centerWindow() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = (int)screenSize.getWidth();
-		int screenHeight = (int)screenSize.getHeight();
+		int screenWidth = (int) screenSize.getWidth();
+		int screenHeight = (int) screenSize.getHeight();
 		this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
 	}
-	
+
 	/*
-	 * Crée et dispose les composants.
+	 * Crï¿½e et dispose les composants.
 	 * 
 	 */
-	private void initializeComponent()
-	{
+	private void initializeComponent() {
 		this.txtPass.addKeyListener(this);
 		Box hbMain = Box.createHorizontalBox();
 		Box vbMain = Box.createVerticalBox();
@@ -97,11 +95,11 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener
 		btnCancel.addActionListener(this);
 		Box hbButton = Box.createHorizontalBox();
 		Box hbText = Box.createHorizontalBox();
-		
+
 		hbMain.add(Box.createHorizontalStrut(10));
 		hbMain.add(vbMain);
 		hbMain.add(Box.createHorizontalStrut(10));
-		
+
 		vbMain.add(Box.createVerticalStrut(10));
 		vbMain.add(panText);
 		vbMain.add(Box.createVerticalStrut(5));
@@ -109,122 +107,107 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener
 		vbMain.add(Box.createVerticalStrut(10));
 		vbMain.add(panButtons);
 		vbMain.add(Box.createVerticalStrut(10));
-		
+
 		panText.add(hbText);
 		panButtons.add(hbButton);
-		
+
 		hbText.add(Box.createHorizontalGlue());
 		hbText.add(new JLabel(CheatDialog.DIRECTIVE));
 		hbText.add(Box.createHorizontalGlue());
-		
+
 		hbButton.add(Box.createHorizontalGlue());
 		hbButton.add(btnOK);
 		hbButton.add(Box.createHorizontalGlue());
 		hbButton.add(btnCancel);
 		hbButton.add(Box.createHorizontalGlue());
-		
+
 		this.add(hbMain);
 	}
-	
-	private void onValidated(ValidationEvent e)
-	{
-		for (ValidationListener listener : this.listeners)
-		{
+
+	private void onValidated(final ValidationEvent e) {
+		for (ValidationListener listener : this.listeners) {
 			listener.validated(e);
 		}
 	}
-	
+
 	/**
-	 * Enregistre un écouteur d'évènement Validation.
+	 * Enregistre un ï¿½couteur d'ï¿½vï¿½nement Validation.
 	 * 
-	 * @param listener	L'écouteur d'évènement. Ne doit pas être null.
+	 * @param listener
+	 *            L'ï¿½couteur d'ï¿½vï¿½nement. Ne doit pas ï¿½tre null.
 	 */
-	public void addValidationListener(ValidationListener listener)
-	{
-		if (listener != null)
-		{
+	public void addValidationListener(final ValidationListener listener) {
+		if (listener != null) {
 			this.listeners.add(listener);
 		}
 	}
-	
+
 	/**
-	 * Désenregistre un écouteur d'évènement Validation.
+	 * Dï¿½senregistre un ï¿½couteur d'ï¿½vï¿½nement Validation.
 	 * 
-	 * @param listener	L'écouteur d'évènement. Ne doit pas être null.
+	 * @param listener
+	 *            L'ï¿½couteur d'ï¿½vï¿½nement. Ne doit pas ï¿½tre null.
 	 */
-	public void removeValidationListener(ValidationListener listener)
-	{
-		if (listener != null)
-		{
-			for (ValidationListener l : this.listeners)
-			{
-				if (l.equals(listener))
-				{
+	public void removeValidationListener(final ValidationListener listener) {
+		if (listener != null) {
+			for (ValidationListener l : this.listeners) {
+				if (l.equals(listener)) {
 					this.listeners.remove(l);
 				}
 			}
 		}
 	}
-	
+
 	/**
-	 * Affiche la boîte de dialogue de saisie du code de triche,
-	 * et enregistre le listener.
+	 * Affiche la boï¿½te de dialogue de saisie du code de triche, et enregistre le listener.
 	 * 
-	 * @param password	Le mot de passe, sous forme de tableau
-	 * 					de caractères. Doit contenir entre 0
-	 * 					et MAX_CHARS_PASSWORD caractères.
-	 * @param listener	L'écouteur d'évènement Validation. Ne
-	 * 					doit pas être null.
+	 * @param password
+	 *            Le mot de passe, sous forme de tableau de caractï¿½res. Doit contenir entre 0 et MAX_CHARS_PASSWORD caractï¿½res.
+	 * @param listener
+	 *            L'ï¿½couteur d'ï¿½vï¿½nement Validation. Ne doit pas ï¿½tre null.
 	 */
-	public static void showDialog(char[] password, ValidationListener listener)
-	{
-		if (password.length <= CheatDialog.MAX_CHARS_PASSWORD && listener != null)
-		{
+	public static void showDialog(final char[] password, final ValidationListener listener) {
+		if (password.length <= CheatDialog.MAX_CHARS_PASSWORD && listener != null) {
 			CheatDialog dlg = new CheatDialog(listener, password);
 			dlg.setVisible(true);
 		}
 	}
 
-	public void actionPerformed(ActionEvent e)
-	{
-		if (e.getActionCommand().equals(CheatDialog.OK_ACTION_COMMAND))
-		{ this.ok_Clicked(); }
-		else if (e.getActionCommand().equals(CheatDialog.CANCEL_ACTION_COMMAND))
-		{ this.cancel_Clicked(); }
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		if (e.getActionCommand().equals(CheatDialog.OK_ACTION_COMMAND)) {
+			this.ok_Clicked();
+		} else if (e.getActionCommand().equals(CheatDialog.CANCEL_ACTION_COMMAND)) {
+			this.cancel_Clicked();
+		}
 	}
-	
-	private void ok_Clicked()
-	{
-		if (Arrays.equals(this.txtPass.getPassword(), this.correctPassword))
-		{
+
+	private void ok_Clicked() {
+		if (Arrays.equals(this.txtPass.getPassword(), this.correctPassword)) {
 			this.txtPass.setText("");
 			this.correctPassword = null;
 			JOptionPane.showMessageDialog(null, CheatDialog.RIGHT_PASSWORD_MESSAGE);
 			this.onValidated(new ValidationEvent(this.getClass()));
 			this.dispose();
-		}
-		else
-		{
+		} else {
 			JOptionPane.showMessageDialog(null, CheatDialog.WRONG_PASSWORD_MESSAGE);
 		}
 	}
-	
-	private void cancel_Clicked()
-	{
+
+	private void cancel_Clicked() {
 		this.dispose();
 	}
 
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_ENTER)
-		{
+	@Override
+	public void keyPressed(final KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			this.ok_Clicked();
 		}
 	}
 
-	public void keyReleased(KeyEvent e)
-	{}
+	@Override
+	public void keyReleased(final KeyEvent e) {}
 
-	public void keyTyped(KeyEvent e)
-	{}
+	@Override
+	public void keyTyped(final KeyEvent e) {}
 }
