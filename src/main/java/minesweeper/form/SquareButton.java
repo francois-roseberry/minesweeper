@@ -7,10 +7,10 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import minesweeper.Loader;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.SquareButtonListener;
-import util.ImageUtil;
 
 /**
  * La classe SquareButton repr�sente une case de la grille de jeu.
@@ -30,8 +30,8 @@ public class SquareButton extends JButton {
 	private int x;
 	private int y;
 	private int neighboorMinesCount = 0;
-	private ImageIcon iconFlag = ImageUtil.getImageIcon(getClass(), "flag.gif");
-	private ImageIcon iconQuestion = ImageUtil.getImageIcon(getClass(), "question.gif");
+	private ImageIcon iconFlag = Loader.getImageIcon("flag.gif");
+	private ImageIcon iconQuestion = Loader.getImageIcon("question.gif");
 	private boolean wasFlagged = false;
 
 	public static final Dimension SQUARE_SIZE = new Dimension(20, 20);

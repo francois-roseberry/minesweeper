@@ -6,7 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import util.ImageUtil;
+import minesweeper.Loader;
 
 /**
  * La classe SmileyButton repr�sente la bouton avec un "Bonhomme Sourire" qui permet de recommencer la partie.
@@ -18,10 +18,10 @@ import util.ImageUtil;
 @SuppressWarnings("serial")
 public class SmileyButton extends JButton {
 
-	private ImageIcon iconSmile = ImageUtil.getImageIcon(getClass(), "smiley_happy.gif");
-	private ImageIcon iconWon = ImageUtil.getImageIcon(getClass(), "smiley_won.gif");
-	private ImageIcon iconLost = ImageUtil.getImageIcon(getClass(), "smiley_lost.gif");
-	private ImageIcon iconHo = ImageUtil.getImageIcon(getClass(), "smiley_ho.gif");
+	private ImageIcon iconSmile = Loader.getImageIcon("smiley_happy.gif");
+	private ImageIcon iconWon = Loader.getImageIcon("smiley_won.gif");
+	private ImageIcon iconLost = Loader.getImageIcon("smiley_lost.gif");
+	private ImageIcon iconHo = Loader.getImageIcon("smiley_ho.gif");
 
 	public SmileyButton() {
 		super();

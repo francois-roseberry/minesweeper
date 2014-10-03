@@ -1,4 +1,4 @@
-package minesweeper;
+package minesweeper.app;
 
 import minesweeper.form.AppFrame;
 

@@ -1,21 +1,21 @@
-package util;
+package minesweeper;
 
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public abstract class ImageUtil {
+public abstract class Loader {
 
-	public static ImageIcon getImageIcon(final Class<?> clazz, final String path) {
-		return new ImageIcon(clazz.getResource("resource/" + path));
+	public static ImageIcon getImageIcon(final String path) {
+		return new ImageIcon(Loader.class.getResource(path));
 	}
 
-	public static BufferedImage getImage(final Class<?> clazz, final String path) {
+	public static BufferedImage getImage(final String path) {
 		try {
-			return ImageIO.read(clazz.getResource("resource/" + path));
+			return ImageIO.read(Loader.class.getResource(path));
 		} catch (Exception ex) {
-			throw new RuntimeException("L'image n'a pas pu �tre charg�e : " + ex.getMessage());
+			throw new RuntimeException("Image could not be loaded : " + ex.getMessage());
 		}
 	}
 

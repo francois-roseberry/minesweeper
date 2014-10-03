@@ -14,11 +14,11 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import minesweeper.Loader;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
 import minesweeper.model.event.SquareButtonListener;
-import util.ImageUtil;
 
 /**
  * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases (boutons).
@@ -43,19 +43,19 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	// Liste des �couteurs GameListener de cette classe.
 	private List<GameListener> listeners = new ArrayList<GameListener>();
 	// Images de num�ros.
-	private Image img1 = ImageUtil.getImage(getClass(), "num1.gif");
-	private Image img2 = ImageUtil.getImage(getClass(), "num2.gif");
-	private Image img3 = ImageUtil.getImage(getClass(), "num3.gif");
-	private Image img4 = ImageUtil.getImage(getClass(), "num4.gif");
-	private Image img5 = ImageUtil.getImage(getClass(), "num5.gif");
-	private Image img6 = ImageUtil.getImage(getClass(), "num6.gif");
-	private Image img7 = ImageUtil.getImage(getClass(), "num7.gif");
-	private Image img8 = ImageUtil.getImage(getClass(), "num8.gif");
+	private Image img1 = Loader.getImage("num1.gif");
+	private Image img2 = Loader.getImage("num2.gif");
+	private Image img3 = Loader.getImage("num3.gif");
+	private Image img4 = Loader.getImage("num4.gif");
+	private Image img5 = Loader.getImage("num5.gif");
+	private Image img6 = Loader.getImage("num6.gif");
+	private Image img7 = Loader.getImage("num7.gif");
+	private Image img8 = Loader.getImage("num8.gif");
 
-	private Image imgMineWrong = ImageUtil.getImage(getClass(), "mine_wrong.gif");
-	private Image imgMine = ImageUtil.getImage(getClass(), "mine.gif");
-	private Image imgMineHit = ImageUtil.getImage(getClass(), "mine_hit.gif");
-	private Image imgMineCheated = ImageUtil.getImage(getClass(), "mine_cheated.gif");
+	private Image imgMineWrong = Loader.getImage("mine_wrong.gif");
+	private Image imgMine = Loader.getImage("mine.gif");
+	private Image imgMineHit = Loader.getImage("mine_hit.gif");
+	private Image imgMineCheated = Loader.getImage("mine_cheated.gif");
 	// Nombre de cases en largeur de la grille.
 	private int squaresPerRow;
 	// Nombre de cases en hauteur de la grille.
