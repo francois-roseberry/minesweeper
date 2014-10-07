@@ -285,7 +285,7 @@ public class AppMenu extends JMenuBar implements ActionListener, ValidationListe
 				CustomGridObject cgo = (CustomGridObject) e.getData();
 				AppFrame.getInstance().startGame(
 						DifficultyLevel.CUSTOM, cgo.getMinesPerRow(),
-						cgo.getMinesPerColumn(), cgo.getNbMines());
+						cgo.getMinesPerColumn(), cgo.getMines());
 			}
 		}
 	}

@@ -15,10 +15,10 @@ public class CustomGridObject {
 	private static final int MAX_MINES_PERCENTAGE = 70;
 
 	// Nombre de cases dans une rang�e, ou nombre de colonnes.
-	private int rows;
+	private final int rows;
 	// Nombre de cases dans une colonne, ou nombre de rang�es.
-	private int columns;
-	private int mines;
+	private final int columns;
+	private final int mines;
 
 	private CustomGridObject(final int rows, final int columns, int mines) {
 		int nbSquares = rows * columns;
@@ -35,13 +35,13 @@ public class CustomGridObject {
 	}
 
 	public static CustomGridObject createCustomGridObject(final int rows, final int columns, final int mines) {
-		CustomGridObject c = null;
 		if (rows >= GameGrid.MIN_SQUARES_IN_A_LINE && rows <= GameGrid.MAX_SQUARES_IN_A_LINE
 				&& columns >= GameGrid.MIN_SQUARES_IN_A_LINE && columns <= GameGrid.MAX_SQUARES_IN_A_LINE
 				&& mines >= GameGrid.MIN_MINES && mines <= GameGrid.MAX_MINES) {
-			c = new CustomGridObject(rows, columns, mines);
+			return new CustomGridObject(rows, columns, mines);
 		}
-		return c;
+
+		throw new RuntimeException("Invalid grid");
 	}
 
 	public int getMinesPerRow() {
@@ -52,7 +52,7 @@ public class CustomGridObject {
 		return columns;
 	}
 
-	public int getNbMines() {
+	public int getMines() {
 		return mines;
 	}
 }

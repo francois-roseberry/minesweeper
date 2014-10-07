@@ -4,9 +4,11 @@ import java.util.prefs.Preferences;
 
 import minesweeper.model.DifficultyLevel;
 
+import com.google.common.base.Preconditions;
+
 public class ScoreManager {
 
-	private Preferences prefs;
+	private final Preferences preferences;
 	private static final String DEFAULT_NAME = "Anonyme";
 	private static final int DEFAULT_SCORE = 999;
 
@@ -15,7 +17,7 @@ public class ScoreManager {
 	 * 
 	 */
 	public ScoreManager() {
-		this.prefs = Preferences.userNodeForPackage(getClass());
+		this.preferences = Preferences.userNodeForPackage(getClass());
 	}
 
 	/**
@@ -37,19 +39,18 @@ public class ScoreManager {
 	 * @return
 	 */
 	public Score readScore(final DifficultyLevel level) {
-		Score s = null;
-		if (level != null) {
-			String scoreString = this.prefs.get(level.toString(), ScoreManager.DEFAULT_SCORE + " " + ScoreManager.DEFAULT_NAME);
-			int index = scoreString.indexOf(' ');
-			s = new Score(Integer.parseInt(scoreString.substring(0, index)), scoreString.substring(index + 1));
-		}
-		return s;
+		Preconditions.checkNotNull(level);
+
+		String scoreString = this.preferences.get(level.toString(), ScoreManager.DEFAULT_SCORE + " " + ScoreManager.DEFAULT_NAME);
+		int index = scoreString.indexOf(' ');
+		return new Score(Integer.parseInt(scoreString.substring(0, index)), scoreString.substring(index + 1));
 	}
 
 	public void saveScore(final DifficultyLevel level, final Score score) {
-		if (level != null && score != null) {
-			prefs.put(level.toString(), score.getScore() + " " + score.getName());
-		}
+		Preconditions.checkNotNull(level);
+		Preconditions.checkNotNull(score);
+
+		preferences.put(level.toString(), score.getScore() + " " + score.getName());
 	}
 
 	public void resetScores() {

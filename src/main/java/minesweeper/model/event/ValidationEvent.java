@@ -2,11 +2,11 @@ package minesweeper.model.event;
 
 public class ValidationEvent {
 
-	private Class<?> validatedClass;
-	private Object data;
+	private final Class<?> validatedClass;
+	private final Object data;
 
 	public ValidationEvent(final Class<?> validatedClass) {
-		this.validatedClass = validatedClass;
+		this(validatedClass, null);
 	}
 
 	public ValidationEvent(final Class<?> validatedClass, final Object data) {

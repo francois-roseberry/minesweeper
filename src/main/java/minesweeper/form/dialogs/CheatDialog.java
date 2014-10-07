@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +21,8 @@ import javax.swing.WindowConstants;
 
 import minesweeper.model.event.ValidationEvent;
 import minesweeper.model.event.ValidationListener;
+
+import com.google.common.collect.Lists;
 
 @SuppressWarnings("serial")
 public class CheatDialog extends JDialog implements ActionListener, KeyListener {
@@ -43,11 +44,11 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 	public static final int MAX_CHARS_PASSWORD = 15;
 
 	// Champ de texte de type Mot de passe.
-	private JPasswordField txtPass = new JPasswordField(CheatDialog.MAX_CHARS_PASSWORD);
+	private final JPasswordField txtPass = new JPasswordField(CheatDialog.MAX_CHARS_PASSWORD);
 	// Mot de passe � v�rifier.
 	private char[] correctPassword;
 	// Liste des �couteurs d'�v�nement Validation.
-	private List<ValidationListener> listeners = new ArrayList<ValidationListener>();
+	private final List<ValidationListener> listeners = Lists.newArrayList();
 
 	/*
 	 * Constructeur.
@@ -56,14 +57,14 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 	private CheatDialog(final ValidationListener listener, final char[] password) {
 		super();
 
-		this.setTitle(CheatDialog.TITLE);
-		this.setModal(true);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.addValidationListener(listener);
-		this.initializeComponent();
-		this.pack();
-		this.correctPassword = password;
-		this.centerWindow();
+		setTitle(CheatDialog.TITLE);
+		setModal(true);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		addValidationListener(listener);
+		initializeComponent();
+		pack();
+		correctPassword = password;
+		centerWindow();
 	}
 
 	/*
@@ -74,7 +75,7 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenWidth = (int) screenSize.getWidth();
 		int screenHeight = (int) screenSize.getHeight();
-		this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
+		setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
 	}
 
 	/*
@@ -82,7 +83,7 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 	 * 
 	 */
 	private void initializeComponent() {
-		this.txtPass.addKeyListener(this);
+		txtPass.addKeyListener(this);
 		Box hbMain = Box.createHorizontalBox();
 		Box vbMain = Box.createVerticalBox();
 		JPanel panButtons = new JPanel(new BorderLayout());
@@ -121,7 +122,7 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 		hbButton.add(btnCancel);
 		hbButton.add(Box.createHorizontalGlue());
 
-		this.add(hbMain);
+		add(hbMain);
 	}
 
 	private void onValidated(final ValidationEvent e) {
@@ -137,9 +138,7 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 	 *            L'�couteur d'�v�nement. Ne doit pas �tre null.
 	 */
 	public void addValidationListener(final ValidationListener listener) {
-		if (listener != null) {
-			this.listeners.add(listener);
-		}
+		listeners.add(listener);
 	}
 
 	/**
@@ -152,7 +151,7 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 		if (listener != null) {
 			for (ValidationListener l : this.listeners) {
 				if (l.equals(listener)) {
-					this.listeners.remove(l);
+					listeners.remove(l);
 				}
 			}
 		}
@@ -167,41 +166,41 @@ public class CheatDialog extends JDialog implements ActionListener, KeyListener 
 	 *            L'�couteur d'�v�nement Validation. Ne doit pas �tre null.
 	 */
 	public static void showDialog(final char[] password, final ValidationListener listener) {
-		if (password.length <= CheatDialog.MAX_CHARS_PASSWORD && listener != null) {
-			CheatDialog dlg = new CheatDialog(listener, password);
-			dlg.setVisible(true);
+		if (password.length <= CheatDialog.MAX_CHARS_PASSWORD) {
+			CheatDialog dialog = new CheatDialog(listener, password);
+			dialog.setVisible(true);
 		}
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals(CheatDialog.OK_ACTION_COMMAND)) {
-			this.ok_Clicked();
+			ok_Clicked();
 		} else if (e.getActionCommand().equals(CheatDialog.CANCEL_ACTION_COMMAND)) {
-			this.cancel_Clicked();
+			cancel_Clicked();
 		}
 	}
 
 	private void ok_Clicked() {
 		if (Arrays.equals(this.txtPass.getPassword(), this.correctPassword)) {
-			this.txtPass.setText("");
-			this.correctPassword = null;
+			txtPass.setText("");
+			correctPassword = null;
 			JOptionPane.showMessageDialog(null, CheatDialog.RIGHT_PASSWORD_MESSAGE);
-			this.onValidated(new ValidationEvent(this.getClass()));
-			this.dispose();
+			onValidated(new ValidationEvent(getClass()));
+			dispose();
 		} else {
 			JOptionPane.showMessageDialog(null, CheatDialog.WRONG_PASSWORD_MESSAGE);
 		}
 	}
 
 	private void cancel_Clicked() {
-		this.dispose();
+		dispose();
 	}
 
 	@Override
 	public void keyPressed(final KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			this.ok_Clicked();
+			ok_Clicked();
 		}
 	}
 

@@ -6,8 +6,8 @@ public class Score {
 
 	private static final String DEFAULT_NAME = "Anonyme";
 
-	private int score;
-	private String name;
+	private final int score;
+	private final String name;
 
 	public Score() {
 		this(DEFAULT_SCORE, Score.DEFAULT_NAME);
@@ -21,18 +21,8 @@ public class Score {
 		this.name = name;
 	}
 
-	public void setScore(final int score) {
-		if (score > 0) {
-			this.score = score;
-		}
-	}
-
 	public int getScore() {
 		return score;
-	}
-
-	public void setName(final String name) {
-		this.name = name;
 	}
 
 	public String getName() {
