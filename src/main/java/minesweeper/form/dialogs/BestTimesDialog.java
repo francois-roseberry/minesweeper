@@ -16,7 +16,7 @@ import javax.swing.WindowConstants;
 
 import minesweeper.model.DifficultyLevel;
 import minesweeper.model.data.access.Score;
-import minesweeper.model.data.access.ScoreManager;
+import minesweeper.model.data.access.JavaScoreManager;
 
 @SuppressWarnings("serial")
 public class BestTimesDialog extends JDialog implements ActionListener {
@@ -25,7 +25,7 @@ public class BestTimesDialog extends JDialog implements ActionListener {
 	private static final String RESET_ACTION_COMMAND = "Effacer les scores";
 	private static final String CLOSE_ACTION_COMMAND = "Fermer";
 
-	private ScoreManager scoreMan = new ScoreManager();
+	private JavaScoreManager scoreMan = new JavaScoreManager();
 
 	private JLabel lblBeginnerScore = new JLabel();
 	private JLabel lblMediumScore = new JLabel();
@@ -143,9 +143,9 @@ public class BestTimesDialog extends JDialog implements ActionListener {
 		Score midScore = this.scoreMan.readScore(DifficultyLevel.MEDIUM);
 		Score expertScore = this.scoreMan.readScore(DifficultyLevel.EXPERT);
 
-		this.lblBeginnerScore.setText("" + beginnerScore.getScore());
-		this.lblMediumScore.setText("" + midScore.getScore());
-		this.lblExpertScore.setText("" + expertScore.getScore());
+		this.lblBeginnerScore.setText("" + beginnerScore.getTime());
+		this.lblMediumScore.setText("" + midScore.getTime());
+		this.lblExpertScore.setText("" + expertScore.getTime());
 
 		this.lblBeginnerName.setText(beginnerScore.getName());
 		this.lblMediumName.setText(midScore.getName());

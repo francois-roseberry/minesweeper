@@ -6,23 +6,23 @@ public class Score {
 
 	private static final String DEFAULT_NAME = "Anonyme";
 
-	private final int score;
+	private final int time;
 	private final String name;
 
 	public Score() {
 		this(DEFAULT_SCORE, Score.DEFAULT_NAME);
 	}
 
-	public Score(int score, final String name) {
-		if (score < 1) {
-			score = 1;
+	public Score(int time, final String name) {
+		if (time < 1) {
+			time = 1;
 		}
-		this.score = score;
+		this.time = time;
 		this.name = name;
 	}
 
-	public int getScore() {
-		return score;
+	public int getTime() {
+		return time;
 	}
 
 	public String getName() {

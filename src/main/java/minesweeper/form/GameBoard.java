@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import minesweeper.form.dialogs.HighScoreDialog;
 import minesweeper.model.DifficultyLevel;
 import minesweeper.model.data.access.Score;
-import minesweeper.model.data.access.ScoreManager;
+import minesweeper.model.data.access.JavaScoreManager;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
 import minesweeper.model.event.ValidationEvent;
@@ -253,7 +253,8 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 		inGame = false;
 		statsPanel.indicateGameWon();
 		if (gameLevel != DifficultyLevel.CUSTOM) {
-			if (statsPanel.getTimeElapsed() < ScoreManager.getScore(gameLevel).getScore()) {
+			int bestTime = new JavaScoreManager().readScore(gameLevel).getTime();
+			if (statsPanel.getTimeElapsed() < bestTime) {
 				HighScoreDialog.showDialog(this);
 			}
 		}
@@ -272,7 +273,7 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	@Override
 	public void validated(final ValidationEvent e) {
 		if (e.getValidatedClass() == HighScoreDialog.class) {
-			ScoreManager scoreMan = new ScoreManager();
+			JavaScoreManager scoreMan = new JavaScoreManager();
 			scoreMan.saveScore(gameLevel, new Score(statsPanel.getTimeElapsed(), (String) e.getData()));
 		}
 	}
