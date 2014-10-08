@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -25,10 +23,9 @@ public class HighScoreDialog extends JDialog implements ActionListener {
 	private static final String BTN_OK_ACTION_COMMAND = "OK";
 	private static final String BTN_CANCEL_ACTION_COMMAND = "Annuler";
 
-	// Liste des �couteurs d'�v�nement Validation.
-	private List<ValidationListener> listeners = new ArrayList<ValidationListener>();
+	private final ValidationListener listener;
 
-	private JTextField txtName = new JTextField(15);
+	private final JTextField txtName = new JTextField(15);
 
 	/**
 	 * Constructeur.
@@ -38,14 +35,16 @@ public class HighScoreDialog extends JDialog implements ActionListener {
 	 */
 	public HighScoreDialog(final ValidationListener listener) {
 		super();
-		this.setTitle(HighScoreDialog.TITLE);
-		this.setResizable(false);
-		this.setModal(true);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.addValidationListener(listener);
-		this.initializeComponent();
-		this.pack();
-		this.centerWindow();
+
+		this.listener = listener;
+
+		setTitle(HighScoreDialog.TITLE);
+		setResizable(false);
+		setModal(true);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		initializeComponent();
+		pack();
+		centerWindow();
 	}
 
 	/*
@@ -107,69 +106,25 @@ public class HighScoreDialog extends JDialog implements ActionListener {
 		vbMain.add(hbButtons);
 		vbMain.add(Box.createVerticalStrut(10));
 
-		this.add(vbMain);
-
-		//this.add(new JLabel("Entrez votre nom :"), BorderLayout.NORTH);
-		//this.add(this.txtName, BorderLayout.CENTER);
-		//this.add(btnOK, BorderLayout.SOUTH);
+		add(vbMain);
 	}
 
-	private void onValidated(final ValidationEvent e) {
-		for (ValidationListener listener : this.listeners) {
-			listener.validated(e);
-		}
-	}
-
-	/**
-	 * Enregistre un �couteur d'�v�nement Validation.
-	 * 
-	 * @param listener
-	 *            L'�couteur d'�v�nement. Ne doit pas �tre null.
-	 */
-	public void addValidationListener(final ValidationListener listener) {
-		if (listener != null) {
-			this.listeners.add(listener);
-		}
-	}
-
-	/**
-	 * D�senregistre un �couteur d'�v�nement Validation.
-	 * 
-	 * @param listener
-	 *            L'�couteur d'�v�nement. Ne doit pas �tre null.
-	 */
-	public void removeValidationListener(final ValidationListener listener) {
-		if (listener != null) {
-			for (ValidationListener l : this.listeners) {
-				if (l.equals(listener)) {
-					this.listeners.remove(l);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Affiche la bo�te de dialogue de saisie du code de triche, et enregistre le listener.
-	 * 
-	 * @param listener
-	 *            L'�couteur d'�v�nement Validation. Ne doit pas �tre null.
-	 */
 	public static void showDialog(final ValidationListener listener) {
-		HighScoreDialog dlg = new HighScoreDialog(listener);
-		dlg.setVisible(true);
+		HighScoreDialog dialog = new HighScoreDialog(listener);
+		dialog.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals(HighScoreDialog.BTN_OK_ACTION_COMMAND)) {
-			this.ok_Clicked();
+			ok_Clicked();
 		} else if (e.getActionCommand().equals(HighScoreDialog.BTN_CANCEL_ACTION_COMMAND)) {
-			this.dispose();
+			dispose();
 		}
 	}
 
 	private void ok_Clicked() {
-		this.onValidated(new ValidationEvent(this.getClass(), new String(this.txtName.getText())));
-		this.dispose();
+		listener.validated(new ValidationEvent(this.getClass(), new String(this.txtName.getText())));
+		dispose();
 	}
 }

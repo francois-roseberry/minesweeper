@@ -18,17 +18,17 @@ import minesweeper.Loader;
 @SuppressWarnings("serial")
 public class SmileyButton extends JButton {
 
-	private ImageIcon iconSmile = Loader.getImageIcon("smiley_happy.gif");
-	private ImageIcon iconWon = Loader.getImageIcon("smiley_won.gif");
-	private ImageIcon iconLost = Loader.getImageIcon("smiley_lost.gif");
-	private ImageIcon iconHo = Loader.getImageIcon("smiley_ho.gif");
+	private final ImageIcon iconSmile = Loader.getImageIcon("smiley_happy.gif");
+	private final ImageIcon iconWon = Loader.getImageIcon("smiley_won.gif");
+	private final ImageIcon iconLost = Loader.getImageIcon("smiley_lost.gif");
+	private final ImageIcon iconHo = Loader.getImageIcon("smiley_ho.gif");
 
 	public SmileyButton() {
 		super();
 
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		setPreferredSize(new Dimension(36, 36));
-		setMaximumSize(this.getPreferredSize());
+		setMaximumSize(getPreferredSize());
 		reset();
 	}
 

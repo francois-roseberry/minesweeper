@@ -27,9 +27,9 @@ import minesweeper.model.event.ValidationListener;
 public class GameBoard extends JPanel implements GameListener, ValidationListener {
 
 	// Grille de jeu.
-	private GameGrid grid = new GameGrid();
+	private final GameGrid grid = new GameGrid();
 	// Panneau de contr�le. (timer, compteur de mines et bouton sourire).
-	private StatsBoard statsPanel = new StatsBoard();
+	private final StatsBoard statsPanel = new StatsBoard();
 	// Niveau de difficult� de la partie.
 	private DifficultyLevel gameLevel;
 	// Indique si le premier clique de la partie a �t� r�alis�.

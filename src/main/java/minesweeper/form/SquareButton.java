@@ -1,7 +1,6 @@
 package minesweeper.form;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -11,6 +10,8 @@ import minesweeper.Loader;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.SquareButtonListener;
+
+import com.google.common.collect.Lists;
 
 /**
  * La classe SquareButton repr�sente une case de la grille de jeu.
@@ -25,13 +26,13 @@ public class SquareButton extends JButton {
 	// �tat du bouton.
 	private SquareButtonState state = SquareButtonState.HIDDEN;
 
-	private List<SquareButtonListener> listeners = new ArrayList<SquareButtonListener>();
+	private final List<SquareButtonListener> listeners = Lists.newArrayList();
 	private boolean hasMine = false;
-	private int x;
-	private int y;
+	private final int x;
+	private final int y;
 	private int neighboorMinesCount = 0;
-	private ImageIcon iconFlag = Loader.getImageIcon("flag.gif");
-	private ImageIcon iconQuestion = Loader.getImageIcon("question.gif");
+	private final ImageIcon iconFlag = Loader.getImageIcon("flag.gif");
+	private final ImageIcon iconQuestion = Loader.getImageIcon("question.gif");
 	private boolean wasFlagged = false;
 
 	public static final Dimension SQUARE_SIZE = new Dimension(20, 20);
@@ -78,83 +79,77 @@ public class SquareButton extends JButton {
 	}
 
 	public int getXSquare() {
-		return this.x;
+		return x;
 	}
 
 	public int getYSquare() {
-		return this.y;
+		return y;
 	}
 
 	public SquareButtonState getState() {
-		return this.state;
+		return state;
 	}
 
 	public boolean isMined() {
-		return this.hasMine;
+		return hasMine;
 	}
 
 	public void setMine() {
-		this.hasMine = true;
+		hasMine = true;
 	}
 
 	public void cheat() {
-		if (this.hasMine) {
-			this.state = SquareButtonState.CHEATED;
-			this.setVisible(false);
+		if (hasMine) {
+			state = SquareButtonState.CHEATED;
+			setVisible(false);
 		}
 	}
 
 	public void rightClick() {
-		if (this.state == SquareButtonState.HIDDEN) {
-			this.setIcon(this.iconFlag);
-			this.state = SquareButtonState.MARKED;
-			this.onSquareMarked(new GameEvent());
+		if (state == SquareButtonState.HIDDEN) {
+			setIcon(this.iconFlag);
+			state = SquareButtonState.MARKED;
+			onSquareMarked(new GameEvent());
 		} else if (state == SquareButtonState.MARKED) {
-			this.setIcon(this.iconQuestion);
-			this.state = SquareButtonState.UNSURE;
-			this.onSquareUnmarked(new GameEvent());
+			setIcon(this.iconQuestion);
+			state = SquareButtonState.UNSURE;
+			onSquareUnmarked(new GameEvent());
 		} else if (state == SquareButtonState.UNSURE) {
-			this.setIcon(null);
-			this.state = SquareButtonState.HIDDEN;
+			setIcon(null);
+			state = SquareButtonState.HIDDEN;
 		}
 	}
 
 	private void onSquareMarked(final GameEvent e) {
-		for (SquareButtonListener listener : this.listeners) {
+		for (SquareButtonListener listener : listeners) {
 			listener.squareMarked(e);
 		}
 	}
 
 	private void onSquareUnmarked(final GameEvent e) {
-		for (SquareButtonListener listener : this.listeners) {
+		for (SquareButtonListener listener : listeners) {
 			listener.squareUnmarked(e);
 		}
 	}
 
 	public void addSquareButtonListener(final SquareButtonListener listener) {
-		this.listeners.add(listener);
+		listeners.add(listener);
 	}
 
-	public boolean equalCoords(final SquareButton btn) {
-		boolean equals = false;
-		if (btn != null) {
-			if (btn.getXSquare() == this.getXSquare() && btn.getYSquare() == this.getYSquare()) {
-				equals = true;
-			}
+	public boolean equalCoords(final SquareButton button) {
+		if (button == null) {
+			return false;
 		}
-		return equals;
+
+		return (button.getXSquare() == x && button.getYSquare() == y);
 	}
 
 	public boolean equalCoords(final int x, final int y) {
-		boolean equals = false;
-		if (x == this.x && y == this.y) {
-			equals = true;
-		}
-		return equals;
+		return (x == this.x && y == this.y);
 	}
 
 	@Override
 	public String toString() {
-		return "x = " + this.x + ", y = " + this.y;
+		return "x = " + x + ", y = " + y;
 	}
 }

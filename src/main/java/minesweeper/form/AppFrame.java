@@ -31,9 +31,9 @@ public class AppFrame extends JFrame implements WindowListener {
 	private static AppFrame instance = null;
 
 	// Panneau de jeu.
-	private GameBoard gamePanel = new GameBoard();
+	private final GameBoard gamePanel = new GameBoard();
 	// Barre de menus.
-	private AppMenu mb = new AppMenu();
+	private final AppMenu mb = new AppMenu();
 	private int squaresPerRow = 0;
 	private int squaresPerColumn = 0;
 	private int mines = 0;

@@ -20,10 +20,10 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class StatsBoard extends JPanel implements ActionListener {
 
-	private LCDPanel lblMines = LCDPanel.createLCDPanel(3);
-	private LCDPanel lblTime = LCDPanel.createLCDPanel(3);
-	private SmileyButton btnSmiley = new SmileyButton();
-	private Timer timer = new Timer(1000, this);
+	private final LCDPanel lblMines = LCDPanel.createLCDPanel(3);
+	private final LCDPanel lblTime = LCDPanel.createLCDPanel(3);
+	private final SmileyButton btnSmiley = new SmileyButton();
+	private final Timer timer = new Timer(1000, this);
 
 	private int secondsElapsed = 0;
 	private int mineCount = 0;
@@ -98,47 +98,47 @@ public class StatsBoard extends JPanel implements ActionListener {
 	}
 
 	public void startGame(final int mines) {
-		this.resetTimer();
-		this.btnSmiley.reset();
-		this.displayMineCount(mines);
+		resetTimer();
+		btnSmiley.reset();
+		displayMineCount(mines);
 	}
 
 	public void indicateGameWon() {
-		this.stopTimer();
-		this.btnSmiley.indicateGameWon();
+		stopTimer();
+		btnSmiley.indicateGameWon();
 	}
 
 	public void indicateGameLost() {
-		this.stopTimer();
-		this.btnSmiley.indicateGameLost();
+		stopTimer();
+		btnSmiley.indicateGameLost();
 	}
 
 	public void indicateMousePressed() {
-		this.btnSmiley.indicateMousePressed();
+		btnSmiley.indicateMousePressed();
 	}
 
 	public void indicateMouseReleased() {
-		this.btnSmiley.indicateMouseReleased();
+		btnSmiley.indicateMouseReleased();
 	}
 
 	public void displayMineCount(final int mineCount) {
 		if (mineCount >= 0) {
 			this.mineCount = mineCount;
-			this.lblMines.displayNumber(this.mineCount);
+			lblMines.displayNumber(mineCount);
 		}
 	}
 
 	public void incrementMineCount() {
-		this.mineCount++;
-		if (this.mineCount >= 0) {
-			this.lblMines.displayNumber(this.mineCount);
+		mineCount++;
+		if (mineCount >= 0) {
+			lblMines.displayNumber(mineCount);
 		}
 	}
 
 	public void decrementMineCount() {
-		this.mineCount--;
-		if (this.mineCount >= 0) {
-			this.lblMines.displayNumber(this.mineCount);
+		mineCount--;
+		if (mineCount >= 0) {
+			lblMines.displayNumber(mineCount);
 		}
 	}
 }

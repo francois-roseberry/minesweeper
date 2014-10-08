@@ -62,14 +62,14 @@ public class LCDPanel extends JPanel {
 			NUMS_CRISTAL_DIGIT_9, NUMS_CRISTAL_NO_DIGIT };
 
 	// Couleur d'affichage des cristaux.
-	private Color displayColor;
+	private final Color displayColor;
 	// Indique si les z�ros � gauche (non-significatifs)
 	// doivent �tre affich�s quand m�me.
-	private boolean paddingZeros;
+	private final boolean paddingZeros;
 	// Texte � afficher (toujours num�rique).
 	private String display = "";
 	// Nombre de caract�res num�riques affich�s.
-	private int digits;
+	private final int digits;
 	// Image utilis�e pour le double buffering.
 	private BufferedImage buffer;
 	// Objet Graphics de cette image.
@@ -188,7 +188,7 @@ public class LCDPanel extends JPanel {
 	}
 
 	private void drawDigit(final int numDigit, final Graphics g) {
-		char ch = this.display.charAt(numDigit);
+		char ch = display.charAt(numDigit);
 		int value = LCDPanel.NO_DIGIT_VALUE;
 		try {
 			value = Integer.valueOf("" + ch);
