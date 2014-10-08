@@ -38,14 +38,16 @@ public class JavaScoreManager implements ScoreManager {
 	 *            Le niveau de difficult� � lire.
 	 * @return
 	 */
+	@Override
 	public Score readScore(final DifficultyLevel level) {
 		Preconditions.checkNotNull(level);
 
-		String scoreString = this.preferences.get(level.toString(), JavaScoreManager.DEFAULT_SCORE + " " + JavaScoreManager.DEFAULT_NAME);
+		String scoreString = preferences.get(level.toString(), JavaScoreManager.DEFAULT_SCORE + " " + JavaScoreManager.DEFAULT_NAME);
 		int index = scoreString.indexOf(' ');
 		return new Score(Integer.parseInt(scoreString.substring(0, index)), scoreString.substring(index + 1));
 	}
 
+	@Override
 	public void saveScore(final DifficultyLevel level, final Score score) {
 		Preconditions.checkNotNull(level);
 		Preconditions.checkNotNull(score);
