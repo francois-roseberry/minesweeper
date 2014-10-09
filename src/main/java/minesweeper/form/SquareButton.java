@@ -64,15 +64,6 @@ public class SquareButton extends JButton {
 		wasFlagged = true;
 	}
 
-	public void reset() {
-		state = SquareButtonState.HIDDEN;
-		setVisible(true);
-		hasMine = false;
-		neighboorMinesCount = 0;
-		setIcon(null);
-		wasFlagged = false;
-	}
-
 	public void reveal() {
 		state = SquareButtonState.REVEALED;
 		setVisible(false);
@@ -146,6 +137,15 @@ public class SquareButton extends JButton {
 
 	public boolean equalCoords(final int x, final int y) {
 		return (x == this.x && y == this.y);
+	}
+
+	public void reset() {
+		state = SquareButtonState.HIDDEN;
+		setVisible(true);
+		hasMine = false;
+		neighboorMinesCount = 0;
+		setIcon(null);
+		wasFlagged = false;
 	}
 
 	@Override
