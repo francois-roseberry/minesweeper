@@ -195,7 +195,7 @@ public class CustomGridDialog extends JDialog implements ActionListener {
 		int mines = Integer.parseInt(this.spnMines.getValue().toString());
 		System.out.println("Valeurs s�lectionn�s :");
 		System.out.println(rows + " cases par rang�e, " + columns + " cases par colonne, " + mines + " mines");
-		CustomGridObject cgo = CustomGridObject.createCustomGridObject(rows, columns, mines);
+		CustomGridObject cgo = CustomGridObject.create(rows, columns, mines);
 		this.onValidated(new ValidationEvent(this.getClass(), cgo));
 		this.dispose();
 	}
