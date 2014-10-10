@@ -6,8 +6,8 @@ import javax.swing.JPanel;
 
 import minesweeper.form.dialogs.HighScoreDialog;
 import minesweeper.model.DifficultyLevel;
-import minesweeper.model.data.access.Score;
 import minesweeper.model.data.access.JavaScoreManager;
+import minesweeper.model.data.access.Score;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
 import minesweeper.model.event.ValidationEvent;
@@ -27,7 +27,7 @@ import minesweeper.model.event.ValidationListener;
 public class GameBoard extends JPanel implements GameListener, ValidationListener {
 
 	// Grille de jeu.
-	private final GameGrid grid = new GameGrid();
+	private final GameGrid grid;
 	// Panneau de contr�le. (timer, compteur de mines et bouton sourire).
 	private final StatsBoard statsPanel = new StatsBoard();
 	// Niveau de difficult� de la partie.
@@ -57,8 +57,40 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	public GameBoard() {
 		super();
 
+		grid = new GameGrid(createGameServices());
+
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		initializeComponent();
+	}
+
+	protected GameServices createGameServices() {
+		return new GameServices() {
+
+			@Override
+			public boolean isInGame() {
+				return inGame;
+			}
+
+			@Override
+			public boolean isFirstClicked() {
+				return firstClicked;
+			}
+
+			@Override
+			public void firstClicked() {
+				GameBoard.this.firstClicked();
+			}
+
+			@Override
+			public void indicateMousePressed() {
+				GameBoard.this.indicateMousePressed();
+			}
+
+			@Override
+			public void indicateMouseReleased() {
+				GameBoard.this.indicateMouseReleased();
+			}
+		};
 	}
 
 	public static char[] getPassword() {
@@ -185,12 +217,12 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 		grid.startGame(squaresPerRow, squaresPerColumn, mines);
 	}
 
-	public void indicateMousePressed() {
+	private void indicateMousePressed() {
 		statsPanel.stopTimer();
 		statsPanel.indicateMousePressed();
 	}
 
-	public void indicateMouseReleased() {
+	private void indicateMouseReleased() {
 		if (!cheating) {
 			statsPanel.startTimer();
 		}
@@ -198,41 +230,10 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	}
 
 	/**
-	 * Obtient le niveau de difficult� de la partie en cours.
-	 * 
-	 * @return Le niveau de difficult� de la partie en cours, null sinon.
-	 */
-	public DifficultyLevel getGameLevel() {
-		if (inGame) {
-			return gameLevel;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Permet de savoir si une partie est en cours.
-	 * 
-	 * @return Vrai si une partie est en cours, faux sinon.
-	 */
-	public boolean isInGame() {
-		return inGame;
-	}
-
-	/**
-	 * Permet de savoir si le premier clique de la partie a �t� effectu�.
-	 * 
-	 * @return Vrai si le premier clique a �t� r�alis�, faux sinon.
-	 */
-	public boolean isFirstClicked() {
-		return firstClicked;
-	}
-
-	/**
 	 * Indique que le premier clique de la partie a �t� effectu�.
 	 * 
 	 */
-	public void firstClicked() {
+	private void firstClicked() {
 		firstClicked = true;
 		if (cheating) {
 			grid.cheat();
