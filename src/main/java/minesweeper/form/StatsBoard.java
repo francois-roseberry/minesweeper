@@ -20,8 +20,8 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class StatsBoard extends JPanel implements ActionListener {
 
-	private final LCDPanel lblMines = LCDPanel.createLCDPanel(3);
-	private final LCDPanel lblTime = LCDPanel.createLCDPanel(3);
+	private final LCDPanel lblMines = LCDPanel.create(3);
+	private final LCDPanel lblTime = LCDPanel.create(3);
 	private final SmileyButton btnSmiley = new SmileyButton();
 	private final Timer timer = new Timer(1000, this);
 

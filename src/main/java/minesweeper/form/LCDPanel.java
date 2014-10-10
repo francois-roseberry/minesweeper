@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import com.google.common.base.Preconditions;
+
 /**
  * La classe LCDPanel repr�sente un panneau d'affichage � cristaux liquides (simul� bien-entendu).
  * 
@@ -121,44 +123,11 @@ public class LCDPanel extends JPanel {
 	 * 
 	 * @return Un panneau d'affichages � cristaux liquides.
 	 */
-	public static LCDPanel createLCDPanel(final int digits) {
-		LCDPanel lcd = null;
-		if (digits >= LCDPanel.MINIMUM_DIGITS &&
-				digits <= LCDPanel.MAXIMUM_DIGITS) {
-			lcd = new LCDPanel(digits, LCDPanel.DEFAULT_LCD_COLOR, true);
-		}
-		return lcd;
-	}
+	public static LCDPanel create(final int digits) {
+		Preconditions.checkArgument(digits >= LCDPanel.MINIMUM_DIGITS &&
+				digits <= LCDPanel.MAXIMUM_DIGITS, "Wrong number of digits");
 
-	/**
-	 * Cr�e un panneau d'affichage � cristaux liquides.
-	 * 
-	 * @param digits
-	 *            Le nombre de caract�res qui sera affich�. Doit �tre > 0.
-	 * 
-	 * @param displayColor
-	 *            La couleur d'affichage. Doit �tre diff�rent de 0.
-	 * 
-	 * @return
-	 */
-	public static LCDPanel createLCDPanel(final int digits, final Color displayColor) {
-		LCDPanel lcd = null;
-		if (digits >= LCDPanel.MINIMUM_DIGITS &&
-				digits <= LCDPanel.MAXIMUM_DIGITS &&
-				!displayColor.equals(Color.BLACK)) {
-			lcd = new LCDPanel(digits, displayColor, true);
-		}
-		return lcd;
-	}
-
-	public static LCDPanel createLCDPanel(final int digits, final Color displayColor, final boolean paddingZeros) {
-		LCDPanel lcd = null;
-		if (digits >= LCDPanel.MINIMUM_DIGITS &&
-				digits <= LCDPanel.MAXIMUM_DIGITS &&
-				!displayColor.equals(Color.BLACK)) {
-			lcd = new LCDPanel(digits, displayColor, paddingZeros);
-		}
-		return lcd;
+		return new LCDPanel(digits, LCDPanel.DEFAULT_LCD_COLOR, true);
 	}
 
 	public void displayNumber(final int number) {
@@ -174,15 +143,15 @@ public class LCDPanel extends JPanel {
 		super.paintComponent(g);
 
 		gBuf.setColor(Color.BLACK);
-		gBuf.fillRect(0, 0, this.getWidth(), this.getHeight());
-		gBuf.setColor(this.displayColor);
-		drawDigits(this.gBuf);
+		gBuf.fillRect(0, 0, getWidth(), getHeight());
+		gBuf.setColor(displayColor);
+		drawDigits(gBuf);
 
-		g.drawImage(this.buffer, 0, 0, null);
+		g.drawImage(buffer, 0, 0, null);
 	}
 
 	private void drawDigits(final Graphics g) {
-		for (int i = 0; i < this.digits; i++) {
+		for (int i = 0; i < digits; i++) {
 			drawDigit(i, g);
 		}
 	}
