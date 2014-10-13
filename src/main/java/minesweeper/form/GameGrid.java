@@ -163,7 +163,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 */
 	private void generateMines(final SquareButton squareToAvoid, int nbMines) {
 		if (gameServices.isInGame() && !gameServices.isFirstClicked()) {
-			if (nbMines > 0 && nbMines < getNumSquares() - 1) {
+			if (nbMines > 0 && nbMines < getSquaresCount() - 1) {
 				// Cr�er une collection de cases disponibles.
 				// (les cases qui peuvent recevoir des mines)
 				List<Point> openCoords = Lists.newArrayList();
@@ -194,7 +194,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * Obtient le nombre de cases de la grille.
 	 * 
 	 */
-	private int getNumSquares() {
+	private int getSquaresCount() {
 		if (isGridNotCreated()) {
 			return 0;
 		}

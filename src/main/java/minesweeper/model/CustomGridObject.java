@@ -44,11 +44,11 @@ public class CustomGridObject {
 		throw new RuntimeException("Invalid grid");
 	}
 
-	public int getMinesPerRow() {
+	public int getRows() {
 		return rows;
 	}
 
-	public int getMinesPerColumn() {
+	public int getColumns() {
 		return columns;
 	}
 
