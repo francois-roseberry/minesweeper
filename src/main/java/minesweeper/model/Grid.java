@@ -29,6 +29,8 @@ public class Grid {
 	//          - Si les mines n'ont pas toutes été marquées, marquer celles qui restent
 	// - sinon le jeu doit continuer
 	public Grid reveal(final Cell cell) throws GameLostException {
+		// TODO : trying to reveal a square wich is already revealed should do something, maybe throw an
+		// IllegalArgumentException
 		Cells newCells = cells.reveal(cell);
 		return new Grid(size, newCells);
 	}

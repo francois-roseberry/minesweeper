@@ -33,6 +33,13 @@ public class GridTest {
 		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
 	}
 
+	@Test
+	public void revealingOneCellShouldLeaveOtherCellsUntouched() throws GameLostException {
+		Grid grid = Grid.create(SIZE_2X2, EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
+
+		assertEquals(CellState.HIDDEN, grid.at(CELL_2_2));
+	}
+
 	@Test(expected = GameLostException.class)
 	public void revealingMineShouldLoseGame() throws GameLostException {
 		MineGenerator generator = mineGenerator(ImmutableList.of(CELL_1_1));
