@@ -69,6 +69,7 @@ public class Grid {
 
 		private ImmutableList<Cell> newRevealedCells(final Cell cell) {
 			ImmutableList.Builder<Cell> builder = ImmutableList.builder();
+			builder.addAll(revealed);
 			builder.add(cell);
 			// TODO : révéler les voisins, récursivement.
 			return builder.build();

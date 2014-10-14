@@ -10,6 +10,8 @@ import com.google.common.collect.ImmutableList;
 
 public class GridTest {
 
+	private static final Cell CELL_2_2 = new Cell(2, 2);
+
 	private static final MineGenerator EMPTY_MINE_GENERATOR = emptyMineGenerator();
 
 	private static final Cell CELL_1_1 = new Cell(1, 1);
@@ -43,6 +45,14 @@ public class GridTest {
 
 		assertFalse(grid.isWinning());
 		assertTrue(grid.reveal(CELL_1_1).isWinning());
+	}
+
+	@Test
+	public void afterRevealingTwoCellsFirstOneStaysRevealed() throws GameLostException {
+		Grid grid = Grid.create(SIZE_2X2, EMPTY_MINE_GENERATOR).reveal(CELL_1_1).reveal(CELL_2_2);
+
+		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
+		assertEquals(CellState.REVEALED, grid.at(CELL_2_2));
 	}
 
 	private static MineGenerator mineGenerator(final ImmutableList<Cell> mines) {
