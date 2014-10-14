@@ -19,6 +19,7 @@ import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
 import minesweeper.model.event.SquareButtonListener;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
@@ -210,22 +211,31 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 */
 	private void revealNeighboorSquares(final SquareButton square) {
 		if (square.getState() == SquareButtonState.HIDDEN) {
-			countNeighboorMines(square);
+
 			square.reveal();
+			countNeighboorMines(square);
 			if (square.getNeighboorMineCount() == 0) {
 				// La case n'a pas de mines avoisinantes.
-				// R�v�ler les voisins.
-				for (int i = -1; i <= 1; i++) {
-					for (int j = -1; j <= 1; j++) {
-						if (i != 0 || j != 0) {
-							if (isSquare(square.getXSquare() + i, square.getYSquare() + j)) {
-								revealNeighboorSquares(squares[square.getXSquare() + i][square.getYSquare() + j]);
-							}
-						}
+				// Révéler les voisins, récursivement.
+				for (SquareButton neighboor : getNeighboors(square)) {
+					revealNeighboorSquares(neighboor);
+				}
+			}
+		}
+	}
+
+	private ImmutableList<SquareButton> getNeighboors(final SquareButton square) {
+		ImmutableList.Builder<SquareButton> builder = ImmutableList.builder();
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (i != 0 || j != 0) {
+					if (isSquare(square.getXSquare() + i, square.getYSquare() + j)) {
+						builder.add(squares[square.getXSquare() + i][square.getYSquare() + j]);
 					}
 				}
 			}
 		}
+		return builder.build();
 	}
 
 	/*
@@ -281,14 +291,9 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		}
 
 		int mines = 0;
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				if (i != 0 || j != 0) {
-					if (isSquare(square.getXSquare() + i, square.getYSquare() + j)
-								&& squares[square.getXSquare() + i][square.getYSquare() + j].isMined()) {
-						mines++;
-					}
-				}
+		for (SquareButton neighboor : getNeighboors(square)) {
+			if (neighboor.isMined()) {
+				mines++;
 			}
 		}
 
