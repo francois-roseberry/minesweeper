@@ -15,26 +15,27 @@ public class SquareButtonTest {
 	public void atCreationStateShouldBeHiddenAndMineCountShouldBeZero() {
 		SquareButton button = new SquareButton(0, 0);
 
-		assertEquals(button.getNeighboorMinesCount(), 0);
+		assertEquals(button.getNeighboorMineCount(), 0);
 		assertEquals(button.getState(), SquareButtonState.HIDDEN);
 	}
 
 	@Test
-	public void afterIncrementingMineCountShouldBeOne() {
+	public void settingMineCountBetween0And9ShouldSetIt() {
 		SquareButton button = new SquareButton(0, 0);
-		button.incrementNeighboorMinesCount();
-
-		assertEquals(button.getNeighboorMinesCount(), 1);
+		for (int mines = 0; mines < 9; mines++) {
+			button.setNeighboorMineCount(mines);
+			assertEquals(button.getNeighboorMineCount(), mines);
+		}
 	}
 
-	@Test
-	public void incrementingShouldCapToEight() {
-		SquareButton button = new SquareButton(0, 0);
-		for (int i = 0; i < 10; i++) {
-			button.incrementNeighboorMinesCount();
-		}
+	@Test(expected = IllegalArgumentException.class)
+	public void settingNegativeMineCountShouldThrowException() {
+		new SquareButton(0, 0).setNeighboorMineCount(-1);
+	}
 
-		assertEquals(button.getNeighboorMinesCount(), 8);
+	@Test(expected = IllegalArgumentException.class)
+	public void settingMineCountShouldWithCountAboveSevenShouldThrowException() {
+		new SquareButton(0, 0).setNeighboorMineCount(9);
 	}
 
 	@Test
@@ -139,13 +140,13 @@ public class SquareButtonTest {
 		button.reveal();
 		button.setMine();
 		button.setWasFlagged();
-		button.incrementNeighboorMinesCount();
+		button.setNeighboorMineCount(4);
 		button.reset();
 
 		assertEquals(button.getState(), SquareButtonState.HIDDEN);
 		assertFalse(button.isMined());
 		assertFalse(button.wasFlagged());
 		assertTrue(button.isVisible());
-		assertEquals(button.getNeighboorMinesCount(), 0);
+		assertEquals(button.getNeighboorMineCount(), 0);
 	}
 }

@@ -11,6 +11,7 @@ import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.SquareButtonListener;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 /**
@@ -46,14 +47,14 @@ public class SquareButton extends JButton {
 		setPreferredSize(SquareButton.SQUARE_SIZE);
 	}
 
-	public int getNeighboorMinesCount() {
+	public int getNeighboorMineCount() {
 		return neighboorMinesCount;
 	}
 
-	public void incrementNeighboorMinesCount() {
-		if (neighboorMinesCount < 8) {
-			neighboorMinesCount++;
-		}
+	public void setNeighboorMineCount(final int mines) {
+		Preconditions.checkArgument(mines >= 0 && mines <= 8);
+
+		neighboorMinesCount = mines;
 	}
 
 	public boolean wasFlagged() {

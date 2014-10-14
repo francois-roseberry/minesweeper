@@ -212,7 +212,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		if (square.getState() == SquareButtonState.HIDDEN) {
 			countNeighboorMines(square);
 			square.reveal();
-			if (square.getNeighboorMinesCount() == 0) {
+			if (square.getNeighboorMineCount() == 0) {
 				// La case n'a pas de mines avoisinantes.
 				// R�v�ler les voisins.
 				for (int i = -1; i <= 1; i++) {
@@ -280,16 +280,19 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 			return;
 		}
 
+		int mines = 0;
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i != 0 || j != 0) {
 					if (isSquare(square.getXSquare() + i, square.getYSquare() + j)
 								&& squares[square.getXSquare() + i][square.getYSquare() + j].isMined()) {
-						squares[square.getXSquare()][square.getYSquare()].incrementNeighboorMinesCount();
+						mines++;
 					}
 				}
 			}
 		}
+
+		squares[square.getXSquare()][square.getYSquare()].setNeighboorMineCount(mines);
 	}
 
 	/*
@@ -472,7 +475,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	private void drawNumberImage(final Graphics g, final int i, final int j) {
-		switch (squares[i][j].getNeighboorMinesCount()) {
+		switch (squares[i][j].getNeighboorMineCount()) {
 			case 1:
 				g.drawImage(img1, i * 20 + 1, j * 20 + 1, null);
 				break;
