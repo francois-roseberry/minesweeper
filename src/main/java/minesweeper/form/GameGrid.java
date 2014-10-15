@@ -19,6 +19,7 @@ import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
 import minesweeper.model.event.SquareButtonListener;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -113,9 +114,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * 
 	 */
 	public void cheat() {
-		if (isGridNotCreated()) {
-			return;
-		}
+		Preconditions.checkArgument(isGridCreated());
 
 		for (int j = 0; j < squares[0].length; j++) {
 			for (int i = 0; i < squares.length; i++) {
@@ -147,10 +146,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	private void resetSquareButtons() {
-		if (isGridNotCreated()) {
-			return;
-		}
-
 		for (int j = 0; j < squares[0].length; j++) {
 			for (int i = 0; i < squares.length; i++) {
 				squares[i][j].reset();
@@ -196,10 +191,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * 
 	 */
 	private int getSquaresCount() {
-		if (isGridNotCreated()) {
-			return 0;
-		}
-
 		return squares.length * squares[0].length;
 	}
 
@@ -211,7 +202,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 */
 	private void revealNeighboorSquares(final SquareButton square) {
 		if (square.getState() == SquareButtonState.HIDDEN) {
-
 			square.reveal();
 			countNeighboorMines(square);
 			if (square.getNeighboorMineCount() == 0) {
@@ -244,10 +234,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * 
 	 */
 	private boolean isSquare(final int x, final int y) {
-		if (isGridNotCreated()) {
-			return false;
-		}
-
 		return (x >= 0 && x < squares.length &&
 					y >= 0 && y < squares[0].length);
 	}
@@ -257,10 +243,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * 
 	 */
 	private void finishLostGame() {
-		if (isGridNotCreated()) {
-			return;
-		}
-
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
 				if ((squares[i][j].getState() == SquareButtonState.HIDDEN ||
@@ -286,10 +268,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * 
 	 */
 	private void countNeighboorMines(final SquareButton square) {
-		if (isGridNotCreated()) {
-			return;
-		}
-
 		int mines = 0;
 		for (SquareButton neighboor : getNeighboors(square)) {
 			if (neighboor.isMined()) {
@@ -305,6 +283,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * 
 	 */
 	private void squareButton_leftClick(final SquareButton square) {
+		Preconditions.checkArgument(isGridCreated());
 		// Premier clique de la partie.
 		if (!gameServices.isFirstClicked()) {
 			if (square.getState() == SquareButtonState.HIDDEN) {
@@ -343,10 +322,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	private void markHiddenSquares() {
-		if (isGridNotCreated()) {
-			return;
-		}
-
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
 				if (squares[i][j].getState() == SquareButtonState.HIDDEN) {
@@ -367,25 +342,18 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	private boolean areAllHiddenSquaresMined() {
-		boolean all = true;
-		if (squares != null && squares[0] != null) {
-			for (int i = 0; i < squares.length; i++) {
-				for (int j = 0; j < squares[0].length; j++) {
-					if (squares[i][j].getState() == SquareButtonState.HIDDEN &&
+		for (int i = 0; i < squares.length; i++) {
+			for (int j = 0; j < squares[0].length; j++) {
+				if (squares[i][j].getState() == SquareButtonState.HIDDEN &&
 							!squares[i][j].isMined()) {
-						all = false;
-					}
+					return false;
 				}
 			}
 		}
-		return all;
+		return true;
 	}
 
 	private boolean areAllSquaresRevealedOrMarked() {
-		if (isGridNotCreated()) {
-			return true;
-		}
-
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
 				if (squares[i][j].getState() != SquareButtonState.REVEALED &&
@@ -398,10 +366,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	private int getMarkedSquaresCount() {
-		if (isGridNotCreated()) {
-			return 0;
-		}
-
 		int count = 0;
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
@@ -450,8 +414,8 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		}
 	}
 
-	private boolean isGridNotCreated() {
-		return squares == null || squares[0] == null;
+	private boolean isGridCreated() {
+		return squares != null && squares[0] != null;
 	}
 
 	private void drawImages(final Graphics g) {
@@ -517,7 +481,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		// Dessiner la grille en dessous des composants.
 		super.paintComponent(g);
 
-		if (isGridNotCreated()) {
+		if (!isGridCreated()) {
 			return;
 		}
 
@@ -534,7 +498,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 			// Si les dimensions ne changent pas,
 			// r�utilise la grille au lieu de la recr�er.
 			// Petite optimisation ...
-			if (squaresPerRow == this.squaresPerRow &&
+			if (isGridCreated() && squaresPerRow == this.squaresPerRow &&
 					squaresPerColumn == this.squaresPerColumn) {
 				resetSquareButtons();
 			} else {
