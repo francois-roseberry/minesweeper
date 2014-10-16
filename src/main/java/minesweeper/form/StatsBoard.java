@@ -56,7 +56,7 @@ public class StatsBoard extends JPanel implements ActionListener {
 		vbMain.add(hbMain);
 		vbMain.add(Box.createVerticalStrut(5));
 
-		this.add(vbMain);
+		add(vbMain);
 	}
 
 	@Override
