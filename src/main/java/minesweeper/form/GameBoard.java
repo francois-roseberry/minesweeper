@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import minesweeper.form.dialogs.HighScoreDialog;
 import minesweeper.model.DifficultyLevel;
+import minesweeper.model.GridSize;
 import minesweeper.model.data.access.JavaScoreManager;
 import minesweeper.model.data.access.Score;
 import minesweeper.model.event.GameEvent;
@@ -214,7 +215,7 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 			mines = GameGrid.MINES_PER_LEVEL[this.gameLevel.ordinal()];
 		}
 		statsPanel.startGame(mines);
-		grid.startGame(squaresPerRow, squaresPerColumn, mines);
+		grid.startGame(GridSize.create(squaresPerRow, squaresPerColumn), mines);
 	}
 
 	private void indicateMousePressed() {

@@ -37,9 +37,9 @@ public class CustomGridDialog extends JDialog implements ActionListener {
 	// Liste des �couteurs d'�v�nement Validation.
 	private List<ValidationListener> listeners = new ArrayList<ValidationListener>();
 
-	private JSpinner spnRows = new JSpinner(new SpinnerNumberModel(15, GameGrid.MIN_SQUARES_IN_A_LINE, GameGrid.MAX_SQUARES_IN_A_LINE, 1));
+	private JSpinner spnRows = new JSpinner(new SpinnerNumberModel(15, GameGrid.MIN_ROWS, GameGrid.MAX_ROWS, 1));
 	private JSpinner spnColumns = new JSpinner(
-			new SpinnerNumberModel(15, GameGrid.MIN_SQUARES_IN_A_LINE, GameGrid.MAX_SQUARES_IN_A_LINE, 1));
+			new SpinnerNumberModel(15, GameGrid.MIN_ROWS, GameGrid.MAX_ROWS, 1));
 	private JSpinner spnMines = new JSpinner(new SpinnerNumberModel(20, GameGrid.MIN_MINES, GameGrid.MAX_MINES, 1));
 
 	/**

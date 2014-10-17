@@ -16,8 +16,8 @@ public class GridTest {
 
 	private static final Cell CELL_1_1 = new Cell(1, 1);
 
-	private static final GridSize SIZE_2X2 = new GridSize(2, 2);
-	private static final GridSize SIZE_1X1 = new GridSize(1, 1);
+	private static final GridSize SIZE_2X2 = GridSize.create(2, 2);
+	private static final GridSize SIZE_1X1 = GridSize.create(1, 1);
 
 	@Test
 	public void atCreationGridShouldHaveAllCellsHidden() {

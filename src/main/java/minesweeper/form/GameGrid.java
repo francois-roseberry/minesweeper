@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import minesweeper.Loader;
+import minesweeper.model.GridSize;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
@@ -60,9 +61,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	private final Image imgMineHit = Loader.getImage("mine_hit.gif");
 	private final Image imgMineCheated = Loader.getImage("mine_cheated.gif");
 	// Nombre de cases en largeur de la grille.
-	private int squaresPerRow;
-	// Nombre de cases en hauteur de la grille.
-	private int squaresPerColumn;
+	private GridSize size;
 	// Nombre de mines dans la grille.
 	private int mines;
 	// Case contenant la mine qui a �t� cliqu�e (qui a caus�
@@ -80,12 +79,12 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * Nombre de carr�s minimum accept�s en hauteur ou en largeur.
 	 * 
 	 */
-	public static final int MIN_SQUARES_IN_A_LINE = 9;
+	public static final int MIN_ROWS = 9;
 	/**
 	 * Nombre de carr�s maximum accept�s en hauteur ou en largeur.
 	 * 
 	 */
-	public static final int MAX_SQUARES_IN_A_LINE = 32;
+	public static final int MAX_ROWS = 32;
 	/**
 	 * Nombre de mines minimal.
 	 * 
@@ -121,21 +120,25 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		}
 	}
 
-	private void createSquares(final int nbSquaresWidth, final int nbSquaresHeight) {
-		squaresPerRow = nbSquaresWidth;
-		squaresPerColumn = nbSquaresHeight;
+	private void createSquares(final GridSize size) {
+		this.size = size;
 		deleteSquares();
-		setLayout(new GridLayout(nbSquaresHeight, nbSquaresWidth));
-		squares = new SquareButton[nbSquaresWidth][nbSquaresHeight];
+		setLayout(new GridLayout(size.columns(), size.rows()));
+		squares = new SquareButton[size.rows()][size.columns()];
 		for (int column = 0; column < squares[0].length; column++) {
 			for (int row = 0; row < squares.length; row++) {
-				squares[row][column] = new SquareButton(row, column);
-				squares[row][column].addMouseListener(this);
-				squares[row][column].addSquareButtonListener(this);
-				squares[row][column].setBorder(BorderFactory.createRaisedBevelBorder());
+				squares[row][column] = createSquareButton(column, row);
 				add(squares[row][column]);
 			}
 		}
+	}
+
+	private SquareButton createSquareButton(final int column, final int row) {
+		SquareButton square = new SquareButton(row, column);
+		square.addMouseListener(this);
+		square.addSquareButtonListener(this);
+		square.setBorder(BorderFactory.createRaisedBevelBorder());
+		return square;
 	}
 
 	private void deleteSquares() {
@@ -484,21 +487,17 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		drawImages(graphics);
 	}
 
-	public void startGame(final int squaresPerRow, final int squaresPerColumn, final int mines) {
-		if (squaresPerRow >= GameGrid.MIN_SQUARES_IN_A_LINE && squaresPerRow <= GameGrid.MAX_SQUARES_IN_A_LINE
-				&& squaresPerColumn >= GameGrid.MIN_SQUARES_IN_A_LINE && squaresPerColumn <= GameGrid.MAX_SQUARES_IN_A_LINE) {
-			// Stocke le nombre de mines de la grille.
-			// (utilis� pour la g�n�ration par la suite).
-			this.mines = mines;
-			// Si les dimensions ne changent pas,
-			// r�utilise la grille au lieu de la recr�er.
-			// Petite optimisation ...
-			if (isGridCreated() && squaresPerRow == this.squaresPerRow &&
-					squaresPerColumn == this.squaresPerColumn) {
-				resetSquareButtons();
-			} else {
-				createSquares(squaresPerRow, squaresPerColumn);
-			}
+	public void startGame(final GridSize size, final int mines) {
+		// Stocke le nombre de mines de la grille.
+		// (utilis� pour la g�n�ration par la suite).
+		this.mines = mines;
+		// Si les dimensions ne changent pas,
+		// r�utilise la grille au lieu de la recr�er.
+		// Petite optimisation ...
+		if (isGridCreated() && size.equals(this.size)) {
+			resetSquareButtons();
+		} else {
+			createSquares(size);
 		}
 	}
 

@@ -35,8 +35,8 @@ public class CustomGridObject {
 	}
 
 	public static CustomGridObject create(final int rows, final int columns, final int mines) {
-		if (rows >= GameGrid.MIN_SQUARES_IN_A_LINE && rows <= GameGrid.MAX_SQUARES_IN_A_LINE
-				&& columns >= GameGrid.MIN_SQUARES_IN_A_LINE && columns <= GameGrid.MAX_SQUARES_IN_A_LINE
+		if (rows >= GameGrid.MIN_ROWS && rows <= GameGrid.MAX_ROWS
+				&& columns >= GameGrid.MIN_ROWS && columns <= GameGrid.MAX_ROWS
 				&& mines >= GameGrid.MIN_MINES && mines <= GameGrid.MAX_MINES) {
 			return new CustomGridObject(rows, columns, mines);
 		}
