@@ -2,7 +2,7 @@ package minesweeper.model;
 
 import static junit.framework.Assert.*;
 import static org.mockito.Mockito.*;
-import minesweeper.model.exception.GameLostException;
+import minesweeper.model.exception.MineFoundException;
 
 import org.junit.Test;
 
@@ -27,27 +27,27 @@ public class GridTest {
 	}
 
 	@Test
-	public void revealingAnyCellInEmptyGridShouldReturnNewGridWithCellRevealed() throws GameLostException {
+	public void revealingAnyCellInEmptyGridShouldReturnNewGridWithCellRevealed() throws MineFoundException {
 		Grid grid = Grid.create(SIZE_2X2, EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
 
 		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
 	}
 
 	@Test
-	public void revealingOneCellShouldLeaveOtherCellsUntouched() throws GameLostException {
+	public void revealingOneCellShouldLeaveOtherCellsUntouched() throws MineFoundException {
 		Grid grid = Grid.create(SIZE_2X2, EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
 
 		assertEquals(CellState.HIDDEN, grid.at(CELL_2_2));
 	}
 
-	@Test(expected = GameLostException.class)
-	public void revealingMineShouldLoseGame() throws GameLostException {
+	@Test(expected = MineFoundException.class)
+	public void revealingMineShouldLoseGame() throws MineFoundException {
 		MineGenerator generator = mineGenerator(ImmutableList.of(CELL_1_1));
 		Grid.create(SIZE_2X2, generator).reveal(CELL_1_1);
 	}
 
 	@Test
-	public void revealingAllNonMinedCellsShouldReturnWinningGrid() throws GameLostException {
+	public void revealingAllNonMinedCellsShouldReturnWinningGrid() throws MineFoundException {
 		Grid grid = Grid.create(SIZE_1X1, EMPTY_MINE_GENERATOR);
 
 		assertFalse(grid.isWinning());
@@ -55,11 +55,22 @@ public class GridTest {
 	}
 
 	@Test
-	public void afterRevealingTwoCellsFirstOneStaysRevealed() throws GameLostException {
+	public void afterRevealingSecondCellFirstOneStaysRevealed() throws MineFoundException {
 		Grid grid = Grid.create(SIZE_2X2, EMPTY_MINE_GENERATOR).reveal(CELL_1_1).reveal(CELL_2_2);
 
 		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
 		assertEquals(CellState.REVEALED, grid.at(CELL_2_2));
+	}
+
+	@Test
+	public void minesShouldBePlacedAfterFirstCellIsRevealedOnly() throws MineFoundException {
+		MineGenerator generator = emptyMineGenerator();
+
+		Grid grid = Grid.create(SIZE_2X2, generator);
+		verify(generator, never()).getMinedCells();
+
+		grid.reveal(CELL_1_1);
+		verify(generator).getMinedCells();
 	}
 
 	private static MineGenerator mineGenerator(final ImmutableList<Cell> mines) {

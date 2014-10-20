@@ -1,6 +1,6 @@
 package minesweeper.model.exception;
 
 @SuppressWarnings("serial")
-public class GameLostException extends Exception {
+public class MineFoundException extends Exception {
 
 }

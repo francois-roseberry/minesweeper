@@ -1,18 +1,20 @@
 package minesweeper.model;
 
-import minesweeper.model.exception.GameLostException;
+import minesweeper.model.exception.MineFoundException;
 
 import com.google.common.collect.ImmutableList;
 
+//	Conditions de victoire :
+// 	 		- Toutes les cases non-minées ont été révélées.
+//			(autrement dit, le nombre de cases révélées = rows*columns - mines.size()
+//          - Si les mines n'ont pas toutes été marquées, marquer celles qui restent
 public class Grid {
 
 	private final GridSize size;
 	private final Cells cells;
 
 	public static Grid create(final GridSize size, final MineGenerator generator) {
-		ImmutableList<Cell> mines = generator.getMinedCells();
-		Cells cells = new Cells(mines, ImmutableList.<Cell> of());
-		return new Grid(size, cells);
+		return new Grid(size, emptyCells(generator));
 	}
 
 	private Grid(final GridSize size, final Cells cells) {
@@ -20,19 +22,8 @@ public class Grid {
 		this.cells = cells;
 	}
 
-	// Doit retourner (une grille!) :
-	// - si la partie est perdue (une mine a été révélée)
-	// - si la partie a été gagnée
-	// 		Conditions de victoire :
-	// 	 		- Toutes les cases non-minées ont été révélées.
-	//			(autrement dit, le nombre de cases révélées = rows*columns - mines.size()
-	//          - Si les mines n'ont pas toutes été marquées, marquer celles qui restent
-	// - sinon le jeu doit continuer
-	public Grid reveal(final Cell cell) throws GameLostException {
-		// TODO : trying to reveal a square wich is already revealed should do something, maybe throw an
-		// IllegalArgumentException
-		Cells newCells = cells.reveal(cell);
-		return new Grid(size, newCells);
+	public Grid reveal(final Cell cell) throws MineFoundException {
+		return new Grid(size, cells.reveal(cell));
 	}
 
 	public CellState at(final Cell cell) {
@@ -43,50 +34,80 @@ public class Grid {
 		return cells.size() == size.cellCount();
 	}
 
-	private static class Cells {
+	private interface Cells {
 
-		private final ImmutableList<Cell> mines;
-		private final ImmutableList<Cell> revealed;
+		CellState at(final Cell cell);
 
-		public Cells(final ImmutableList<Cell> mines, final ImmutableList<Cell> revealed) {
-			this.mines = mines;
-			this.revealed = revealed;
-		}
+		Cells reveal(final Cell cell) throws MineFoundException;
 
-		private CellState at(final Cell cell) {
-			if (isRevealed(cell)) {
-				return CellState.REVEALED;
+		int size();
+	}
+
+	private static Cells emptyCells(final MineGenerator generator) {
+		return new Cells() {
+
+			@Override
+			public int size() {
+				return 0;
 			}
 
-			return CellState.HIDDEN;
-		}
-
-		private Cells reveal(final Cell cell) throws GameLostException {
-			if (isMined(cell)) {
-				throw new GameLostException();
+			@Override
+			public CellState at(final Cell cell) {
+				return CellState.HIDDEN;
 			}
 
-			return new Cells(mines, newRevealedCells(cell));
-		}
+			@Override
+			public Cells reveal(final Cell cell) throws MineFoundException {
+				return withMines(generator.getMinedCells()).reveal(cell);
+			}
+		};
+	}
 
-		private ImmutableList<Cell> newRevealedCells(final Cell cell) {
-			ImmutableList.Builder<Cell> builder = ImmutableList.builder();
-			builder.addAll(revealed);
-			builder.add(cell);
-			// TODO : révéler les voisins, récursivement.
-			return builder.build();
-		}
+	private static Cells withMines(final ImmutableList<Cell> mines) {
+		return inGameCells(ImmutableList.<Cell> of(), mines);
+	}
 
-		private int size() {
-			return mines.size() + revealed.size();
-		}
+	private static Cells inGameCells(final ImmutableList<Cell> revealed, final ImmutableList<Cell> mines) {
+		return new Cells() {
 
-		private boolean isMined(final Cell cell) {
-			return mines.contains(cell);
-		}
+			@Override
+			public CellState at(final Cell cell) {
+				if (isRevealed(cell)) {
+					return CellState.REVEALED;
+				}
 
-		private boolean isRevealed(final Cell cell) {
-			return revealed.contains(cell);
-		}
+				return CellState.HIDDEN;
+			}
+
+			@Override
+			public Cells reveal(final Cell cell) throws MineFoundException {
+				if (isMined(cell)) {
+					throw new MineFoundException();
+				}
+
+				return inGameCells(newRevealedCells(cell), mines);
+			}
+
+			@Override
+			public int size() {
+				return mines.size() + revealed.size();
+			}
+
+			private ImmutableList<Cell> newRevealedCells(final Cell cell) {
+				ImmutableList.Builder<Cell> builder = ImmutableList.builder();
+				builder.addAll(revealed);
+				builder.add(cell);
+				// TODO : révéler les voisins, récursivement.
+				return builder.build();
+			}
+
+			private boolean isRevealed(final Cell cell) {
+				return revealed.contains(cell);
+			}
+
+			private boolean isMined(final Cell cell) {
+				return mines.contains(cell);
+			}
+		};
 	}
 }
