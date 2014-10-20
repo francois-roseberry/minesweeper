@@ -39,9 +39,4 @@ public class Cell {
 		}
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Cell [row=" + row + ", column=" + column + "]";
-	}
 }
