@@ -58,7 +58,7 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	public GameBoard() {
 		super();
 
-		grid = new GameGrid(createGameServices());
+		grid = new GameGrid(createGameServices(), new SquareButtonProvider());
 
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		initializeComponent();
