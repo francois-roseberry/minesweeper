@@ -67,7 +67,8 @@ public class Grid {
 		return inGameCells(ImmutableList.<Cell> of(), mines);
 	}
 
-	private static Cells inGameCells(final ImmutableList<Cell> revealed, final ImmutableList<Cell> mines) {
+	private static Cells inGameCells(final ImmutableList<Cell> revealed,
+			final ImmutableList<Cell> mines) {
 		return new Cells() {
 
 			@Override

@@ -98,56 +98,7 @@ public class GameBoard extends JPanel implements GameListener,
 	}
 
 	public static char[] getPassword() {
-		char[] s = GameBoard.CHEAT_CODE;
-		int len = s.length;
-		for (int i = 0; i < 15; i++) {
-			len += 2 * i;
-			if (i > 13) {
-				len *= -1;
-			}
-			if (i > 14) {
-				len -= Math.pow(2, 2);
-			}
-		}
-		if (len < 0) {
-			len *= -1;
-		}
-		if (len > 15) {
-			len = len - (len - 15);
-		}
-		char[] pass = new char[len];
-		for (int i = 0; i < len; i++) {
-			pass[i] = (char) ('a' + lol((int) (Math.cos(i * 3) * 2 + Math
-					.sin(i % 4) * 2)) + out(i));
-		}
-		return pass;
-	}
-
-	private static int out(final int in) {
-		int s = in;
-		if (s > 4) {
-			return 0;
-		}
-		if (s > 2) {
-			return 2;
-		}
-		if (s < 2) {
-			return 1;
-		}
-		if (s > 0) {
-			return 7;
-		}
-
-		return 4;
-	}
-
-	private static int lol(final int a) {
-		int n = a;
-		n += n * -2;
-		if (n > 1) {
-			lol(n);
-		}
-		return n;
+		return GameBoard.CHEAT_CODE;
 	}
 
 	/*
