@@ -44,11 +44,6 @@ public class GameBoard extends JPanel implements GameListener,
 	// Indique si la triche a �t� activ�e.
 	private boolean cheating = false;
 
-	// Nombre de cases en largeur pour tous les niveaux.
-	private static final int[] GRID_WIDTH_LEVELS = new int[] { 9, 16, 32 };
-	// Nombre de cases en hauteur pour tous les niveaux.
-	private static final int[] GRID_HEIGHT_LEVELS = new int[] { 9, 16, 16 };
-
 	private static final ImmutableList<GridSize> GRID_SIZE_LEVELS = ImmutableList
 			.of(GridSize.create(9, 9), GridSize.create(16, 16),
 					GridSize.create(32, 16));
@@ -66,7 +61,7 @@ public class GameBoard extends JPanel implements GameListener,
 	public GameBoard() {
 		super();
 
-		grid = new GameGrid(createGameServices());
+		grid = new GameGrid(createGameServices(), new SquareButtonProvider());
 
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		initializeComponent();

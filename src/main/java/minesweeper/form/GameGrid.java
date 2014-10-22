@@ -69,6 +69,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	private SquareButton hitSquare;
 
 	private final GameServices gameServices;
+	private final SquareButtonProvider provider;
 
 	/**
 	 * Nombre de mines � placer dans la grille pour chaque niveau.
@@ -100,10 +101,11 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * Constructeur. Cr�e une grille vide.
 	 * 
 	 */
-	public GameGrid(final GameServices gameServices) {
+	public GameGrid(final GameServices gameServices, final SquareButtonProvider provider) {
 		super();
 
 		this.gameServices = gameServices;
+		this.provider = provider;
 
 		setBorder(BorderFactory.createLoweredBevelBorder());
 	}
@@ -134,7 +136,7 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	private SquareButton createSquareButton(final int column, final int row) {
-		SquareButton square = new SquareButton(row, column);
+		SquareButton square = provider.create(row, column);
 		square.addMouseListener(this);
 		square.addSquareButtonListener(this);
 		square.setBorder(BorderFactory.createRaisedBevelBorder());

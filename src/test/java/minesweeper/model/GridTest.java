@@ -41,7 +41,7 @@ public class GridTest {
 	}
 
 	@Test(expected = MineFoundException.class)
-	public void revealingMineShouldLoseGame() throws MineFoundException {
+	public void revealingMineShouldThrowException() throws MineFoundException {
 		MineGenerator generator = mineGenerator(ImmutableList.of(CELL_1_1));
 		Grid.create(SIZE_2X2, generator).reveal(CELL_1_1);
 	}
