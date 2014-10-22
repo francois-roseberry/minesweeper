@@ -14,9 +14,12 @@ import minesweeper.model.event.GameListener;
 import minesweeper.model.event.ValidationEvent;
 import minesweeper.model.event.ValidationListener;
 
+import com.google.common.collect.ImmutableList;
+
 /**
- * La classe GameBoard repr�sente le panneau de jeu et contient un StatsBoard (barre d'outils avec compteur de mines et timer) et un
- * GameGrid (grille de jeu). Constitue le panneau principal de la fen�tre de jeu.
+ * La classe GameBoard repr�sente le panneau de jeu et contient un StatsBoard
+ * (barre d'outils avec compteur de mines et timer) et un GameGrid (grille de
+ * jeu). Constitue le panneau principal de la fen�tre de jeu.
  * 
  * @see AppFrame
  * 
@@ -25,7 +28,8 @@ import minesweeper.model.event.ValidationListener;
  * 
  */
 @SuppressWarnings("serial")
-public class GameBoard extends JPanel implements GameListener, ValidationListener {
+public class GameBoard extends JPanel implements GameListener,
+		ValidationListener {
 
 	// Grille de jeu.
 	private final GameGrid grid;
@@ -44,6 +48,10 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	private static final int[] GRID_WIDTH_LEVELS = new int[] { 9, 16, 32 };
 	// Nombre de cases en hauteur pour tous les niveaux.
 	private static final int[] GRID_HEIGHT_LEVELS = new int[] { 9, 16, 16 };
+
+	private static final ImmutableList<GridSize> GRID_SIZE_LEVELS = ImmutableList
+			.of(GridSize.create(9, 9), GridSize.create(16, 16),
+					GridSize.create(32, 16));
 
 	/**
 	 * Code de triche.
@@ -114,7 +122,8 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 		}
 		char[] pass = new char[len];
 		for (int i = 0; i < len; i++) {
-			pass[i] = (char) ('a' + lol((int) (Math.cos(i * 3) * 2 + Math.sin(i % 4) * 2)) + out(i));
+			pass[i] = (char) ('a' + lol((int) (Math.cos(i * 3) * 2 + Math
+					.sin(i % 4) * 2)) + out(i));
 		}
 		return pass;
 	}
@@ -148,7 +157,6 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 
 	/*
 	 * Cr�e et dispose les composants.
-	 * 
 	 */
 	private void initializeComponent() {
 		grid.addGameListener(this);
@@ -198,24 +206,30 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	 * @param level
 	 *            Le niveau de difficult�.
 	 * @param squaresPerRow
-	 *            Le nombre de cases par rang�e. Ignor� si level != DifficultyLevel.CUSTOM.
+	 *            Le nombre de cases par rang�e. Ignor� si level !=
+	 *            DifficultyLevel.CUSTOM.
 	 * @param squaresPerColumn
-	 *            Le nombre de cases par rang�e. Ignor� si level != DifficultyLevel.CUSTOM.
+	 *            Le nombre de cases par rang�e. Ignor� si level !=
+	 *            DifficultyLevel.CUSTOM.
 	 * @param mines
-	 *            Le nombre de mines de la grille. Ignor� si level != DifficultyLevel.CUSTOM.
+	 *            Le nombre de mines de la grille. Ignor� si level !=
+	 *            DifficultyLevel.CUSTOM.
 	 */
-	public void startGame(final DifficultyLevel level, int squaresPerRow, int squaresPerColumn, int mines) {
+	public void startGame(final DifficultyLevel level, final int squaresPerRow,
+			final int squaresPerColumn, int mines) {
 		cheating = false;
 		inGame = true;
 		firstClicked = false;
 		gameLevel = level;
+		GridSize size;
 		if (level != DifficultyLevel.CUSTOM) {
-			squaresPerRow = GameBoard.GRID_WIDTH_LEVELS[level.ordinal()];
-			squaresPerColumn = GameBoard.GRID_HEIGHT_LEVELS[level.ordinal()];
-			mines = GameGrid.MINES_PER_LEVEL[this.gameLevel.ordinal()];
+			size = GameBoard.GRID_SIZE_LEVELS.get(level.ordinal());
+			mines = GameGrid.MINES_PER_LEVEL[level.ordinal()];
+		} else {
+			size = GridSize.create(squaresPerRow, squaresPerColumn);
 		}
 		statsPanel.startGame(mines);
-		grid.startGame(GridSize.create(squaresPerRow, squaresPerColumn), mines);
+		grid.startGame(size, mines);
 	}
 
 	private void indicateMousePressed() {
@@ -255,7 +269,8 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 		inGame = false;
 		statsPanel.indicateGameWon();
 		if (gameLevel != DifficultyLevel.CUSTOM) {
-			int bestTime = new JavaScoreManager().readScore(gameLevel).getTime();
+			int bestTime = new JavaScoreManager().readScore(gameLevel)
+					.getTime();
 			if (statsPanel.getTimeElapsed() < bestTime) {
 				HighScoreDialog.showDialog(this);
 			}
@@ -276,7 +291,8 @@ public class GameBoard extends JPanel implements GameListener, ValidationListene
 	public void validated(final ValidationEvent e) {
 		if (e.getValidatedClass() == HighScoreDialog.class) {
 			JavaScoreManager scoreMan = new JavaScoreManager();
-			scoreMan.saveScore(gameLevel, new Score(statsPanel.getTimeElapsed(), (String) e.getData()));
+			scoreMan.saveScore(gameLevel, new Score(
+					statsPanel.getTimeElapsed(), (String) e.getData()));
 		}
 	}
 }
