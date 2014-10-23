@@ -25,14 +25,16 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases (boutons).
+ * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases
+ * (boutons).
  * 
  * @author David Maltais
  * @author Fran�ois Roseberry
  * 
  */
 @SuppressWarnings("serial")
-public class GameGrid extends JPanel implements MouseListener, SquareButtonListener {
+public class GameGrid extends JPanel implements MouseListener,
+		SquareButtonListener {
 
 	// Tableau des cases de la grille.
 	// On garde un tableau des cases du jeu m�me si tous
@@ -101,7 +103,8 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	 * Constructeur. Cr�e une grille vide.
 	 * 
 	 */
-	public GameGrid(final GameServices gameServices, final SquareButtonProvider provider) {
+	public GameGrid(final GameServices gameServices,
+			final SquareButtonProvider provider) {
 		super();
 
 		this.gameServices = gameServices;
@@ -166,50 +169,45 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 
 	/*
 	 * G�n�rer les emplacements al�atoires des mines.
-	 * 
 	 */
 	private void generateMines(final SquareButton squareToAvoid, int mines) {
-		if (gameServices.isInGame() && !gameServices.isFirstClicked()) {
-			if (mines > 0 && mines < getSquaresCount() - 1) {
-				// Cr�er une collection de cases disponibles.
-				// (les cases qui peuvent recevoir des mines)
-				List<Point> openCoords = Lists.newArrayList();
+		if (mines > 0 && mines < getSquaresCount() - 1) {
+			// Cr�er une collection de cases disponibles.
+			// (les cases qui peuvent recevoir des mines)
+			List<Point> openCoords = Lists.newArrayList();
 
-				// Remplir le tableau des coordonn�es disponibles.
-				for (int i = 0; i < squares.length; i++) {
-					for (int j = 0; j < squares[0].length; j++) {
-						if (!squareToAvoid.equalCoords(i, j)) {
-							openCoords.add(new Point(i, j));
-						}
+			// Remplir le tableau des coordonn�es disponibles.
+			for (int i = 0; i < squares.length; i++) {
+				for (int j = 0; j < squares[0].length; j++) {
+					if (!squareToAvoid.equalCoords(i, j)) {
+						openCoords.add(new Point(i, j));
 					}
 				}
-				int openIndex;
-				Random rnd = new Random();
-				while (mines > 0) {
-					// G�n�rer un index al�atoire.
-					openIndex = rnd.nextInt(openCoords.size());
-					squares[(int) openCoords.get(openIndex).getX()][(int) openCoords.get(openIndex).getY()].setMine();
-					// Enlever la case de la liste.
-					openCoords.remove(openIndex);
-					mines--;
-				}
+			}
+			int openIndex;
+			Random rnd = new Random();
+			while (mines > 0) {
+				// G�n�rer un index al�atoire.
+				openIndex = rnd.nextInt(openCoords.size());
+				squares[(int) openCoords.get(openIndex).getX()][(int) openCoords
+						.get(openIndex).getY()].setMine();
+				// Enlever la case de la liste.
+				openCoords.remove(openIndex);
+				mines--;
 			}
 		}
 	}
 
 	/*
 	 * Obtient le nombre de cases de la grille.
-	 * 
 	 */
 	private int getSquaresCount() {
 		return squares.length * squares[0].length;
 	}
 
 	/*
-	 * M�thode permettant de r�v�ler une case, compter les
-	 * mines alentour et au besoin, s'appeler r�cursivement
-	 * pour r�v�ler les cases autour.
-	 * 
+	 * M�thode permettant de r�v�ler une case, compter les mines alentour et au
+	 * besoin, s'appeler r�cursivement pour r�v�ler les cases autour.
 	 */
 	private void revealNeighboorSquares(final SquareButton square) {
 		if (square.getState() == SquareButtonState.HIDDEN) {
@@ -230,8 +228,10 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i != 0 || j != 0) {
-					if (isInGrid(square.getXSquare() + i, square.getYSquare() + j)) {
-						builder.add(squares[square.getXSquare() + i][square.getYSquare() + j]);
+					if (isInGrid(square.getXSquare() + i, square.getYSquare()
+							+ j)) {
+						builder.add(squares[square.getXSquare() + i][square
+								.getYSquare() + j]);
 					}
 				}
 			}
@@ -240,29 +240,26 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	/*
-	 * V�rifie si les coordonn�es fournies (plut�t indices de
-	 * tableau) correspondent � une case de la grille.
-	 * 
+	 * V�rifie si les coordonn�es fournies (plut�t indices de tableau)
+	 * correspondent � une case de la grille.
 	 */
 	private boolean isInGrid(final int row, final int column) {
-		return (row >= 0 && row < squares.length &&
-					column >= 0 && column < squares[0].length);
+		return (row >= 0 && row < squares.length && column >= 0 && column < squares[0].length);
 	}
 
 	/*
 	 * Finalise une partie perdue en r�v�lant les mines, etc.
-	 * 
 	 */
 	private void finishLostGame() {
 		for (SquareButton square : getSquareButtons()) {
-			if ((square.getState() == SquareButtonState.HIDDEN ||
-							square.getState() == SquareButtonState.UNSURE)
-							&& square.isMined()) {
+			if ((square.getState() == SquareButtonState.HIDDEN || square
+					.getState() == SquareButtonState.UNSURE)
+					&& square.isMined()) {
 				// R�v�ler la mine.
 				square.reveal();
 			}
 			if (square.getState() == SquareButtonState.MARKED
-							&& !square.isMined()) {
+					&& !square.isMined()) {
 				// Marquer la case comme min�e incorrectement.
 				square.setWasFlagged();
 				// R�v�ler la case.
@@ -273,7 +270,6 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 
 	/*
 	 * Compte le nombre de mines voisines d'une case.
-	 * 
 	 */
 	private void countNeighboorMines(final SquareButton square) {
 		int mines = 0;
@@ -283,12 +279,12 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 			}
 		}
 
-		squares[square.getXSquare()][square.getYSquare()].setNeighboorMineCount(mines);
+		squares[square.getXSquare()][square.getYSquare()]
+				.setNeighboorMineCount(mines);
 	}
 
 	/*
 	 * G�re le clic gauche sur une case.
-	 * 
 	 */
 	private void squareButton_leftClick(final SquareButton square) {
 		Preconditions.checkArgument(isGridCreated());
@@ -301,7 +297,8 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 			}
 		} else {
 			// Clic normal (pendant la partie).
-			if (square.isMined() && square.getState() == SquareButtonState.HIDDEN) {
+			if (square.isMined()
+					&& square.getState() == SquareButtonState.HIDDEN) {
 				// La partie a �t� perdue.
 				hitSquare = square;
 				finishLostGame();
@@ -321,8 +318,8 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	private void squareButton_rightClick(final SquareButton square) {
-		if (square.getState() != SquareButtonState.REVEALED &&
-				square.getState() != SquareButtonState.CHEATED) {
+		if (square.getState() != SquareButtonState.REVEALED
+				&& square.getState() != SquareButtonState.CHEATED) {
 			square.rightClick();
 		}
 
@@ -339,18 +336,17 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 
 	private void checkGameWon() {
 		// Conditions de victoire :
-		// 	 - Toutes les cases ont �t� r�v�l�es ou marqu�es.
-		// 	 - Le compteur de cases marqu�es = le nombre de mines.
-		if (areAllSquaresRevealedOrMarked() &&
-				getMarkedSquaresCount() == mines) {
+		// - Toutes les cases ont �t� r�v�l�es ou marqu�es.
+		// - Le compteur de cases marqu�es = le nombre de mines.
+		if (areAllSquaresRevealedOrMarked() && getMarkedSquaresCount() == mines) {
 			onGameWon(new GameEvent());
 		}
 	}
 
 	private boolean areAllHiddenSquaresMined() {
 		for (SquareButton square : getSquareButtons()) {
-			if (square.getState() == SquareButtonState.HIDDEN &&
-							!square.isMined()) {
+			if (square.getState() == SquareButtonState.HIDDEN
+					&& !square.isMined()) {
 				return false;
 			}
 		}
@@ -359,8 +355,8 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 
 	private boolean areAllSquaresRevealedOrMarked() {
 		for (SquareButton square : getSquareButtons()) {
-			if (square.getState() != SquareButtonState.REVEALED &&
-							square.getState() != SquareButtonState.MARKED) {
+			if (square.getState() != SquareButtonState.REVEALED
+					&& square.getState() != SquareButtonState.MARKED) {
 				return false;
 			}
 		}
@@ -405,12 +401,14 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 		graphics.setColor(Color.BLACK);
 		// Dessiner les lignes horizontales de la grille.
 		for (int row = 0; row < squares.length; row++) {
-			graphics.drawLine(20 * (row + 1) + 1, 0, 20 * (row + 1) + 1, this.getHeight());
+			graphics.drawLine(20 * (row + 1) + 1, 0, 20 * (row + 1) + 1,
+					this.getHeight());
 		}
 
 		// Dessiner les lignes verticales de la grille.
 		for (int column = 0; column < squares[0].length; column++) {
-			graphics.drawLine(0, 20 * (column + 1) + 1, this.getWidth(), 20 * (column + 1) + 1);
+			graphics.drawLine(0, 20 * (column + 1) + 1, this.getWidth(),
+					20 * (column + 1) + 1);
 		}
 	}
 
@@ -425,50 +423,55 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 				if (squares[row][column].getState() == SquareButtonState.REVEALED) {
 					if (squares[row][column].isMined()) {
 						if (squares[row][column].equalCoords(hitSquare)) {
-							graphics.drawImage(imgMineHit, row * 20 + 2, column * 20 + 2, null);
+							graphics.drawImage(imgMineHit, row * 20 + 2,
+									column * 20 + 2, null);
 						} else {
-							graphics.drawImage(imgMine, row * 20 + 2, column * 20 + 2, null);
+							graphics.drawImage(imgMine, row * 20 + 2,
+									column * 20 + 2, null);
 						}
 					} else {
 						if (squares[row][column].wasFlagged()) {
-							graphics.drawImage(imgMineWrong, row * 20 + 2, column * 20 + 2, null);
+							graphics.drawImage(imgMineWrong, row * 20 + 2,
+									column * 20 + 2, null);
 						}
 					}
 
 					drawNumberImage(graphics, row, column);
 				} else if (squares[row][column].getState() == SquareButtonState.CHEATED) {
-					graphics.drawImage(imgMineCheated, row * 20 + 2, column * 20 + 1, null);
+					graphics.drawImage(imgMineCheated, row * 20 + 2,
+							column * 20 + 1, null);
 				}
 			}
 		}
 	}
 
-	private void drawNumberImage(final Graphics graphics, final int row, final int column) {
+	private void drawNumberImage(final Graphics graphics, final int row,
+			final int column) {
 		switch (squares[row][column].getNeighboorMineCount()) {
-			case 1:
-				graphics.drawImage(img1, row * 20 + 1, column * 20 + 1, null);
-				break;
-			case 2:
-				graphics.drawImage(img2, row * 20 + 1, column * 20 + 1, null);
-				break;
-			case 3:
-				graphics.drawImage(img3, row * 20 + 1, column * 20 + 1, null);
-				break;
-			case 4:
-				graphics.drawImage(img4, row * 20 + 1, column * 20 + 1, null);
-				break;
-			case 5:
-				graphics.drawImage(img5, row * 20 + 1, column * 20 + 1, null);
-				break;
-			case 6:
-				graphics.drawImage(img6, row * 20 + 1, column * 20 + 1, null);
-				break;
-			case 7:
-				graphics.drawImage(img7, row * 20 + 1, column * 20 + 1, null);
-				break;
-			case 8:
-				graphics.drawImage(img8, row * 20 + 1, column * 20 + 1, null);
-				break;
+		case 1:
+			graphics.drawImage(img1, row * 20 + 1, column * 20 + 1, null);
+			break;
+		case 2:
+			graphics.drawImage(img2, row * 20 + 1, column * 20 + 1, null);
+			break;
+		case 3:
+			graphics.drawImage(img3, row * 20 + 1, column * 20 + 1, null);
+			break;
+		case 4:
+			graphics.drawImage(img4, row * 20 + 1, column * 20 + 1, null);
+			break;
+		case 5:
+			graphics.drawImage(img5, row * 20 + 1, column * 20 + 1, null);
+			break;
+		case 6:
+			graphics.drawImage(img6, row * 20 + 1, column * 20 + 1, null);
+			break;
+		case 7:
+			graphics.drawImage(img7, row * 20 + 1, column * 20 + 1, null);
+			break;
+		case 8:
+			graphics.drawImage(img8, row * 20 + 1, column * 20 + 1, null);
+			break;
 		}
 	}
 
@@ -504,13 +507,16 @@ public class GameGrid extends JPanel implements MouseListener, SquareButtonListe
 	}
 
 	@Override
-	public void mouseClicked(final MouseEvent e) {}
+	public void mouseClicked(final MouseEvent e) {
+	}
 
 	@Override
-	public void mouseEntered(final MouseEvent e) {}
+	public void mouseEntered(final MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(final MouseEvent e) {}
+	public void mouseExited(final MouseEvent e) {
+	}
 
 	@Override
 	public void mousePressed(final MouseEvent e) {
