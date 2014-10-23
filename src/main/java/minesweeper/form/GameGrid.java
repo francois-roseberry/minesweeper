@@ -171,38 +171,29 @@ public class GameGrid extends JPanel implements MouseListener,
 	 * G�n�rer les emplacements al�atoires des mines.
 	 */
 	private void generateMines(final SquareButton squareToAvoid, int mines) {
-		if (mines > 0 && mines < getSquaresCount() - 1) {
-			// Cr�er une collection de cases disponibles.
-			// (les cases qui peuvent recevoir des mines)
-			List<Point> openCoords = Lists.newArrayList();
+		// Cr�er une collection de cases disponibles.
+		// (les cases qui peuvent recevoir des mines)
+		List<Point> openCoords = Lists.newArrayList();
 
-			// Remplir le tableau des coordonn�es disponibles.
-			for (int i = 0; i < squares.length; i++) {
-				for (int j = 0; j < squares[0].length; j++) {
-					if (!squareToAvoid.equalCoords(i, j)) {
-						openCoords.add(new Point(i, j));
-					}
+		// Remplir le tableau des coordonn�es disponibles.
+		for (int i = 0; i < squares.length; i++) {
+			for (int j = 0; j < squares[0].length; j++) {
+				if (!squareToAvoid.equalCoords(i, j)) {
+					openCoords.add(new Point(i, j));
 				}
 			}
-			int openIndex;
-			Random rnd = new Random();
-			while (mines > 0) {
-				// G�n�rer un index al�atoire.
-				openIndex = rnd.nextInt(openCoords.size());
-				squares[(int) openCoords.get(openIndex).getX()][(int) openCoords
-						.get(openIndex).getY()].setMine();
-				// Enlever la case de la liste.
-				openCoords.remove(openIndex);
-				mines--;
-			}
 		}
-	}
-
-	/*
-	 * Obtient le nombre de cases de la grille.
-	 */
-	private int getSquaresCount() {
-		return squares.length * squares[0].length;
+		int openIndex;
+		Random rnd = new Random();
+		while (mines > 0) {
+			// G�n�rer un index al�atoire.
+			openIndex = rnd.nextInt(openCoords.size());
+			squares[(int) openCoords.get(openIndex).getX()][(int) openCoords
+					.get(openIndex).getY()].setMine();
+			// Enlever la case de la liste.
+			openCoords.remove(openIndex);
+			mines--;
+		}
 	}
 
 	/*
