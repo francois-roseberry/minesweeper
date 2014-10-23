@@ -129,8 +129,8 @@ public class GameGrid extends JPanel implements MouseListener,
 		deleteSquares();
 		setLayout(new GridLayout(size.columns(), size.rows()));
 		squares = new SquareButton[size.rows()][size.columns()];
-		for (int column = 0; column < squares[0].length; column++) {
-			for (int row = 0; row < squares.length; row++) {
+		for (int column = 0; column < size.columns(); column++) {
+			for (int row = 0; row < size.rows(); row++) {
 				squares[row][column] = createSquareButton(column, row);
 				add(squares[row][column]);
 			}
