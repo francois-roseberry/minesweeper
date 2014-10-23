@@ -94,11 +94,11 @@ public class SquareButton extends JButton {
 
 	public void rightClick() {
 		if (state == SquareButtonState.HIDDEN) {
-			setIcon(this.iconFlag);
+			setIcon(iconFlag);
 			state = SquareButtonState.MARKED;
 			onSquareMarked(new GameEvent());
 		} else if (state == SquareButtonState.MARKED) {
-			setIcon(this.iconQuestion);
+			setIcon(iconQuestion);
 			state = SquareButtonState.UNSURE;
 			onSquareUnmarked(new GameEvent());
 		} else if (state == SquareButtonState.UNSURE) {
@@ -107,9 +107,9 @@ public class SquareButton extends JButton {
 		}
 	}
 
-	private void onSquareMarked(final GameEvent e) {
+	private void onSquareMarked(final GameEvent event) {
 		for (SquareButtonListener listener : listeners) {
-			listener.squareMarked(e);
+			listener.squareMarked(event);
 		}
 	}
 

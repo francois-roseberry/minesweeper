@@ -1,8 +1,11 @@
 package minesweeper.form;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import minesweeper.model.Cell;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
@@ -60,7 +63,7 @@ public class SquareButtonTest {
 	}
 
 	@Test
-	public void cheatShoulNotChangeStateIfButtonIsNotMined() {
+	public void cheatShouldNotChangeStateIfButtonIsNotMined() {
 		SquareButton button = new SquareButton(CELL);
 		button.cheat();
 
