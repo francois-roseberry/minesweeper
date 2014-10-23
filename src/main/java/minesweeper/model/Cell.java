@@ -39,4 +39,12 @@ public class Cell {
 		}
 		return true;
 	}
+
+	public int row() {
+		return row;
+	}
+
+	public int column() {
+		return column;
+	}
 }

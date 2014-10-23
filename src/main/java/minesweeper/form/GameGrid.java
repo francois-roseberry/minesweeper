@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -14,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import minesweeper.Loader;
+import minesweeper.model.Cell;
 import minesweeper.model.GridSize;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
@@ -62,7 +62,7 @@ public class GameGrid extends JPanel implements MouseListener,
 	private final Image imgMine = Loader.getImage("mine.gif");
 	private final Image imgMineHit = Loader.getImage("mine_hit.gif");
 	private final Image imgMineCheated = Loader.getImage("mine_cheated.gif");
-	// Nombre de cases en largeur de la grille.
+	// Nombre de cases de la grille.
 	private GridSize size;
 	// Nombre de mines dans la grille.
 	private int mines;
@@ -153,9 +153,9 @@ public class GameGrid extends JPanel implements MouseListener,
 
 	private ImmutableList<SquareButton> getSquareButtons() {
 		ImmutableList.Builder<SquareButton> builder = ImmutableList.builder();
-		for (int j = 0; j < squares[0].length; j++) {
-			for (int i = 0; i < squares.length; i++) {
-				builder.add(squares[i][j]);
+		for (int column = 0; column < size.columns(); column++) {
+			for (int row = 0; row < size.rows(); row++) {
+				builder.add(squares[row][column]);
 			}
 		}
 		return builder.build();
@@ -170,30 +170,43 @@ public class GameGrid extends JPanel implements MouseListener,
 	/*
 	 * G�n�rer les emplacements al�atoires des mines.
 	 */
-	private void generateMines(final SquareButton squareToAvoid, int mines) {
+	private void generateMines(final Cell cellToAvoid, int mines) {
 		// Cr�er une collection de cases disponibles.
 		// (les cases qui peuvent recevoir des mines)
-		List<Point> openCoords = Lists.newArrayList();
+		List<Cell> openCells = getOpenCellForMines(cellToAvoid);
 
-		// Remplir le tableau des coordonn�es disponibles.
-		for (int i = 0; i < squares.length; i++) {
-			for (int j = 0; j < squares[0].length; j++) {
-				if (!squareToAvoid.equalCoords(i, j)) {
-					openCoords.add(new Point(i, j));
-				}
-			}
-		}
+		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
 		int openIndex;
 		Random rnd = new Random();
 		while (mines > 0) {
 			// G�n�rer un index al�atoire.
-			openIndex = rnd.nextInt(openCoords.size());
-			squares[(int) openCoords.get(openIndex).getX()][(int) openCoords
-					.get(openIndex).getY()].setMine();
+			openIndex = rnd.nextInt(openCells.size());
+			builder.add(openCells.get(openIndex));
 			// Enlever la case de la liste.
-			openCoords.remove(openIndex);
+			openCells.remove(openIndex);
 			mines--;
 		}
+
+		ImmutableList<Cell> placedMines = builder.build();
+
+		for (Cell mine : placedMines) {
+			squares[mine.row()][mine.column()].setMine();
+		}
+	}
+
+	private List<Cell> getOpenCellForMines(final Cell cellToAvoid) {
+		List<Cell> openCells = Lists.newArrayList();
+
+		// Remplir le tableau des coordonn�es disponibles.
+		for (int row = 0; row < size.rows(); row++) {
+			for (int column = 0; column < size.columns(); column++) {
+				Cell cell = new Cell(row, column);
+				if (!cellToAvoid.equals(cell)) {
+					openCells.add(cell);
+				}
+			}
+		}
+		return openCells;
 	}
 
 	/*
@@ -282,7 +295,8 @@ public class GameGrid extends JPanel implements MouseListener,
 		// Premier clique de la partie.
 		if (!gameServices.isFirstClicked()) {
 			if (square.getState() == SquareButtonState.HIDDEN) {
-				generateMines(square, this.mines);
+				generateMines(new Cell(square.getX(), square.getY()),
+						this.mines);
 				revealNeighboorSquares(square);
 				gameServices.firstClicked();
 			}
