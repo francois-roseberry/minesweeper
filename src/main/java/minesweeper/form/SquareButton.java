@@ -113,9 +113,9 @@ public class SquareButton extends JButton {
 		}
 	}
 
-	private void onSquareUnmarked(final GameEvent e) {
+	private void onSquareUnmarked(final GameEvent event) {
 		for (SquareButtonListener listener : listeners) {
-			listener.squareUnmarked(e);
+			listener.squareUnmarked(event);
 		}
 	}
 
