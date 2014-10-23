@@ -152,10 +152,8 @@ public class GameGrid extends JPanel implements MouseListener,
 
 	private ImmutableList<SquareButton> getSquareButtons() {
 		ImmutableList.Builder<SquareButton> builder = ImmutableList.builder();
-		for (int column = 0; column < size.columns(); column++) {
-			for (int row = 0; row < size.rows(); row++) {
-				builder.add(squares[row][column]);
-			}
+		for (Cell cell : size.cells()) {
+			builder.add(squares[cell.row() - 1][cell.column() - 1]);
 		}
 		return builder.build();
 	}
