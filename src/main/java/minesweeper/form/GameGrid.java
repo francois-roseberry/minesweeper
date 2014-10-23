@@ -26,7 +26,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 /**
- * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases (boutons).
+ * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases
+ * (boutons).
  * 
  * @author David Maltais
  * @author Fran�ois Roseberry
@@ -125,18 +126,18 @@ public class GameGrid extends JPanel implements MouseListener,
 		}
 	}
 
-	private void createSquares(final GridSize size) {
+	private ImmutableMap<Cell, SquareButton> createSquares(final GridSize size) {
 		this.size = size;
-		deleteSquares();
 		setLayout(new GridLayout(size.rows(), size.columns()));
-		ImmutableMap.Builder<Cell, SquareButton> builder = ImmutableMap.builder();
+		ImmutableMap.Builder<Cell, SquareButton> builder = ImmutableMap
+				.builder();
 		for (Cell cell : size.cells()) {
 			SquareButton square = createSquareButton(cell);
 			builder.put(cell, square);
 			add(square);
 		}
 
-		squares = builder.build();
+		return builder.build();
 	}
 
 	private SquareButton createSquareButton(final Cell cell) {
@@ -149,7 +150,6 @@ public class GameGrid extends JPanel implements MouseListener,
 
 	private void deleteSquares() {
 		removeAll();
-		squares = null;
 	}
 
 	private ImmutableList<SquareButton> getSquareButtons() {
@@ -181,7 +181,8 @@ public class GameGrid extends JPanel implements MouseListener,
 	}
 
 	// à remplacer par le MineGenerator externe
-	private ImmutableList<Cell> generateMines(int mines, final ImmutableList<Cell> availableCells) {
+	private ImmutableList<Cell> generateMines(int mines,
+			final ImmutableList<Cell> availableCells) {
 		List<Cell> openCells = Lists.newArrayList(availableCells);
 
 		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
@@ -197,7 +198,8 @@ public class GameGrid extends JPanel implements MouseListener,
 		return builder.build();
 	}
 
-	private Cell pickCellAtRandom(final List<Cell> openCells, final Random random) {
+	private Cell pickCellAtRandom(final List<Cell> openCells,
+			final Random random) {
 		int openIndex = random.nextInt(openCells.size());
 		Cell chosenCell = openCells.get(openIndex);
 		return chosenCell;
@@ -391,15 +393,13 @@ public class GameGrid extends JPanel implements MouseListener,
 	private void drawGrid(final Graphics graphics) {
 		graphics.setColor(Color.BLACK);
 		// Dessiner les lignes horizontales de la grille.
-		for (int row = 0; row < size.rows(); row++) {
-			graphics.drawLine(20 * (row + 1) + 1, 0, 20 * (row + 1) + 1,
-					this.getHeight());
+		for (int row = 1; row <= size.rows(); row++) {
+			graphics.drawLine(20 * row + 1, 0, 20 * row + 1, getHeight());
 		}
 
 		// Dessiner les lignes verticales de la grille.
-		for (int column = 0; column < size.columns(); column++) {
-			graphics.drawLine(0, 20 * (column + 1) + 1, this.getWidth(),
-					20 * (column + 1) + 1);
+		for (int column = 1; column <= size.columns(); column++) {
+			graphics.drawLine(0, 20 * column + 1, getWidth(), 20 * column + 1);
 		}
 	}
 
@@ -410,17 +410,17 @@ public class GameGrid extends JPanel implements MouseListener,
 	private void drawImages(final Graphics graphics) {
 		// Dessiner les chiffres.
 		for (Cell cell : squares.keySet()) {
-			int x = cell.row() - 1;
-			int y = cell.column() - 1;
+			int x = cell.column() - 1;
+			int y = cell.row() - 1;
 			SquareButton square = squares.get(cell);
 			if (square.getState() == SquareButtonState.REVEALED) {
 				if (square.isMined()) {
 					if (cell.equals(hitCell)) {
-						graphics.drawImage(imgMineHit, x * 20 + 2,
-								y * 20 + 2, null);
+						graphics.drawImage(imgMineHit, x * 20 + 2, y * 20 + 2,
+								null);
 					} else {
-						graphics.drawImage(imgMine, x * 20 + 2,
-								y * 20 + 2, null);
+						graphics.drawImage(imgMine, x * 20 + 2, y * 20 + 2,
+								null);
 					}
 				} else {
 					if (square.wasFlagged()) {
@@ -431,40 +431,39 @@ public class GameGrid extends JPanel implements MouseListener,
 
 				drawNumberImage(graphics, cell);
 			} else if (square.getState() == SquareButtonState.CHEATED) {
-				graphics.drawImage(imgMineCheated, x * 20 + 2,
-						y * 20 + 1, null);
+				graphics.drawImage(imgMineCheated, x * 20 + 2, y * 20 + 1, null);
 			}
 		}
 	}
 
 	private void drawNumberImage(final Graphics graphics, final Cell cell) {
-		int x = cell.row() - 1;
-		int y = cell.column() - 1;
+		int x = cell.column() - 1;
+		int y = cell.row() - 1;
 		switch (squares.get(cell).getNeighboorMineCount()) {
-			case 1:
-				graphics.drawImage(img1, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 2:
-				graphics.drawImage(img2, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 3:
-				graphics.drawImage(img3, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 4:
-				graphics.drawImage(img4, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 5:
-				graphics.drawImage(img5, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 6:
-				graphics.drawImage(img6, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 7:
-				graphics.drawImage(img7, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 8:
-				graphics.drawImage(img8, x * 20 + 1, y * 20 + 1, null);
-				break;
+		case 1:
+			graphics.drawImage(img1, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 2:
+			graphics.drawImage(img2, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 3:
+			graphics.drawImage(img3, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 4:
+			graphics.drawImage(img4, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 5:
+			graphics.drawImage(img5, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 6:
+			graphics.drawImage(img6, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 7:
+			graphics.drawImage(img7, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 8:
+			graphics.drawImage(img8, x * 20 + 1, y * 20 + 1, null);
+			break;
 		}
 	}
 
@@ -495,18 +494,22 @@ public class GameGrid extends JPanel implements MouseListener,
 		if (isGridCreated() && size.equals(this.size)) {
 			resetSquareButtons();
 		} else {
-			createSquares(size);
+			removeAll();
+			squares = createSquares(size);
 		}
 	}
 
 	@Override
-	public void mouseClicked(final MouseEvent e) {}
+	public void mouseClicked(final MouseEvent e) {
+	}
 
 	@Override
-	public void mouseEntered(final MouseEvent e) {}
+	public void mouseEntered(final MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(final MouseEvent e) {}
+	public void mouseExited(final MouseEvent e) {
+	}
 
 	@Override
 	public void mousePressed(final MouseEvent e) {
