@@ -148,10 +148,6 @@ public class GameGrid extends JPanel implements MouseListener,
 		return square;
 	}
 
-	private void deleteSquares() {
-		removeAll();
-	}
-
 	private ImmutableList<SquareButton> getSquareButtons() {
 		ImmutableList.Builder<SquareButton> builder = ImmutableList.builder();
 		for (Cell cell : size.cells()) {
