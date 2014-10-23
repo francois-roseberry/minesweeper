@@ -31,7 +31,7 @@ public class Grid {
 	}
 
 	public boolean isWinning() {
-		return cells.size() == size.cellCount();
+		return cells.size() == size.cells().size();
 	}
 
 	private interface Cells {

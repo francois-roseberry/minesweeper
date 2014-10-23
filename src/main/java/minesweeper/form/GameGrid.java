@@ -25,8 +25,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases
- * (boutons).
+ * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases (boutons).
  * 
  * @author David Maltais
  * @author Fran�ois Roseberry
@@ -190,7 +189,7 @@ public class GameGrid extends JPanel implements MouseListener,
 		ImmutableList<Cell> placedMines = builder.build();
 
 		for (Cell mine : placedMines) {
-			squares[mine.row()][mine.column()].setMine();
+			squares[mine.row() - 1][mine.column() - 1].setMine();
 		}
 	}
 
@@ -198,12 +197,9 @@ public class GameGrid extends JPanel implements MouseListener,
 		List<Cell> openCells = Lists.newArrayList();
 
 		// Remplir le tableau des coordonn�es disponibles.
-		for (int row = 0; row < size.rows(); row++) {
-			for (int column = 0; column < size.columns(); column++) {
-				Cell cell = new Cell(row, column);
-				if (!cellToAvoid.equals(cell)) {
-					openCells.add(cell);
-				}
+		for (Cell cell : size.cells()) {
+			if (!cellToAvoid.equals(cell)) {
+				openCells.add(cell);
 			}
 		}
 		return openCells;
@@ -295,7 +291,7 @@ public class GameGrid extends JPanel implements MouseListener,
 		// Premier clique de la partie.
 		if (!gameServices.isFirstClicked()) {
 			if (square.getState() == SquareButtonState.HIDDEN) {
-				generateMines(new Cell(square.getX(), square.getY()),
+				generateMines(new Cell(square.getX() + 1, square.getY() + 1),
 						this.mines);
 				revealNeighboorSquares(square);
 				gameServices.firstClicked();
@@ -453,30 +449,30 @@ public class GameGrid extends JPanel implements MouseListener,
 	private void drawNumberImage(final Graphics graphics, final int row,
 			final int column) {
 		switch (squares[row][column].getNeighboorMineCount()) {
-		case 1:
-			graphics.drawImage(img1, row * 20 + 1, column * 20 + 1, null);
-			break;
-		case 2:
-			graphics.drawImage(img2, row * 20 + 1, column * 20 + 1, null);
-			break;
-		case 3:
-			graphics.drawImage(img3, row * 20 + 1, column * 20 + 1, null);
-			break;
-		case 4:
-			graphics.drawImage(img4, row * 20 + 1, column * 20 + 1, null);
-			break;
-		case 5:
-			graphics.drawImage(img5, row * 20 + 1, column * 20 + 1, null);
-			break;
-		case 6:
-			graphics.drawImage(img6, row * 20 + 1, column * 20 + 1, null);
-			break;
-		case 7:
-			graphics.drawImage(img7, row * 20 + 1, column * 20 + 1, null);
-			break;
-		case 8:
-			graphics.drawImage(img8, row * 20 + 1, column * 20 + 1, null);
-			break;
+			case 1:
+				graphics.drawImage(img1, row * 20 + 1, column * 20 + 1, null);
+				break;
+			case 2:
+				graphics.drawImage(img2, row * 20 + 1, column * 20 + 1, null);
+				break;
+			case 3:
+				graphics.drawImage(img3, row * 20 + 1, column * 20 + 1, null);
+				break;
+			case 4:
+				graphics.drawImage(img4, row * 20 + 1, column * 20 + 1, null);
+				break;
+			case 5:
+				graphics.drawImage(img5, row * 20 + 1, column * 20 + 1, null);
+				break;
+			case 6:
+				graphics.drawImage(img6, row * 20 + 1, column * 20 + 1, null);
+				break;
+			case 7:
+				graphics.drawImage(img7, row * 20 + 1, column * 20 + 1, null);
+				break;
+			case 8:
+				graphics.drawImage(img8, row * 20 + 1, column * 20 + 1, null);
+				break;
 		}
 	}
 
@@ -512,16 +508,13 @@ public class GameGrid extends JPanel implements MouseListener,
 	}
 
 	@Override
-	public void mouseClicked(final MouseEvent e) {
-	}
+	public void mouseClicked(final MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(final MouseEvent e) {
-	}
+	public void mouseEntered(final MouseEvent e) {}
 
 	@Override
-	public void mouseExited(final MouseEvent e) {
-	}
+	public void mouseExited(final MouseEvent e) {}
 
 	@Override
 	public void mousePressed(final MouseEvent e) {
