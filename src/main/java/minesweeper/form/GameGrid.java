@@ -140,7 +140,7 @@ public class GameGrid extends JPanel implements MouseListener,
 	}
 
 	private SquareButton createSquareButton(final Cell cell) {
-		SquareButton square = provider.create(cell.row(), cell.column());
+		SquareButton square = provider.create(cell);
 		square.addMouseListener(this);
 		square.addSquareButtonListener(this);
 		square.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -219,33 +219,22 @@ public class GameGrid extends JPanel implements MouseListener,
 	 * M�thode permettant de r�v�ler une case, compter les mines alentour et au
 	 * besoin, s'appeler r�cursivement pour r�v�ler les cases autour.
 	 */
-	private void revealNeighboorSquares(final Cell cell) {
-		if (squares.get(cell).getState() == SquareButtonState.HIDDEN) {
-			squares.get(cell).reveal();
-			countNeighboorMines(cell);
-			if (squares.get(cell).getNeighboorMineCount() == 0) {
+	private void revealNeighbors(final Cell cell) {
+		SquareButton square = squares.get(cell);
+		if (square.getState() == SquareButtonState.HIDDEN) {
+			square.reveal();
+			int mines = getNeighboorMineCount(cell);
+			square.setNeighboorMineCount(mines);
+			if (square.getNeighboorMineCount() == 0) {
 				// La case n'a pas de mines avoisinantes.
 				// Révéler les voisins, récursivement.
-				for (Cell neighboor : getNeighboors(cell)) {
-					revealNeighboorSquares(neighboor);
-				}
-			}
-		}
-	}
-
-	private ImmutableList<Cell> getNeighboors(final Cell cell) {
-		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				if (i != 0 || j != 0) {
-					Cell neighboorCell = new Cell(cell.row() + i, cell.column() + j);
-					if (size.cells().contains(neighboorCell)) {
-						builder.add(neighboorCell);
+				for (Cell neighboor : cell.neighboors()) {
+					if (squares.containsKey(neighboor)) {
+						revealNeighbors(neighboor);
 					}
 				}
 			}
 		}
-		return builder.build();
 	}
 
 	/*
@@ -272,15 +261,16 @@ public class GameGrid extends JPanel implements MouseListener,
 	/*
 	 * Compte le nombre de mines voisines d'une case.
 	 */
-	private void countNeighboorMines(final Cell cell) {
+	private int getNeighboorMineCount(final Cell cell) {
 		int mines = 0;
-		for (Cell neighboor : getNeighboors(cell)) {
-			if (squares.get(neighboor).isMined()) {
+		for (Cell neighboor : cell.neighboors()) {
+			SquareButton neighboorSquare = squares.get(neighboor);
+			if (neighboorSquare != null && neighboorSquare.isMined()) {
 				mines++;
 			}
 		}
 
-		squares.get(cell).setNeighboorMineCount(mines);
+		return mines;
 	}
 
 	/*
@@ -293,7 +283,7 @@ public class GameGrid extends JPanel implements MouseListener,
 		if (!gameServices.isFirstClicked()) {
 			if (square.getState() == SquareButtonState.HIDDEN) {
 				placeMines(cell, mines);
-				revealNeighboorSquares(cell);
+				revealNeighbors(cell);
 				gameServices.firstClicked();
 			}
 		} else {
@@ -306,7 +296,7 @@ public class GameGrid extends JPanel implements MouseListener,
 				square.reveal();
 				onGameLost(new GameEvent());
 			} else {
-				revealNeighboorSquares(cell);
+				revealNeighbors(cell);
 				// Si les cases restantes sont toutes min�es, alors
 				// les marquer automatiquement.
 				if (areAllHiddenSquaresMined()) {
@@ -530,8 +520,7 @@ public class GameGrid extends JPanel implements MouseListener,
 		if (gameServices.isInGame()) {
 			gameServices.indicateMouseReleased();
 			SquareButton square = (SquareButton) e.getSource();
-			Cell cellClicked = new Cell(square.getXSquare(), square.getYSquare());
-			System.out.println(cellClicked);
+			Cell cellClicked = square.getCell();
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				squareButton_leftClick(cellClicked);
 			} else if (e.isPopupTrigger()) {

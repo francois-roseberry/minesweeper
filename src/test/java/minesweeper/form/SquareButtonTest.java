@@ -3,6 +3,7 @@ package minesweeper.form;
 import static junit.framework.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
+import minesweeper.model.Cell;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.SquareButtonListener;
@@ -11,9 +12,11 @@ import org.junit.Test;
 
 public class SquareButtonTest {
 
+	private static final Cell CELL = new Cell(1, 1);
+
 	@Test
 	public void atCreationStateShouldBeHiddenAndMineCountShouldBeZero() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 
 		assertEquals(button.getNeighboorMineCount(), 0);
 		assertEquals(button.getState(), SquareButtonState.HIDDEN);
@@ -21,7 +24,7 @@ public class SquareButtonTest {
 
 	@Test
 	public void settingMineCountBetween0And9ShouldSetIt() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		for (int mines = 0; mines < 9; mines++) {
 			button.setNeighboorMineCount(mines);
 			assertEquals(button.getNeighboorMineCount(), mines);
@@ -30,17 +33,17 @@ public class SquareButtonTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void settingNegativeMineCountShouldThrowException() {
-		new SquareButton(0, 0).setNeighboorMineCount(-1);
+		new SquareButton(CELL).setNeighboorMineCount(-1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void settingMineCountShouldWithCountAboveSevenShouldThrowException() {
-		new SquareButton(0, 0).setNeighboorMineCount(9);
+		new SquareButton(CELL).setNeighboorMineCount(9);
 	}
 
 	@Test
 	public void revealShouldChangeStateAndVisibility() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		button.reveal();
 
 		assertFalse(button.isVisible());
@@ -49,7 +52,7 @@ public class SquareButtonTest {
 
 	@Test
 	public void cheatShouldChangeStateIfButtonIsMined() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		button.setMine();
 		button.cheat();
 
@@ -58,7 +61,7 @@ public class SquareButtonTest {
 
 	@Test
 	public void cheatShoulNotChangeStateIfButtonIsNotMined() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		button.cheat();
 
 		assertEquals(button.getState(), SquareButtonState.HIDDEN);
@@ -66,7 +69,7 @@ public class SquareButtonTest {
 
 	@Test
 	public void rightClickShouldChangeStateToMarkedAndLaunchEventIfHidden() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		SquareButtonListener listener = mock(SquareButtonListener.class);
 		button.addSquareButtonListener(listener);
 		button.rightClick();
@@ -77,7 +80,7 @@ public class SquareButtonTest {
 
 	@Test
 	public void rightClickShouldChangeStateToUnsureAndLauchEventIfMarked() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		SquareButtonListener listener = mock(SquareButtonListener.class);
 		button.addSquareButtonListener(listener);
 		button.rightClick();
@@ -89,7 +92,7 @@ public class SquareButtonTest {
 
 	@Test
 	public void rightClickShouldChangeStateToHiddenIfUnsure() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		button.rightClick();
 		button.rightClick();
 		button.rightClick();
@@ -98,45 +101,8 @@ public class SquareButtonTest {
 	}
 
 	@Test
-	public void equalCoordsShouldReturnFalseIfButtonIsNull() {
-		SquareButton button = new SquareButton(0, 0);
-
-		assertFalse(button.equalCoords(null));
-	}
-
-	@Test
-	public void equalCoordsShouldReturnTrueIfButtonHasSameCoords() {
-		SquareButton button = new SquareButton(0, 0);
-		SquareButton button2 = new SquareButton(0, 0);
-
-		assertTrue(button.equalCoords(button2));
-	}
-
-	@Test
-	public void equalCoordsShouldReturnFalseIfButtonHasDifferentCoords() {
-		SquareButton button = new SquareButton(0, 0);
-		SquareButton button2 = new SquareButton(0, 1);
-
-		assertFalse(button.equalCoords(button2));
-	}
-
-	@Test
-	public void equalCoordsShouldReturnTrueIfCoordsAreTheSame() {
-		SquareButton button = new SquareButton(0, 0);
-
-		assertTrue(button.equalCoords(0, 0));
-	}
-
-	@Test
-	public void equalCoordsShouldReturnFalseIfCoordsAreDifferent() {
-		SquareButton button = new SquareButton(0, 0);
-
-		assertFalse(button.equalCoords(0, 1));
-	}
-
-	@Test
 	public void resetShouldSetStateToHiddenAndRemoveMineAndRemoveFlagAndSetVisibleAndSetNeighboorMineCountToZero() {
-		SquareButton button = new SquareButton(0, 0);
+		SquareButton button = new SquareButton(CELL);
 		button.reveal();
 		button.setMine();
 		button.setWasFlagged();

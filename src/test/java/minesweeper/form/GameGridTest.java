@@ -1,13 +1,12 @@
 package minesweeper.form;
 
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static junit.framework.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.awt.event.MouseEvent;
 
+import minesweeper.model.Cell;
 import minesweeper.model.GridSize;
 import minesweeper.model.SquareButtonState;
 
@@ -31,8 +30,8 @@ public class GameGridTest {
 
 	@Test
 	public void atGameStartAllButtonsShouldBeHidden() {
-		SquareButton button = new SquareButton(0, 0);
-		when(providerMock.create(anyInt(), anyInt())).thenReturn(button);
+		SquareButton button = new SquareButton(new Cell(1, 1));
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
 		assertEquals(SquareButtonState.HIDDEN, button.getState());
@@ -40,8 +39,8 @@ public class GameGridTest {
 
 	@Test
 	public void afterRevealingSquareItsStateShouldBeRevealed() {
-		SquareButton button = new SquareButton(0, 0);
-		when(providerMock.create(anyInt(), anyInt())).thenReturn(button);
+		SquareButton button = new SquareButton(new Cell(1, 1));
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
 		MouseEvent eventMock = mock(MouseEvent.class);
@@ -54,8 +53,8 @@ public class GameGridTest {
 
 	@Test
 	public void afterFirstClickShouldCallGameServices() {
-		SquareButton button = new SquareButton(0, 0);
-		when(providerMock.create(anyInt(), anyInt())).thenReturn(button);
+		SquareButton button = new SquareButton(new Cell(1, 1));
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
 		MouseEvent eventMock = mock(MouseEvent.class);

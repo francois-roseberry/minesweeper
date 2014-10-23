@@ -1,8 +1,10 @@
 package minesweeper.form;
 
+import minesweeper.model.Cell;
+
 public class SquareButtonProvider {
 
-	SquareButton create(final int row, final int column) {
-		return new SquareButton(row, column);
+	SquareButton create(final Cell cell) {
+		return new SquareButton(cell);
 	}
 }

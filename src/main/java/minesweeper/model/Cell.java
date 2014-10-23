@@ -1,5 +1,7 @@
 package minesweeper.model;
 
+import com.google.common.collect.ImmutableList;
+
 public class Cell {
 
 	private final int row;
@@ -8,6 +10,19 @@ public class Cell {
 	public Cell(final int row, final int column) {
 		this.row = row;
 		this.column = column;
+	}
+
+	public ImmutableList<Cell> neighboors() {
+		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (i != 0 || j != 0) {
+					Cell neighboorCell = new Cell(row + i, column + j);
+					builder.add(neighboorCell);
+				}
+			}
+		}
+		return builder.build();
 	}
 
 	@Override

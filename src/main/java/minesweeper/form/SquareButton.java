@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import minesweeper.Loader;
+import minesweeper.model.Cell;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.SquareButtonListener;
@@ -29,8 +30,7 @@ public class SquareButton extends JButton {
 
 	private final List<SquareButtonListener> listeners = Lists.newArrayList();
 	private boolean hasMine = false;
-	private final int x;
-	private final int y;
+	private final Cell cell;
 	private int neighboorMinesCount = 0;
 	private final ImageIcon iconFlag = Loader.getImageIcon("flag.gif");
 	private final ImageIcon iconQuestion = Loader.getImageIcon("question.gif");
@@ -38,11 +38,10 @@ public class SquareButton extends JButton {
 
 	public static final Dimension SQUARE_SIZE = new Dimension(20, 20);
 
-	public SquareButton(final int x, final int y) {
+	public SquareButton(final Cell cell) {
 		super();
 
-		this.x = x;
-		this.y = y;
+		this.cell = cell;
 
 		setPreferredSize(SquareButton.SQUARE_SIZE);
 	}
@@ -70,12 +69,8 @@ public class SquareButton extends JButton {
 		setVisible(false);
 	}
 
-	public int getXSquare() {
-		return x;
-	}
-
-	public int getYSquare() {
-		return y;
+	public Cell getCell() {
+		return cell;
 	}
 
 	public SquareButtonState getState() {
@@ -128,18 +123,6 @@ public class SquareButton extends JButton {
 		listeners.add(listener);
 	}
 
-	public boolean equalCoords(final SquareButton button) {
-		if (button == null) {
-			return false;
-		}
-
-		return (button.getXSquare() == x && button.getYSquare() == y);
-	}
-
-	public boolean equalCoords(final int x, final int y) {
-		return (x == this.x && y == this.y);
-	}
-
 	public void reset() {
 		state = SquareButtonState.HIDDEN;
 		setVisible(true);
@@ -147,10 +130,5 @@ public class SquareButton extends JButton {
 		neighboorMinesCount = 0;
 		setIcon(null);
 		wasFlagged = false;
-	}
-
-	@Override
-	public String toString() {
-		return "x = " + x + ", y = " + y;
 	}
 }
