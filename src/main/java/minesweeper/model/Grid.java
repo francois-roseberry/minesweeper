@@ -58,7 +58,7 @@ public class Grid {
 
 			@Override
 			public Cells reveal(final Cell cell) throws MineFoundException {
-				return withMines(generator.getMinedCells()).reveal(cell);
+				return withMines(generator.getMines(cell)).reveal(cell);
 			}
 		};
 	}

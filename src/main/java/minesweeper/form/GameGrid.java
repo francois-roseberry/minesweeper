@@ -131,13 +131,13 @@ public class GameGrid extends JPanel implements MouseListener,
 		squares = new SquareButton[size.rows()][size.columns()];
 		for (int column = 0; column < size.columns(); column++) {
 			for (int row = 0; row < size.rows(); row++) {
-				squares[row][column] = createSquareButton(column, row);
+				squares[row][column] = createSquareButton(row, column);
 				add(squares[row][column]);
 			}
 		}
 	}
 
-	private SquareButton createSquareButton(final int column, final int row) {
+	private SquareButton createSquareButton(final int row, final int column) {
 		SquareButton square = provider.create(row, column);
 		square.addMouseListener(this);
 		square.addSquareButtonListener(this);
@@ -167,40 +167,50 @@ public class GameGrid extends JPanel implements MouseListener,
 	/*
 	 * G�n�rer les emplacements al�atoires des mines.
 	 */
-	private void generateMines(final Cell cellToAvoid, int mines) {
+	private void placeMines(final Cell cellToAvoid, final int mines) {
 		// Cr�er une collection de cases disponibles.
 		// (les cases qui peuvent recevoir des mines)
-		List<Cell> openCells = getOpenCellForMines(cellToAvoid);
-
-		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
-		int openIndex;
-		Random rnd = new Random();
-		while (mines > 0) {
-			// G�n�rer un index al�atoire.
-			openIndex = rnd.nextInt(openCells.size());
-			builder.add(openCells.get(openIndex));
-			// Enlever la case de la liste.
-			openCells.remove(openIndex);
-			mines--;
-		}
-
-		ImmutableList<Cell> placedMines = builder.build();
+		ImmutableList<Cell> availableCells = getAvailableCellsForMines(cellToAvoid);
+		ImmutableList<Cell> placedMines = generateMines(mines, availableCells);
 
 		for (Cell mine : placedMines) {
 			squares[mine.row() - 1][mine.column() - 1].setMine();
 		}
 	}
 
-	private List<Cell> getOpenCellForMines(final Cell cellToAvoid) {
-		List<Cell> openCells = Lists.newArrayList();
+	// à remplacer par le MineGenerator externe
+	private ImmutableList<Cell> generateMines(int mines, final ImmutableList<Cell> availableCells) {
+		List<Cell> openCells = Lists.newArrayList(availableCells);
+
+		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
+		Random random = new Random();
+		while (mines > 0) {
+			// G�n�rer un index al�atoire.
+			Cell chosenCell = pickCellAtRandom(openCells, random);
+			builder.add(chosenCell);
+			// Enlever la case de la liste.
+			openCells.remove(chosenCell);
+			mines--;
+		}
+		return builder.build();
+	}
+
+	private Cell pickCellAtRandom(final List<Cell> openCells, final Random random) {
+		int openIndex = random.nextInt(openCells.size());
+		Cell chosenCell = openCells.get(openIndex);
+		return chosenCell;
+	}
+
+	private ImmutableList<Cell> getAvailableCellsForMines(final Cell cellToAvoid) {
+		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
 
 		// Remplir le tableau des coordonn�es disponibles.
 		for (Cell cell : size.cells()) {
 			if (!cellToAvoid.equals(cell)) {
-				openCells.add(cell);
+				builder.add(cell);
 			}
 		}
-		return openCells;
+		return builder.build();
 	}
 
 	/*
@@ -289,7 +299,7 @@ public class GameGrid extends JPanel implements MouseListener,
 		// Premier clique de la partie.
 		if (!gameServices.isFirstClicked()) {
 			if (square.getState() == SquareButtonState.HIDDEN) {
-				generateMines(new Cell(square.getX() + 1, square.getY() + 1),
+				placeMines(new Cell(square.getX() + 1, square.getY() + 1),
 						this.mines);
 				revealNeighboorSquares(square);
 				gameServices.firstClicked();

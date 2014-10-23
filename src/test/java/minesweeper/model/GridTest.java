@@ -1,12 +1,8 @@
 package minesweeper.model;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static junit.framework.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 import minesweeper.model.exception.MineFoundException;
 
 import org.junit.Test;
@@ -80,21 +76,21 @@ public class GridTest {
 		MineGenerator generator = emptyMineGenerator();
 
 		Grid grid = Grid.create(SIZE_2X2, generator);
-		verify(generator, never()).getMinedCells();
+		verify(generator, never()).getMines(any(Cell.class));
 
 		grid.reveal(CELL_1_1);
-		verify(generator).getMinedCells();
+		verify(generator).getMines(any(Cell.class));
 	}
 
 	private static MineGenerator mineGenerator(final ImmutableList<Cell> mines) {
 		MineGenerator generator = mock(MineGenerator.class);
-		when(generator.getMinedCells()).thenReturn(mines);
+		when(generator.getMines(any(Cell.class))).thenReturn(mines);
 		return generator;
 	}
 
 	private static MineGenerator emptyMineGenerator() {
 		MineGenerator generator = mock(MineGenerator.class);
-		when(generator.getMinedCells()).thenReturn(ImmutableList.<Cell> of());
+		when(generator.getMines(any(Cell.class))).thenReturn(ImmutableList.<Cell> of());
 		return generator;
 	}
 }
