@@ -219,28 +219,28 @@ public class GameGrid extends JPanel implements MouseListener,
 	 * M�thode permettant de r�v�ler une case, compter les mines alentour et au
 	 * besoin, s'appeler r�cursivement pour r�v�ler les cases autour.
 	 */
-	private void revealNeighboorSquares(final SquareButton square) {
-		if (square.getState() == SquareButtonState.HIDDEN) {
-			square.reveal();
-			countNeighboorMines(square);
-			if (square.getNeighboorMineCount() == 0) {
+	private void revealNeighboorSquares(final Cell cell) {
+		if (squares.get(cell).getState() == SquareButtonState.HIDDEN) {
+			squares.get(cell).reveal();
+			countNeighboorMines(cell);
+			if (squares.get(cell).getNeighboorMineCount() == 0) {
 				// La case n'a pas de mines avoisinantes.
 				// Révéler les voisins, récursivement.
-				for (SquareButton neighboor : getNeighboors(square)) {
+				for (Cell neighboor : getNeighboors(cell)) {
 					revealNeighboorSquares(neighboor);
 				}
 			}
 		}
 	}
 
-	private ImmutableList<SquareButton> getNeighboors(final SquareButton square) {
-		ImmutableList.Builder<SquareButton> builder = ImmutableList.builder();
+	private ImmutableList<Cell> getNeighboors(final Cell cell) {
+		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i != 0 || j != 0) {
-					Cell neighboorCell = new Cell(square.getXSquare() + i, square.getYSquare() + j);
+					Cell neighboorCell = new Cell(cell.row() + i, cell.column() + j);
 					if (size.cells().contains(neighboorCell)) {
-						builder.add(squares.get(neighboorCell));
+						builder.add(neighboorCell);
 					}
 				}
 			}
@@ -272,28 +272,28 @@ public class GameGrid extends JPanel implements MouseListener,
 	/*
 	 * Compte le nombre de mines voisines d'une case.
 	 */
-	private void countNeighboorMines(final SquareButton square) {
+	private void countNeighboorMines(final Cell cell) {
 		int mines = 0;
-		for (SquareButton neighboor : getNeighboors(square)) {
-			if (neighboor.isMined()) {
+		for (Cell neighboor : getNeighboors(cell)) {
+			if (squares.get(neighboor).isMined()) {
 				mines++;
 			}
 		}
 
-		square.setNeighboorMineCount(mines);
+		squares.get(cell).setNeighboorMineCount(mines);
 	}
 
 	/*
 	 * G�re le clic gauche sur une case.
 	 */
-	private void squareButton_leftClick(final SquareButton square) {
+	private void squareButton_leftClick(final Cell cell) {
 		Preconditions.checkArgument(isGridCreated());
-		Cell cellClicked = new Cell(square.getX() + 1, square.getY() + 1);
+		SquareButton square = squares.get(cell);
 		// Premier clique de la partie.
 		if (!gameServices.isFirstClicked()) {
 			if (square.getState() == SquareButtonState.HIDDEN) {
-				placeMines(cellClicked, mines);
-				revealNeighboorSquares(square);
+				placeMines(cell, mines);
+				revealNeighboorSquares(cell);
 				gameServices.firstClicked();
 			}
 		} else {
@@ -301,12 +301,12 @@ public class GameGrid extends JPanel implements MouseListener,
 			if (square.isMined()
 					&& square.getState() == SquareButtonState.HIDDEN) {
 				// La partie a �t� perdue.
-				hitCell = cellClicked;
+				hitCell = cell;
 				finishLostGame();
 				square.reveal();
 				onGameLost(new GameEvent());
 			} else {
-				revealNeighboorSquares(square);
+				revealNeighboorSquares(cell);
 				// Si les cases restantes sont toutes min�es, alors
 				// les marquer automatiquement.
 				if (areAllHiddenSquaresMined()) {
@@ -318,10 +318,10 @@ public class GameGrid extends JPanel implements MouseListener,
 		}
 	}
 
-	private void squareButton_rightClick(final SquareButton square) {
-		if (square.getState() != SquareButtonState.REVEALED
-				&& square.getState() != SquareButtonState.CHEATED) {
-			square.rightClick();
+	private void squareButton_rightClick(final Cell cell) {
+		if (squares.get(cell).getState() != SquareButtonState.REVEALED
+				&& squares.get(cell).getState() != SquareButtonState.CHEATED) {
+			squares.get(cell).rightClick();
 		}
 
 		checkGameWon();
@@ -530,10 +530,12 @@ public class GameGrid extends JPanel implements MouseListener,
 		if (gameServices.isInGame()) {
 			gameServices.indicateMouseReleased();
 			SquareButton square = (SquareButton) e.getSource();
+			Cell cellClicked = new Cell(square.getXSquare(), square.getYSquare());
+			System.out.println(cellClicked);
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				squareButton_leftClick(square);
+				squareButton_leftClick(cellClicked);
 			} else if (e.isPopupTrigger()) {
-				squareButton_rightClick(square);
+				squareButton_rightClick(cellClicked);
 			}
 		}
 	}

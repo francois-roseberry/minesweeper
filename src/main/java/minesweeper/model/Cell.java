@@ -47,4 +47,9 @@ public class Cell {
 	public int column() {
 		return column;
 	}
+
+	@Override
+	public String toString() {
+		return "Cell [row=" + row + ", column=" + column + "]";
+	}
 }
