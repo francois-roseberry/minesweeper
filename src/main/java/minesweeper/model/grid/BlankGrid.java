@@ -2,7 +2,6 @@ package minesweeper.model.grid;
 
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
-import minesweeper.model.Grid;
 import minesweeper.model.MineGenerator;
 import minesweeper.model.exception.MineFoundException;
 

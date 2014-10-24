@@ -5,7 +5,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
-import minesweeper.model.Grid;
 import minesweeper.model.MineGenerator;
 import minesweeper.model.exception.MineFoundException;
 

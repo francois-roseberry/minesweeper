@@ -3,7 +3,6 @@ package minesweeper.model.grid;
 import static junit.framework.Assert.*;
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
-import minesweeper.model.Grid;
 import minesweeper.model.exception.MineFoundException;
 
 import org.junit.Test;
