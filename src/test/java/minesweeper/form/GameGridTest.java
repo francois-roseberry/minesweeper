@@ -87,7 +87,6 @@ public class GameGridTest {
 
 	@Test
 	public void afterMarkingSquareItsStateShouldBeMarked() {
-		when(gameServicesMock.isFirstClicked()).thenReturn(true);
 		SquareButton button = new SquareButton(CELL_1X1);
 		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
@@ -103,7 +102,6 @@ public class GameGridTest {
 
 	@Test
 	public void afterMarkingSquareTwiceItsStateShouldBeUnsure() {
-		when(gameServicesMock.isFirstClicked()).thenReturn(true);
 		SquareButton button = new SquareButton(CELL_1X1);
 		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
@@ -113,7 +111,49 @@ public class GameGridTest {
 		when(eventMock.getButton()).thenReturn(MouseEvent.BUTTON2);
 		when(eventMock.isPopupTrigger()).thenReturn(true);
 		grid.mouseReleased(eventMock);
+		grid.mouseReleased(eventMock);
 
 		assertEquals(button.getState(), SquareButtonState.UNSURE);
+	}
+
+	@Test
+	public void afterMarkingSquareThriceItsStateShouldBeHidden() {
+		SquareButton button = new SquareButton(CELL_1X1);
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
+		grid.startGame(GRID_SIZE_1X1, 0);
+
+		MouseEvent eventMock = mock(MouseEvent.class);
+		when(eventMock.getSource()).thenReturn(button);
+		when(eventMock.getButton()).thenReturn(MouseEvent.BUTTON2);
+		when(eventMock.isPopupTrigger()).thenReturn(true);
+		grid.mouseReleased(eventMock);
+		grid.mouseReleased(eventMock);
+		grid.mouseReleased(eventMock);
+
+		assertEquals(button.getState(), SquareButtonState.HIDDEN);
+	}
+
+	@Test
+	public void whenPressingMouseShouldIndicateToGameServices() {
+		when(providerMock.create(any(Cell.class))).thenReturn(mock(SquareButton.class));
+		grid.startGame(GRID_SIZE_1X1, 0);
+
+		MouseEvent eventMock = mock(MouseEvent.class);
+		when(eventMock.getSource()).thenReturn(mock(SquareButton.class));
+		grid.mousePressed(eventMock);
+
+		verify(gameServicesMock).indicateMousePressed();
+	}
+
+	@Test
+	public void whenReleasingMouseShouldIndicateToGameServices() {
+		when(providerMock.create(any(Cell.class))).thenReturn(mock(SquareButton.class));
+		grid.startGame(GRID_SIZE_1X1, 0);
+
+		MouseEvent eventMock = mock(MouseEvent.class);
+		when(eventMock.getSource()).thenReturn(mock(SquareButton.class));
+		grid.mouseReleased(eventMock);
+
+		verify(gameServicesMock).indicateMouseReleased();
 	}
 }
