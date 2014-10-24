@@ -12,7 +12,13 @@ public class BlankGrid implements Grid {
 
 	private final MineGenerator generator;
 
-	public BlankGrid(final MineGenerator generator) {
+	public static BlankGrid create(final MineGenerator generator) {
+		Preconditions.checkNotNull(generator);
+
+		return new BlankGrid(generator);
+	}
+
+	private BlankGrid(final MineGenerator generator) {
 		this.generator = Preconditions.checkNotNull(generator);
 	}
 
@@ -27,6 +33,7 @@ public class BlankGrid implements Grid {
 	}
 
 	private InGameGrid withMines(final Cell cell) {
-		return new InGameGrid(generator.getMines(cell), ImmutableList.<Cell> of());
+		return new InGameGrid(generator.getMines(cell),
+				ImmutableList.<Cell> of());
 	}
 }

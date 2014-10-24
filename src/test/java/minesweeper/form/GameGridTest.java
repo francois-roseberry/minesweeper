@@ -1,8 +1,10 @@
 package minesweeper.form;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.awt.event.MouseEvent;
 
@@ -135,7 +137,8 @@ public class GameGridTest {
 
 	@Test
 	public void whenPressingMouseShouldIndicateToGameServices() {
-		when(providerMock.create(any(Cell.class))).thenReturn(mock(SquareButton.class));
+		SquareButton button = new SquareButton(mock(Cell.class));
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
 		MouseEvent eventMock = mock(MouseEvent.class);
@@ -147,7 +150,8 @@ public class GameGridTest {
 
 	@Test
 	public void whenReleasingMouseShouldIndicateToGameServices() {
-		when(providerMock.create(any(Cell.class))).thenReturn(mock(SquareButton.class));
+		SquareButton button = new SquareButton(mock(Cell.class));
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
 		MouseEvent eventMock = mock(MouseEvent.class);
