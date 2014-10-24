@@ -27,7 +27,7 @@ public class EmptyGridTest {
 	}
 
 	@Test
-	public void revealingAnyCellInEmptyGridShouldReturnNewGridWithCellRevealed()
+	public void revealingAnyCellShouldReturnNewGridWithCellRevealed()
 			throws MineFoundException {
 		Grid grid = new EmptyGrid(EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
 
