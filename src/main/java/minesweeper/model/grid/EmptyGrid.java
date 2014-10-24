@@ -23,6 +23,10 @@ public class EmptyGrid implements Grid {
 
 	@Override
 	public Grid reveal(final Cell cell) throws MineFoundException {
-		return new InGameGrid(generator.getMines(cell), ImmutableList.<Cell> of()).reveal(cell);
+		return withMines(cell).reveal(cell);
+	}
+
+	private InGameGrid withMines(final Cell cell) {
+		return new InGameGrid(generator.getMines(cell), ImmutableList.<Cell> of());
 	}
 }
