@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import minesweeper.model.Cell;
 import minesweeper.model.GridSize;
 import minesweeper.model.SquareButtonState;
+import minesweeper.model.event.GameEvent;
+import minesweeper.model.event.GameListener;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import org.junit.Test;
 public class GameGridTest {
 
 	private static final GridSize GRID_SIZE_1X1 = GridSize.create(1, 1);
+	private static final Cell CELL_1X1 = new Cell(1, 1);
 	private GameGrid grid;
 	private SquareButtonProvider providerMock;
 	private GameServices gameServicesMock;
@@ -30,7 +33,7 @@ public class GameGridTest {
 
 	@Test
 	public void atGameStartAllButtonsShouldBeHidden() {
-		SquareButton button = new SquareButton(new Cell(1, 1));
+		SquareButton button = new SquareButton(CELL_1X1);
 		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
@@ -39,7 +42,7 @@ public class GameGridTest {
 
 	@Test
 	public void afterRevealingSquareItsStateShouldBeRevealed() {
-		SquareButton button = new SquareButton(new Cell(1, 1));
+		SquareButton button = new SquareButton(CELL_1X1);
 		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
@@ -53,7 +56,7 @@ public class GameGridTest {
 
 	@Test
 	public void afterFirstClickShouldCallGameServices() {
-		SquareButton button = new SquareButton(new Cell(1, 1));
+		SquareButton button = new SquareButton(CELL_1X1);
 		when(providerMock.create(any(Cell.class))).thenReturn(button);
 		grid.startGame(GRID_SIZE_1X1, 0);
 
@@ -63,5 +66,22 @@ public class GameGridTest {
 		grid.mouseReleased(eventMock);
 
 		verify(gameServicesMock).firstClicked();
+	}
+
+	@Test
+	public void afterRevealingAllSquaresInGridThenGameWonEventShouldBeFired() {
+		when(gameServicesMock.isFirstClicked()).thenReturn(true);
+		SquareButton button = new SquareButton(CELL_1X1);
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
+		GameListener listener = mock(GameListener.class);
+		grid.addGameListener(listener);
+		grid.startGame(GRID_SIZE_1X1, 0);
+
+		MouseEvent eventMock = mock(MouseEvent.class);
+		when(eventMock.getSource()).thenReturn(button);
+		when(eventMock.getButton()).thenReturn(MouseEvent.BUTTON1);
+		grid.mouseReleased(eventMock);
+
+		verify(listener).gameWon(any(GameEvent.class));
 	}
 }
