@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -15,6 +14,7 @@ import javax.swing.JPanel;
 import minesweeper.Loader;
 import minesweeper.model.Cell;
 import minesweeper.model.GridSize;
+import minesweeper.model.MineGenerator;
 import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
@@ -167,49 +167,11 @@ public class GameGrid extends JPanel implements MouseListener,
 	private void placeMines(final Cell cellToAvoid, final int mines) {
 		// Cr�er une collection de cases disponibles.
 		// (les cases qui peuvent recevoir des mines)
-		ImmutableList<Cell> availableCells = getAvailableCellsForMines(cellToAvoid);
-		ImmutableList<Cell> placedMines = generateMines(mines, availableCells);
+		ImmutableList<Cell> placedMines = new MineGenerator(mines, size.cells()).getMines(cellToAvoid);
 
 		for (Cell mine : placedMines) {
 			squares.get(mine).setMine();
 		}
-	}
-
-	// à remplacer par le MineGenerator externe
-	private ImmutableList<Cell> generateMines(int mines,
-			final ImmutableList<Cell> availableCells) {
-		List<Cell> openCells = Lists.newArrayList(availableCells);
-
-		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
-		Random random = new Random();
-		while (mines > 0) {
-			// G�n�rer un index al�atoire.
-			Cell chosenCell = pickCellAtRandom(openCells, random);
-			builder.add(chosenCell);
-			// Enlever la case de la liste.
-			openCells.remove(chosenCell);
-			mines--;
-		}
-		return builder.build();
-	}
-
-	private Cell pickCellAtRandom(final List<Cell> openCells,
-			final Random random) {
-		int openIndex = random.nextInt(openCells.size());
-		Cell chosenCell = openCells.get(openIndex);
-		return chosenCell;
-	}
-
-	private ImmutableList<Cell> getAvailableCellsForMines(final Cell cellToAvoid) {
-		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
-
-		// Remplir le tableau des coordonn�es disponibles.
-		for (Cell cell : size.cells()) {
-			if (!cellToAvoid.equals(cell)) {
-				builder.add(cell);
-			}
-		}
-		return builder.build();
 	}
 
 	/*

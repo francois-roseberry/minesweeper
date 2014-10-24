@@ -84,4 +84,36 @@ public class GameGridTest {
 
 		verify(listener).gameWon(any(GameEvent.class));
 	}
+
+	@Test
+	public void afterMarkingSquareItsStateShouldBeMarked() {
+		when(gameServicesMock.isFirstClicked()).thenReturn(true);
+		SquareButton button = new SquareButton(CELL_1X1);
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
+		grid.startGame(GRID_SIZE_1X1, 0);
+
+		MouseEvent eventMock = mock(MouseEvent.class);
+		when(eventMock.getSource()).thenReturn(button);
+		when(eventMock.getButton()).thenReturn(MouseEvent.BUTTON2);
+		when(eventMock.isPopupTrigger()).thenReturn(true);
+		grid.mouseReleased(eventMock);
+
+		assertEquals(button.getState(), SquareButtonState.MARKED);
+	}
+
+	@Test
+	public void afterMarkingSquareTwiceItsStateShouldBeUnsure() {
+		when(gameServicesMock.isFirstClicked()).thenReturn(true);
+		SquareButton button = new SquareButton(CELL_1X1);
+		when(providerMock.create(any(Cell.class))).thenReturn(button);
+		grid.startGame(GRID_SIZE_1X1, 0);
+
+		MouseEvent eventMock = mock(MouseEvent.class);
+		when(eventMock.getSource()).thenReturn(button);
+		when(eventMock.getButton()).thenReturn(MouseEvent.BUTTON2);
+		when(eventMock.isPopupTrigger()).thenReturn(true);
+		grid.mouseReleased(eventMock);
+
+		assertEquals(button.getState(), SquareButtonState.UNSURE);
+	}
 }
