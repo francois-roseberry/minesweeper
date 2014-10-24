@@ -17,9 +17,8 @@ import minesweeper.model.event.ValidationListener;
 import com.google.common.collect.ImmutableList;
 
 /**
- * La classe GameBoard repr�sente le panneau de jeu et contient un StatsBoard
- * (barre d'outils avec compteur de mines et timer) et un GameGrid (grille de
- * jeu). Constitue le panneau principal de la fen�tre de jeu.
+ * La classe GameBoard repr�sente le panneau de jeu et contient un StatsBoard (barre d'outils avec compteur de mines et timer) et un
+ * GameGrid (grille de jeu). Constitue le panneau principal de la fen�tre de jeu.
  * 
  * @see AppFrame
  * 
@@ -46,7 +45,7 @@ public class GameBoard extends JPanel implements GameListener,
 
 	private static final ImmutableList<GridSize> GRID_SIZE_LEVELS = ImmutableList
 			.of(GridSize.create(9, 9), GridSize.create(16, 16),
-					GridSize.create(32, 16));
+					GridSize.create(16, 32));
 
 	/**
 	 * Code de triche.
@@ -152,14 +151,11 @@ public class GameBoard extends JPanel implements GameListener,
 	 * @param level
 	 *            Le niveau de difficult�.
 	 * @param squaresPerRow
-	 *            Le nombre de cases par rang�e. Ignor� si level !=
-	 *            DifficultyLevel.CUSTOM.
+	 *            Le nombre de cases par rang�e. Ignor� si level != DifficultyLevel.CUSTOM.
 	 * @param squaresPerColumn
-	 *            Le nombre de cases par rang�e. Ignor� si level !=
-	 *            DifficultyLevel.CUSTOM.
+	 *            Le nombre de cases par rang�e. Ignor� si level != DifficultyLevel.CUSTOM.
 	 * @param mines
-	 *            Le nombre de mines de la grille. Ignor� si level !=
-	 *            DifficultyLevel.CUSTOM.
+	 *            Le nombre de mines de la grille. Ignor� si level != DifficultyLevel.CUSTOM.
 	 */
 	public void startGame(final DifficultyLevel level, final int squaresPerRow,
 			final int squaresPerColumn, int mines) {
