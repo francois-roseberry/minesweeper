@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 
-public class EmptyGridTest {
+public class BlankGridTest {
 
 	private static final MineGenerator EMPTY_MINE_GENERATOR = emptyMineGenerator();
 
@@ -21,12 +21,12 @@ public class EmptyGridTest {
 
 	@Test(expected = NullPointerException.class)
 	public void creatingWithNullMineGeneratorShouldThrowException() {
-		new EmptyGrid(null);
+		new BlankGrid(null);
 	}
 
 	@Test
 	public void atCreationGridShouldHaveAllCellsHidden() {
-		Grid grid = new EmptyGrid(EMPTY_MINE_GENERATOR);
+		Grid grid = new BlankGrid(EMPTY_MINE_GENERATOR);
 
 		assertEquals(CellState.HIDDEN, grid.at(CELL_1_1));
 	}
@@ -34,7 +34,7 @@ public class EmptyGridTest {
 	@Test
 	public void revealingAnyCellShouldReturnNewGridWithCellRevealed()
 			throws MineFoundException {
-		Grid grid = new EmptyGrid(EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
+		Grid grid = new BlankGrid(EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
 
 		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
 	}
@@ -44,7 +44,7 @@ public class EmptyGridTest {
 			throws MineFoundException {
 		MineGenerator generator = emptyMineGenerator();
 
-		EmptyGrid grid = new EmptyGrid(generator);
+		BlankGrid grid = new BlankGrid(generator);
 		verify(generator, never()).getMines(any(Cell.class));
 
 		grid.reveal(CELL_1_1);

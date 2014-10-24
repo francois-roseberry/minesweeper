@@ -9,11 +9,11 @@ import minesweeper.model.exception.MineFoundException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
-public class EmptyGrid implements Grid {
+public class BlankGrid implements Grid {
 
 	private final MineGenerator generator;
 
-	public EmptyGrid(final MineGenerator generator) {
+	public BlankGrid(final MineGenerator generator) {
 		this.generator = Preconditions.checkNotNull(generator);
 	}
 
