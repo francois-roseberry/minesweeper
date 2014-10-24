@@ -5,6 +5,7 @@ import minesweeper.model.CellState;
 import minesweeper.model.Grid;
 import minesweeper.model.exception.MineFoundException;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 public class InGameGrid implements Grid {
@@ -13,8 +14,8 @@ public class InGameGrid implements Grid {
 	private final ImmutableList<Cell> revealed;
 
 	public InGameGrid(final ImmutableList<Cell> mines, final ImmutableList<Cell> revealed) {
-		this.mines = mines;
-		this.revealed = revealed;
+		this.mines = Preconditions.checkNotNull(mines);
+		this.revealed = Preconditions.checkNotNull(revealed);
 	}
 
 	@Override

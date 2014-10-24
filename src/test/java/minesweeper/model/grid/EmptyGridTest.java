@@ -19,6 +19,11 @@ public class EmptyGridTest {
 
 	private static final Cell CELL_1_1 = new Cell(1, 1);
 
+	@Test(expected = NullPointerException.class)
+	public void creatingWithNullMineGeneratorShouldThrowException() {
+		new EmptyGrid(null);
+	}
+
 	@Test
 	public void atCreationGridShouldHaveAllCellsHidden() {
 		Grid grid = new EmptyGrid(EMPTY_MINE_GENERATOR);
