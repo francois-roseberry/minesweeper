@@ -34,7 +34,7 @@ public class BlankGridTest {
 	}
 
 	@Test
-	public void revealingAnyCellShouldReturnNewGridWithCellRevealed()
+	public void afterBeingRevealedThenCellStateShouldBeRevealed()
 			throws MineFoundException {
 		Grid grid = BlankGrid.create(EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
 
@@ -51,6 +51,35 @@ public class BlankGridTest {
 
 		grid.reveal(CELL_1_1);
 		verify(generator).getMines(any(Cell.class));
+	}
+
+	@Test
+	public void afterBeingMarkedThenCellStateShouldBeMarked() {
+		MineGenerator generator = emptyMineGenerator();
+
+		BlankGrid grid = BlankGrid.create(generator).mark(CELL_1_1);
+
+		assertEquals(CellState.MARKED, grid.at(CELL_1_1));
+	}
+
+	@Test
+	public void afterBeingMarkedTwiceThenCellStateShouldBeUnsure() {
+		MineGenerator generator = emptyMineGenerator();
+
+		BlankGrid grid = BlankGrid.create(generator).mark(CELL_1_1)
+				.mark(CELL_1_1);
+
+		assertEquals(CellState.UNSURE, grid.at(CELL_1_1));
+	}
+
+	@Test
+	public void afterBeingMarkedThriceThenCellStateShouldBeHidden() {
+		MineGenerator generator = emptyMineGenerator();
+
+		BlankGrid grid = BlankGrid.create(generator).mark(CELL_1_1)
+				.mark(CELL_1_1).mark(CELL_1_1);
+
+		assertEquals(CellState.HIDDEN, grid.at(CELL_1_1));
 	}
 
 	private static MineGenerator emptyMineGenerator() {

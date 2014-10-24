@@ -1,6 +1,6 @@
 package minesweeper.form;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 import java.awt.Dimension;
 
@@ -15,8 +15,9 @@ public class SmileyButtonTest {
 		SmileyButton button = new SmileyButton();
 		Dimension size = new Dimension(36, 36);
 
-		assertEquals(button.getPreferredSize(), size);
-		assertEquals(button.getMaximumSize(), size);
-		assertEquals(button.getBorder(), BorderFactory.createRaisedBevelBorder());
+		assertEquals(size, button.getPreferredSize());
+		assertEquals(size, button.getMaximumSize());
+		assertEquals(BorderFactory.createRaisedBevelBorder(),
+				button.getBorder());
 	}
 }

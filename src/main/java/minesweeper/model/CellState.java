@@ -1,6 +1,5 @@
 package minesweeper.model;
 
 public enum CellState {
-	HIDDEN,
-	REVEALED
+	HIDDEN, REVEALED, MARKED, UNSURE
 }

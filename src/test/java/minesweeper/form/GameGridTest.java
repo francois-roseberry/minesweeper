@@ -99,7 +99,7 @@ public class GameGridTest {
 		when(eventMock.isPopupTrigger()).thenReturn(true);
 		grid.mouseReleased(eventMock);
 
-		assertEquals(button.getState(), SquareButtonState.MARKED);
+		assertEquals(SquareButtonState.MARKED, button.getState());
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class GameGridTest {
 		grid.mouseReleased(eventMock);
 		grid.mouseReleased(eventMock);
 
-		assertEquals(button.getState(), SquareButtonState.UNSURE);
+		assertEquals(SquareButtonState.UNSURE, button.getState());
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class GameGridTest {
 		grid.mouseReleased(eventMock);
 		grid.mouseReleased(eventMock);
 
-		assertEquals(button.getState(), SquareButtonState.HIDDEN);
+		assertEquals(SquareButtonState.HIDDEN, button.getState());
 	}
 
 	@Test

@@ -1,6 +1,6 @@
 package minesweeper.form;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -18,6 +18,6 @@ public class LCDPanelTest {
 
 	@Test
 	public void creatingWithSufficientDigitsShouldReturnAnInstanceOfLCDPanel() {
-		assertTrue(LCDPanel.create(2) != null);
+		assertNotNull(LCDPanel.create(2));
 	}
 }

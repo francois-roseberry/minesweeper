@@ -21,8 +21,8 @@ public class SquareButtonTest {
 	public void atCreationStateShouldBeHiddenAndMineCountShouldBeZero() {
 		SquareButton button = new SquareButton(CELL);
 
-		assertEquals(button.getNeighboorMineCount(), 0);
-		assertEquals(button.getState(), SquareButtonState.HIDDEN);
+		assertEquals(0, button.getNeighboorMineCount());
+		assertEquals(SquareButtonState.HIDDEN, button.getState());
 	}
 
 	@Test
@@ -30,7 +30,7 @@ public class SquareButtonTest {
 		SquareButton button = new SquareButton(CELL);
 		for (int mines = 0; mines < 9; mines++) {
 			button.setNeighboorMineCount(mines);
-			assertEquals(button.getNeighboorMineCount(), mines);
+			assertEquals(mines, button.getNeighboorMineCount());
 		}
 	}
 
@@ -50,7 +50,7 @@ public class SquareButtonTest {
 		button.reveal();
 
 		assertFalse(button.isVisible());
-		assertEquals(button.getState(), SquareButtonState.REVEALED);
+		assertEquals(SquareButtonState.REVEALED, button.getState());
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class SquareButtonTest {
 		button.setMine();
 		button.cheat();
 
-		assertEquals(button.getState(), SquareButtonState.CHEATED);
+		assertEquals(SquareButtonState.CHEATED, button.getState());
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class SquareButtonTest {
 		SquareButton button = new SquareButton(CELL);
 		button.cheat();
 
-		assertEquals(button.getState(), SquareButtonState.HIDDEN);
+		assertEquals(SquareButtonState.HIDDEN, button.getState());
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class SquareButtonTest {
 		button.addSquareButtonListener(listener);
 		button.rightClick();
 
-		assertEquals(button.getState(), SquareButtonState.MARKED);
+		assertEquals(SquareButtonState.MARKED, button.getState());
 		verify(listener).squareMarked(any(GameEvent.class));
 	}
 
@@ -89,7 +89,7 @@ public class SquareButtonTest {
 		button.rightClick();
 		button.rightClick();
 
-		assertEquals(button.getState(), SquareButtonState.UNSURE);
+		assertEquals(SquareButtonState.UNSURE, button.getState());
 		verify(listener).squareUnmarked(any(GameEvent.class));
 	}
 
@@ -100,7 +100,7 @@ public class SquareButtonTest {
 		button.rightClick();
 		button.rightClick();
 
-		assertEquals(button.getState(), SquareButtonState.HIDDEN);
+		assertEquals(SquareButtonState.HIDDEN, button.getState());
 	}
 
 	@Test
@@ -112,10 +112,10 @@ public class SquareButtonTest {
 		button.setNeighboorMineCount(4);
 		button.reset();
 
-		assertEquals(button.getState(), SquareButtonState.HIDDEN);
+		assertEquals(SquareButtonState.HIDDEN, button.getState());
 		assertFalse(button.isMined());
 		assertFalse(button.wasFlagged());
 		assertTrue(button.isVisible());
-		assertEquals(button.getNeighboorMineCount(), 0);
+		assertEquals(0, button.getNeighboorMineCount());
 	}
 }
