@@ -3,7 +3,6 @@ package minesweeper.model.grid;
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
 import minesweeper.model.MineGenerator;
-import minesweeper.model.exception.MineFoundException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
@@ -44,7 +43,7 @@ public class BlankGrid implements Grid {
 	}
 
 	@Override
-	public Grid reveal(final Cell cell) throws MineFoundException {
+	public Grid reveal(final Cell cell) {
 		return withMines(cell).reveal(cell);
 	}
 
@@ -69,8 +68,8 @@ public class BlankGrid implements Grid {
 				ImmutableList.<Cell> of());
 	}
 
-	private ImmutableList<Cell> withCell(final ImmutableList<Cell> cells,
-			final Cell cell) {
+	private static ImmutableList<Cell> withCell(
+			final ImmutableList<Cell> cells, final Cell cell) {
 		return ImmutableList.<Cell> builder().addAll(cells).add(cell).build();
 	}
 

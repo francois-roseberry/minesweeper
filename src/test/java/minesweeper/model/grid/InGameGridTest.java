@@ -1,9 +1,9 @@
 package minesweeper.model.grid;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
-import minesweeper.model.exception.MineFoundException;
 
 import org.junit.Test;
 
@@ -24,25 +24,26 @@ public class InGameGridTest {
 		new InGameGrid(ImmutableList.<Cell> of(), null);
 	}
 
-	@Test(expected = MineFoundException.class)
-	public void revealingMineShouldThrowException() throws MineFoundException {
-		new InGameGrid(ImmutableList.of(CELL_1_1), ImmutableList.<Cell> of()).reveal(CELL_1_1);
+	@Test
+	public void revealingMineShouldReturnFixedGrid() {
+		Grid grid = new InGameGrid(ImmutableList.of(CELL_1_1),
+				ImmutableList.<Cell> of()).reveal(CELL_1_1);
+
+		assertTrue(grid instanceof FixedGrid);
 	}
 
 	@Test
-	public void revealingOneCellShouldLeaveOtherCellsUntouched()
-			throws MineFoundException {
-		Grid grid = new InGameGrid(ImmutableList.<Cell> of(), ImmutableList.<Cell> of())
-				.reveal(CELL_1_1);
+	public void revealingOneCellShouldLeaveOtherCellsUntouched() {
+		Grid grid = new InGameGrid(ImmutableList.<Cell> of(),
+				ImmutableList.<Cell> of()).reveal(CELL_1_1);
 
 		assertEquals(CellState.HIDDEN, grid.at(CELL_2_2));
 	}
 
 	@Test
-	public void afterRevealingSecondCellFirstOneStaysRevealed()
-			throws MineFoundException {
-		Grid grid = new InGameGrid(ImmutableList.<Cell> of(), ImmutableList.<Cell> of())
-				.reveal(CELL_1_1).reveal(CELL_2_2);
+	public void afterRevealingSecondCellFirstOneStaysRevealed() {
+		Grid grid = new InGameGrid(ImmutableList.<Cell> of(),
+				ImmutableList.<Cell> of()).reveal(CELL_1_1).reveal(CELL_2_2);
 
 		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
 		assertEquals(CellState.REVEALED, grid.at(CELL_2_2));

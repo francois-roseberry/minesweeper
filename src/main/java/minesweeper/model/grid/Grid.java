@@ -2,7 +2,6 @@ package minesweeper.model.grid;
 
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
-import minesweeper.model.exception.MineFoundException;
 
 //Conditions de victoire :
 //		- Toutes les cases non-minées ont été révélées.
@@ -10,7 +9,7 @@ import minesweeper.model.exception.MineFoundException;
 //  - Si les mines n'ont pas toutes été marquées, marquer celles qui restent
 public interface Grid {
 
-	Grid reveal(final Cell cell) throws MineFoundException;
+	Grid reveal(final Cell cell);
 
 	CellState at(final Cell cell);
 }

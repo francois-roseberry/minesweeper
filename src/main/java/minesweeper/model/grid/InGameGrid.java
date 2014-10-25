@@ -2,7 +2,6 @@ package minesweeper.model.grid;
 
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
-import minesweeper.model.exception.MineFoundException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -12,7 +11,8 @@ public class InGameGrid implements Grid {
 	private final ImmutableList<Cell> mines;
 	private final ImmutableList<Cell> revealed;
 
-	public InGameGrid(final ImmutableList<Cell> mines, final ImmutableList<Cell> revealed) {
+	public InGameGrid(final ImmutableList<Cell> mines,
+			final ImmutableList<Cell> revealed) {
 		this.mines = Preconditions.checkNotNull(mines);
 		this.revealed = Preconditions.checkNotNull(revealed);
 	}
@@ -27,9 +27,9 @@ public class InGameGrid implements Grid {
 	}
 
 	@Override
-	public Grid reveal(final Cell cell) throws MineFoundException {
+	public Grid reveal(final Cell cell) {
 		if (isMined(cell)) {
-			throw new MineFoundException();
+			return new FixedGrid(this);
 		}
 
 		return new InGameGrid(mines, newRevealedCells(cell));

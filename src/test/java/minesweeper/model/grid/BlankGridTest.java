@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
 import minesweeper.model.MineGenerator;
-import minesweeper.model.exception.MineFoundException;
 
 import org.junit.Test;
 
@@ -34,16 +33,14 @@ public class BlankGridTest {
 	}
 
 	@Test
-	public void afterBeingRevealedThenCellStateShouldBeRevealed()
-			throws MineFoundException {
+	public void afterBeingRevealedThenCellStateShouldBeRevealed() {
 		Grid grid = BlankGrid.create(EMPTY_MINE_GENERATOR).reveal(CELL_1_1);
 
 		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
 	}
 
 	@Test
-	public void minesShouldBePlacedAfterFirstCellIsRevealedOnly()
-			throws MineFoundException {
+	public void minesShouldBePlacedAfterFirstCellIsRevealedOnly() {
 		MineGenerator generator = emptyMineGenerator();
 
 		BlankGrid grid = BlankGrid.create(generator);
