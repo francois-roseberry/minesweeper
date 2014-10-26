@@ -10,11 +10,13 @@ public class InGameGrid implements Grid {
 
 	private final ImmutableList<Cell> mines;
 	private final ImmutableList<Cell> revealed;
+	private final MarkedCells marked;
 
 	public InGameGrid(final ImmutableList<Cell> mines,
-			final ImmutableList<Cell> revealed) {
+			final ImmutableList<Cell> revealed, final MarkedCells marked) {
 		this.mines = Preconditions.checkNotNull(mines);
 		this.revealed = Preconditions.checkNotNull(revealed);
+		this.marked = Preconditions.checkNotNull(marked);
 	}
 
 	@Override
@@ -23,7 +25,7 @@ public class InGameGrid implements Grid {
 			return CellState.REVEALED;
 		}
 
-		return CellState.HIDDEN;
+		return marked.at(cell);
 	}
 
 	@Override
@@ -32,7 +34,12 @@ public class InGameGrid implements Grid {
 			return new FixedGrid(this);
 		}
 
-		return new InGameGrid(mines, newRevealedCells(cell));
+		return new InGameGrid(mines, newRevealedCells(cell), marked);
+	}
+
+	@Override
+	public Grid mark(final Cell cell) {
+		return new InGameGrid(mines, revealed, marked.mark(cell));
 	}
 
 	private ImmutableList<Cell> newRevealedCells(final Cell cell) {

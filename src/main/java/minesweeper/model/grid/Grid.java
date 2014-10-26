@@ -11,5 +11,7 @@ public interface Grid {
 
 	Grid reveal(final Cell cell);
 
+	Grid mark(Cell cell);
+
 	CellState at(final Cell cell);
 }

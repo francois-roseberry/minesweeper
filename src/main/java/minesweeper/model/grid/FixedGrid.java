@@ -23,4 +23,9 @@ public class FixedGrid implements Grid {
 		return grid.at(cell);
 	}
 
+	@Override
+	public Grid mark(final Cell cell) {
+		throw new UnsupportedOperationException();
+	}
+
 }

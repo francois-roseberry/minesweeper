@@ -20,6 +20,11 @@ public class FixedGridTest {
 		new FixedGrid(mock(Grid.class)).reveal(mock(Cell.class));
 	}
 
+	@Test(expected = UnsupportedOperationException.class)
+	public void markingCellShouldThrowException() {
+		new FixedGrid(mock(Grid.class)).mark(mock(Cell.class));
+	}
+
 	@Test
 	public void gettingCellStateShouldGetItFromUnderlyingGrid() {
 		Cell cell = mock(Cell.class);

@@ -33,12 +33,13 @@ public class BlankGrid implements Grid {
 		return withMines(cell).reveal(cell);
 	}
 
-	public BlankGrid mark(final Cell cell) {
+	@Override
+	public Grid mark(final Cell cell) {
 		return new BlankGrid(generator, marked.mark(cell));
 	}
 
 	private InGameGrid withMines(final Cell cell) {
 		return new InGameGrid(generator.getMines(cell),
-				ImmutableList.<Cell> of());
+				ImmutableList.<Cell> of(), marked);
 	}
 }
