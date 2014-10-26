@@ -1,6 +1,7 @@
 package minesweeper.model.grid;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -51,32 +52,8 @@ public class BlankGridTest {
 	}
 
 	@Test
-	public void afterBeingMarkedThenCellStateShouldBeMarked() {
-		MineGenerator generator = emptyMineGenerator();
-
-		BlankGrid grid = BlankGrid.create(generator).mark(CELL_1_1);
-
-		assertEquals(CellState.MARKED, grid.at(CELL_1_1));
-	}
-
-	@Test
-	public void afterBeingMarkedTwiceThenCellStateShouldBeUnsure() {
-		MineGenerator generator = emptyMineGenerator();
-
-		BlankGrid grid = BlankGrid.create(generator).mark(CELL_1_1)
-				.mark(CELL_1_1);
-
-		assertEquals(CellState.UNSURE, grid.at(CELL_1_1));
-	}
-
-	@Test
-	public void afterBeingMarkedThriceThenCellStateShouldBeHidden() {
-		MineGenerator generator = emptyMineGenerator();
-
-		BlankGrid grid = BlankGrid.create(generator).mark(CELL_1_1)
-				.mark(CELL_1_1).mark(CELL_1_1);
-
-		assertEquals(CellState.HIDDEN, grid.at(CELL_1_1));
+	public void afterMarkingShouldReturnBlankGrid() {
+		assertTrue(BlankGrid.create(EMPTY_MINE_GENERATOR).mark(CELL_1_1) instanceof BlankGrid);
 	}
 
 	private static MineGenerator emptyMineGenerator() {
