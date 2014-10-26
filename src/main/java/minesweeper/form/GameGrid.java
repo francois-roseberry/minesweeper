@@ -19,14 +19,18 @@ import minesweeper.model.SquareButtonState;
 import minesweeper.model.event.GameEvent;
 import minesweeper.model.event.GameListener;
 import minesweeper.model.event.SquareButtonListener;
+import minesweeper.model.grid.BlankGrid;
+import minesweeper.model.grid.Grid;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 /**
- * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases (boutons).
+ * La classe GameGrid repr�sente la grille de jeu et contient toutes les cases
+ * (boutons).
  * 
  * @author David Maltais
  * @author Fran�ois Roseberry
@@ -46,6 +50,7 @@ public class GameGrid extends JPanel implements MouseListener,
 	// Aussi, le tableau de components a une seule dimension
 	// tandis qu'un tableau de squares a 2 dimensions.
 	private ImmutableMap<Cell, SquareButton> squares = ImmutableMap.of();;
+	private Optional<Grid> grid = Optional.absent();
 	// Liste des �couteurs GameListener de cette classe.
 	private List<GameListener> listeners = Lists.newArrayList();
 	// Images de num�ros.
@@ -167,7 +172,8 @@ public class GameGrid extends JPanel implements MouseListener,
 	private void placeMines(final Cell cellToAvoid, final int mines) {
 		// Cr�er une collection de cases disponibles.
 		// (les cases qui peuvent recevoir des mines)
-		ImmutableList<Cell> placedMines = new MineGenerator(mines, size.cells()).getMines(cellToAvoid);
+		ImmutableList<Cell> placedMines = new MineGenerator(mines, size.cells())
+				.getMines(cellToAvoid);
 
 		for (Cell mine : placedMines) {
 			squares.get(mine).setMine();
@@ -397,30 +403,30 @@ public class GameGrid extends JPanel implements MouseListener,
 		int x = cell.column() - 1;
 		int y = cell.row() - 1;
 		switch (squares.get(cell).getNeighboorMineCount()) {
-			case 1:
-				graphics.drawImage(img1, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 2:
-				graphics.drawImage(img2, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 3:
-				graphics.drawImage(img3, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 4:
-				graphics.drawImage(img4, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 5:
-				graphics.drawImage(img5, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 6:
-				graphics.drawImage(img6, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 7:
-				graphics.drawImage(img7, x * 20 + 1, y * 20 + 1, null);
-				break;
-			case 8:
-				graphics.drawImage(img8, x * 20 + 1, y * 20 + 1, null);
-				break;
+		case 1:
+			graphics.drawImage(img1, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 2:
+			graphics.drawImage(img2, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 3:
+			graphics.drawImage(img3, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 4:
+			graphics.drawImage(img4, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 5:
+			graphics.drawImage(img5, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 6:
+			graphics.drawImage(img6, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 7:
+			graphics.drawImage(img7, x * 20 + 1, y * 20 + 1, null);
+			break;
+		case 8:
+			graphics.drawImage(img8, x * 20 + 1, y * 20 + 1, null);
+			break;
 		}
 	}
 
@@ -442,6 +448,8 @@ public class GameGrid extends JPanel implements MouseListener,
 	}
 
 	public void startGame(final GridSize size, final int mines) {
+		MineGenerator generator = new MineGenerator(mines, size.cells());
+		grid = Optional.of(BlankGrid.create(generator));
 		// Stocke le nombre de mines de la grille.
 		// (utilis� pour la g�n�ration par la suite).
 		this.mines = mines;
@@ -457,13 +465,16 @@ public class GameGrid extends JPanel implements MouseListener,
 	}
 
 	@Override
-	public void mouseClicked(final MouseEvent e) {}
+	public void mouseClicked(final MouseEvent e) {
+	}
 
 	@Override
-	public void mouseEntered(final MouseEvent e) {}
+	public void mouseEntered(final MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(final MouseEvent e) {}
+	public void mouseExited(final MouseEvent e) {
+	}
 
 	@Override
 	public void mousePressed(final MouseEvent e) {

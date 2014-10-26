@@ -12,7 +12,7 @@ public class BlankGrid implements Grid {
 	private final MineGenerator generator;
 	private final MarkedCells marked;
 
-	public static BlankGrid create(final MineGenerator generator) {
+	public static Grid create(final MineGenerator generator) {
 		Preconditions.checkNotNull(generator);
 
 		return new BlankGrid(generator, MarkedCells.empty());

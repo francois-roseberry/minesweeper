@@ -44,7 +44,7 @@ public class BlankGridTest {
 	public void minesShouldBePlacedAfterFirstCellIsRevealedOnly() {
 		MineGenerator generator = emptyMineGenerator();
 
-		BlankGrid grid = BlankGrid.create(generator);
+		Grid grid = BlankGrid.create(generator);
 		verify(generator, never()).getMines(any(Cell.class));
 
 		grid.reveal(CELL_1_1);
