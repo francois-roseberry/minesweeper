@@ -31,7 +31,7 @@ public class InGameGrid implements Grid {
 	@Override
 	public Grid reveal(final Cell cell) {
 		if (isMined(cell)) {
-			return new FixedGrid(this);
+			return new HitGrid(cell, this);
 		}
 
 		return new InGameGrid(mines, newRevealedCells(cell), marked);

@@ -34,11 +34,19 @@ public class InGameGridTest {
 	}
 
 	@Test
-	public void revealingMineShouldReturnFixedGrid() {
+	public void revealingMineShouldReturnHitGrid() {
 		Grid grid = new InGameGrid(ImmutableSet.of(CELL_1_1),
 				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
-		assertTrue(grid instanceof FixedGrid);
+		assertTrue(grid instanceof HitGrid);
+	}
+
+	@Test
+	public void afterRevealingMineThenResultingGridShouldHaveCellHit() {
+		Grid grid = new InGameGrid(ImmutableSet.of(CELL_1_1),
+				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+
+		assertEquals(CellState.HIT, grid.at(CELL_1_1));
 	}
 
 	@Test
