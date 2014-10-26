@@ -1,10 +1,12 @@
 package minesweeper.model;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class CellTest {
 
@@ -21,7 +23,7 @@ public class CellTest {
 
 	@Test
 	public void neighboorShouldBeImmediate() {
-		ImmutableList<Cell> neighboors = new Cell(2, 2).neighboors();
+		ImmutableSet<Cell> neighboors = new Cell(2, 2).neighboors();
 
 		assertTrue(neighboors.contains(new Cell(1, 1))); // Northwest
 		assertTrue(neighboors.contains(new Cell(1, 2))); // North

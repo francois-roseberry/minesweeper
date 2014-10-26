@@ -5,7 +5,7 @@ import minesweeper.model.CellState;
 import minesweeper.model.MineGenerator;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class BlankGrid implements Grid {
 
@@ -40,6 +40,6 @@ public class BlankGrid implements Grid {
 
 	private InGameGrid withMines(final Cell cell) {
 		return new InGameGrid(generator.getMines(cell),
-				ImmutableList.<Cell> of(), marked);
+				ImmutableSet.<Cell> of(), marked);
 	}
 }

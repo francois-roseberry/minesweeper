@@ -4,16 +4,16 @@ import minesweeper.model.Cell;
 import minesweeper.model.CellState;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class InGameGrid implements Grid {
 
-	private final ImmutableList<Cell> mines;
-	private final ImmutableList<Cell> revealed;
+	private final ImmutableSet<Cell> mines;
+	private final ImmutableSet<Cell> revealed;
 	private final MarkedCells marked;
 
-	public InGameGrid(final ImmutableList<Cell> mines,
-			final ImmutableList<Cell> revealed, final MarkedCells marked) {
+	public InGameGrid(final ImmutableSet<Cell> mines,
+			final ImmutableSet<Cell> revealed, final MarkedCells marked) {
 		this.mines = Preconditions.checkNotNull(mines);
 		this.revealed = Preconditions.checkNotNull(revealed);
 		this.marked = Preconditions.checkNotNull(marked);
@@ -42,8 +42,8 @@ public class InGameGrid implements Grid {
 		return new InGameGrid(mines, revealed, marked.mark(cell));
 	}
 
-	private ImmutableList<Cell> newRevealedCells(final Cell cell) {
-		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
+	private ImmutableSet<Cell> newRevealedCells(final Cell cell) {
+		ImmutableSet.Builder<Cell> builder = ImmutableSet.builder();
 		builder.addAll(revealed);
 		builder.add(cell);
 		for (Cell neighboor : cell.neighboors()) {

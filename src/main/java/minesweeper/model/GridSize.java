@@ -1,7 +1,7 @@
 package minesweeper.model;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class GridSize {
 
@@ -57,8 +57,8 @@ public class GridSize {
 		return true;
 	}
 
-	public ImmutableList<Cell> cells() {
-		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
+	public ImmutableSet<Cell> cells() {
+		ImmutableSet.Builder<Cell> builder = ImmutableSet.builder();
 		for (int row = 1; row <= rows; row++) {
 			for (int column = 1; column <= columns; column++) {
 				builder.add(new Cell(row, column));

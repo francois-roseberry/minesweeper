@@ -26,6 +26,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 /**
@@ -135,10 +136,13 @@ public class GameGrid extends JPanel implements MouseListener,
 		setLayout(new GridLayout(size.rows(), size.columns()));
 		ImmutableMap.Builder<Cell, SquareButton> builder = ImmutableMap
 				.builder();
-		for (Cell cell : size.cells()) {
-			SquareButton square = createSquareButton(cell);
-			builder.put(cell, square);
-			add(square);
+		for (int row = 1; row <= size.rows(); row++) {
+			for (int column = 1; column <= size.columns(); column++) {
+				Cell cell = new Cell(row, column);
+				SquareButton square = createSquareButton(cell);
+				builder.put(cell, square);
+				add(square);
+			}
 		}
 
 		return builder.build();
@@ -172,7 +176,7 @@ public class GameGrid extends JPanel implements MouseListener,
 	private void placeMines(final Cell cellToAvoid, final int mines) {
 		// Cr�er une collection de cases disponibles.
 		// (les cases qui peuvent recevoir des mines)
-		ImmutableList<Cell> placedMines = new MineGenerator(mines, size.cells())
+		ImmutableSet<Cell> placedMines = new MineGenerator(mines, size.cells())
 				.getMines(cellToAvoid);
 
 		for (Cell mine : placedMines) {

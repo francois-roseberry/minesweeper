@@ -13,7 +13,7 @@ import minesweeper.model.MineGenerator;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class BlankGridTest {
 
@@ -59,7 +59,7 @@ public class BlankGridTest {
 	private static MineGenerator emptyMineGenerator() {
 		MineGenerator generator = mock(MineGenerator.class);
 		when(generator.getMines(any(Cell.class))).thenReturn(
-				ImmutableList.<Cell> of());
+				ImmutableSet.<Cell> of());
 		return generator;
 	}
 }

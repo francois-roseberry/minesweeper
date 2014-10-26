@@ -3,24 +3,24 @@ package minesweeper.model;
 import java.util.List;
 import java.util.Random;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 public class MineGenerator {
 
 	private final int mines;
-	private final ImmutableList<Cell> cells;
+	private final ImmutableSet<Cell> cells;
 
-	public MineGenerator(final int mines, final ImmutableList<Cell> cells) {
+	public MineGenerator(final int mines, final ImmutableSet<Cell> cells) {
 		this.mines = mines;
 		this.cells = cells;
 	}
 
-	public ImmutableList<Cell> getMines(final Cell cellToAvoid) {
+	public ImmutableSet<Cell> getMines(final Cell cellToAvoid) {
 		int minesToGenerate = mines;
 		List<Cell> openCells = getAvailableCellsForMines(cellToAvoid);
 
-		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
+		ImmutableSet.Builder<Cell> builder = ImmutableSet.builder();
 		Random random = new Random();
 		while (minesToGenerate > 0) {
 			// G�n�rer un index al�atoire.
@@ -45,7 +45,8 @@ public class MineGenerator {
 		return cells;
 	}
 
-	private Cell pickCellAtRandom(final List<Cell> openCells, final Random random) {
+	private Cell pickCellAtRandom(final List<Cell> openCells,
+			final Random random) {
 		if (openCells.size() == 1) {
 			return openCells.get(0);
 		}
