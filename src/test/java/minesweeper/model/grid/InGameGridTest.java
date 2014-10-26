@@ -43,11 +43,19 @@ public class InGameGridTest {
 	}
 
 	@Test
-	public void revealingOneCellShouldLeaveOtherCellsUntouched() {
-		Grid grid = new InGameGrid(ImmutableList.<Cell> of(),
+	public void revealingOneCellShouldLeaveMinesHidden() {
+		Grid grid = new InGameGrid(ImmutableList.of(CELL_2_2),
 				ImmutableList.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
 		assertEquals(CellState.HIDDEN, grid.at(CELL_2_2));
+	}
+
+	@Test
+	public void revealingOneCellShouldRevealNeighboorsIfTheyAreNotMined() {
+		Grid grid = new InGameGrid(ImmutableList.<Cell> of(),
+				ImmutableList.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+
+		assertEquals(CellState.REVEALED, grid.at(CELL_2_2));
 	}
 
 	@Test

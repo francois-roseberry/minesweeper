@@ -46,7 +46,11 @@ public class InGameGrid implements Grid {
 		ImmutableList.Builder<Cell> builder = ImmutableList.builder();
 		builder.addAll(revealed);
 		builder.add(cell);
-		// TODO : révéler les voisins, récursivement.
+		for (Cell neighboor : cell.neighboors()) {
+			if (!mines.contains(neighboor)) {
+				builder.add(neighboor);
+			}
+		}
 		return builder.build();
 	}
 
