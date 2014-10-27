@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import minesweeper.model.Cell;
 import minesweeper.model.CellState;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
@@ -50,7 +51,7 @@ public class InGameGridTest {
 	}
 
 	@Test
-	public void revealingOneCellShouldLeaveMinesHidden() {
+	public void revealingCellShouldLeaveMinesHidden() {
 		Grid grid = new InGameGrid(ImmutableSet.of(CELL_2_2),
 				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
@@ -58,11 +59,21 @@ public class InGameGridTest {
 	}
 
 	@Test
-	public void revealingOneCellShouldRevealNeighboorsIfTheyAreNotMined() {
+	public void revealingCellShouldRevealImmediateNeighboorsIfTheyAreNotMined() {
 		Grid grid = new InGameGrid(ImmutableSet.<Cell> of(),
 				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
+		assertEquals(CellState.REVEALED, grid.at(new Cell(1, 2)));
 		assertEquals(CellState.REVEALED, grid.at(CELL_2_2));
+	}
+
+	@Ignore
+	@Test
+	public void revealingCellShouldRevealNonImmediateNeighboorsIfPathLeadingToThemIsNotMined() {
+		Grid grid = new InGameGrid(ImmutableSet.<Cell> of(),
+				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+
+		assertEquals(CellState.REVEALED, grid.at(new Cell(1, 3)));
 	}
 
 	@Test

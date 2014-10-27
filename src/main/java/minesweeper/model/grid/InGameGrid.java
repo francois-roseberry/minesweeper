@@ -25,6 +25,13 @@ public class InGameGrid implements Grid {
 			return CellState.REVEALED;
 		}
 
+		// Si cette case n'est pas minée et qu'un chemin non-miné mène de cette
+		// case à
+		// une case déjà révélée, alors cette case est révélée aussi.
+		// Cette idée, si implémentée telle quelle, est beaucoup trop
+		// inefficace.
+		// L'idée est bonne pourtant, faut je la retravaille.
+
 		return marked.at(cell);
 	}
 
@@ -46,11 +53,19 @@ public class InGameGrid implements Grid {
 		ImmutableSet.Builder<Cell> builder = ImmutableSet.builder();
 		builder.addAll(revealed);
 		builder.add(cell);
+
+		// TODO
+		// Au lieu de révéler récursivement les voisins (et ainsi être obligé
+		// d'avoir
+		// les dimensions de la grille), les révéler uniquement quand on demande
+		// leur
+		// état dans at().
 		for (Cell neighboor : cell.neighboors()) {
 			if (!mines.contains(neighboor)) {
 				builder.add(neighboor);
 			}
 		}
+
 		return builder.build();
 	}
 
