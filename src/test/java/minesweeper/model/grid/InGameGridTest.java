@@ -21,47 +21,42 @@ public class InGameGridTest {
 
 	@Test(expected = NullPointerException.class)
 	public void creatingWithNullMineListShouldThrowException() {
-		new InGameGrid(null, ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void creatingWithNullRevealedListShouldThrowException() {
-		new InGameGrid(ImmutableSet.<Cell> of(), null, EMPTY_MARKED_CELLS);
+		InGameGrid.create(null, EMPTY_MARKED_CELLS);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void creatingWithNullMarkedCellsShouldThrowException() {
-		new InGameGrid(ImmutableSet.<Cell> of(), ImmutableSet.<Cell> of(), null);
+		InGameGrid.create(ImmutableSet.<Cell> of(), null);
 	}
 
 	@Test
 	public void revealingMineShouldReturnHitGrid() {
-		Grid grid = new InGameGrid(ImmutableSet.of(CELL_1_1),
-				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+		Grid grid = InGameGrid.create(ImmutableSet.of(CELL_1_1),
+				EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
 		assertTrue(grid instanceof HitGrid);
 	}
 
 	@Test
 	public void afterRevealingMineThenResultingGridShouldHaveCellHit() {
-		Grid grid = new InGameGrid(ImmutableSet.of(CELL_1_1),
-				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+		Grid grid = InGameGrid.create(ImmutableSet.of(CELL_1_1),
+				EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
 		assertEquals(CellState.HIT, grid.at(CELL_1_1));
 	}
 
 	@Test
 	public void revealingCellShouldLeaveMinesHidden() {
-		Grid grid = new InGameGrid(ImmutableSet.of(CELL_2_2),
-				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+		Grid grid = InGameGrid.create(ImmutableSet.of(CELL_2_2),
+				EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
 		assertEquals(CellState.HIDDEN, grid.at(CELL_2_2));
 	}
 
 	@Test
 	public void revealingCellShouldRevealImmediateNeighboorsIfTheyAreNotMined() {
-		Grid grid = new InGameGrid(ImmutableSet.<Cell> of(),
-				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+		Grid grid = InGameGrid.create(ImmutableSet.<Cell> of(),
+				EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
 		assertEquals(CellState.REVEALED, grid.at(new Cell(1, 2)));
 		assertEquals(CellState.REVEALED, grid.at(CELL_2_2));
@@ -70,17 +65,17 @@ public class InGameGridTest {
 	@Ignore
 	@Test
 	public void revealingCellShouldRevealNonImmediateNeighboorsIfPathLeadingToThemIsNotMined() {
-		Grid grid = new InGameGrid(ImmutableSet.<Cell> of(),
-				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1);
+		Grid grid = InGameGrid.create(ImmutableSet.<Cell> of(),
+				EMPTY_MARKED_CELLS).reveal(CELL_1_1);
 
 		assertEquals(CellState.REVEALED, grid.at(new Cell(1, 3)));
 	}
 
 	@Test
 	public void afterRevealingSecondCellFirstOneStaysRevealed() {
-		Grid grid = new InGameGrid(ImmutableSet.<Cell> of(),
-				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).reveal(CELL_1_1)
-				.reveal(CELL_2_2);
+		Grid grid = InGameGrid
+				.create(ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS)
+				.reveal(CELL_1_1).reveal(CELL_2_2);
 
 		assertEquals(CellState.REVEALED, grid.at(CELL_1_1));
 		assertEquals(CellState.REVEALED, grid.at(CELL_2_2));
@@ -88,8 +83,8 @@ public class InGameGridTest {
 
 	@Test
 	public void markingCellShouldReturnInGameGrid() {
-		Grid grid = new InGameGrid(ImmutableSet.<Cell> of(),
-				ImmutableSet.<Cell> of(), EMPTY_MARKED_CELLS).mark(CELL_1_1);
+		Grid grid = InGameGrid.create(ImmutableSet.<Cell> of(),
+				EMPTY_MARKED_CELLS).mark(CELL_1_1);
 
 		assertTrue(grid instanceof InGameGrid);
 	}
@@ -98,8 +93,7 @@ public class InGameGridTest {
 	public void markingCellsShouldCallMarkedCells() {
 		MarkedCells markedCells = mock(MarkedCells.class);
 		when(markedCells.mark(CELL_1_1)).thenReturn(mock(MarkedCells.class));
-		new InGameGrid(ImmutableSet.<Cell> of(), ImmutableSet.<Cell> of(),
-				markedCells).mark(CELL_1_1);
+		InGameGrid.create(ImmutableSet.<Cell> of(), markedCells).mark(CELL_1_1);
 
 		verify(markedCells).mark(CELL_1_1);
 	}

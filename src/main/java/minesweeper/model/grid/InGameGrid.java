@@ -12,11 +12,17 @@ public class InGameGrid implements Grid {
 	private final ImmutableSet<Cell> revealed;
 	private final MarkedCells marked;
 
-	public InGameGrid(final ImmutableSet<Cell> mines,
+	public static InGameGrid create(final ImmutableSet<Cell> mines,
+			final MarkedCells marked) {
+		return new InGameGrid(Preconditions.checkNotNull(mines),
+				ImmutableSet.<Cell> of(), Preconditions.checkNotNull(marked));
+	}
+
+	private InGameGrid(final ImmutableSet<Cell> mines,
 			final ImmutableSet<Cell> revealed, final MarkedCells marked) {
-		this.mines = Preconditions.checkNotNull(mines);
-		this.revealed = Preconditions.checkNotNull(revealed);
-		this.marked = Preconditions.checkNotNull(marked);
+		this.mines = mines;
+		this.revealed = revealed;
+		this.marked = marked;
 	}
 
 	@Override
