@@ -1,6 +1,5 @@
 package minesweeper.model;
 
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 import org.junit.Test;
@@ -11,27 +10,23 @@ public class MineGeneratorTest {
 
 	@Test
 	public void placingZeroMinesShouldReturnEmptyList() {
-		MineGenerator generator = new MineGenerator(0, ImmutableSet.of(
-				new Cell(1, 1), new Cell(1, 2)));
-
-		assertTrue(generator.getMines(new Cell(1, 1)).isEmpty());
+		ImmutableSet<Cell> mines = new MineGenerator(0).getMines(ImmutableSet
+				.of(new Cell(1, 1), new Cell(1, 2)));
+		assertTrue(mines.isEmpty());
 	}
 
 	@Test
-	public void neverPlacesMineOnCellToAvoid() {
-		MineGenerator generator = new MineGenerator(1, ImmutableSet.of(
-				new Cell(1, 1), new Cell(1, 2)));
-
-		Cell cellToAvoid = new Cell(1, 1);
-		assertFalse(generator.getMines(cellToAvoid).contains(cellToAvoid));
+	public void alwaysPlacesMinesOnAvailableCells() {
+		ImmutableSet<Cell> cells = ImmutableSet.of(new Cell(1, 1), new Cell(1,
+				2));
+		ImmutableSet<Cell> mines = new MineGenerator(1).getMines(cells);
+		assertTrue(cells.containsAll(mines));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void tryingToPlaceMoreMinesThanAvailableCellsShouldThrowException() {
-		Cell cellToAvoid = new Cell(1, 1);
-		MineGenerator generator = new MineGenerator(1,
-				ImmutableSet.of(cellToAvoid));
+		MineGenerator generator = new MineGenerator(1);
 
-		generator.getMines(cellToAvoid);
+		generator.getMines(ImmutableSet.<Cell> of());
 	}
 }

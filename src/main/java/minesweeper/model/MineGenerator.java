@@ -9,16 +9,14 @@ import com.google.common.collect.Lists;
 public class MineGenerator {
 
 	private final int mines;
-	private final ImmutableSet<Cell> cells;
 
-	public MineGenerator(final int mines, final ImmutableSet<Cell> cells) {
+	public MineGenerator(final int mines) {
 		this.mines = mines;
-		this.cells = cells;
 	}
 
-	public ImmutableSet<Cell> getMines(final Cell cellToAvoid) {
+	public ImmutableSet<Cell> getMines(final ImmutableSet<Cell> availableCells) {
 		int minesToGenerate = mines;
-		List<Cell> openCells = getAvailableCellsForMines(cellToAvoid);
+		List<Cell> openCells = Lists.newArrayList(availableCells);
 
 		ImmutableSet.Builder<Cell> builder = ImmutableSet.builder();
 		Random random = new Random();
@@ -31,18 +29,6 @@ public class MineGenerator {
 			minesToGenerate--;
 		}
 		return builder.build();
-	}
-
-	private List<Cell> getAvailableCellsForMines(final Cell cellToAvoid) {
-		List<Cell> cells = Lists.newArrayList();
-
-		// Remplir le tableau des coordonn�es disponibles.
-		for (Cell cell : this.cells) {
-			if (!cellToAvoid.equals(cell)) {
-				cells.add(cell);
-			}
-		}
-		return cells;
 	}
 
 	private Cell pickCellAtRandom(final List<Cell> openCells,

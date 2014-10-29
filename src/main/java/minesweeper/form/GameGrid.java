@@ -176,12 +176,24 @@ public class GameGrid extends JPanel implements MouseListener,
 	private void placeMines(final Cell cellToAvoid, final int mines) {
 		// Cr�er une collection de cases disponibles.
 		// (les cases qui peuvent recevoir des mines)
-		ImmutableSet<Cell> placedMines = new MineGenerator(mines, size.cells())
-				.getMines(cellToAvoid);
+		ImmutableSet<Cell> placedMines = new MineGenerator(mines)
+				.getMines(getAvailableCellsForMines(cellToAvoid));
 
 		for (Cell mine : placedMines) {
 			squares.get(mine).setMine();
 		}
+	}
+
+	private ImmutableSet<Cell> getAvailableCellsForMines(final Cell cellToAvoid) {
+		ImmutableSet.Builder<Cell> builder = ImmutableSet.builder();
+
+		// Remplir le tableau des coordonn�es disponibles.
+		for (Cell cell : size.cells()) {
+			if (!cellToAvoid.equals(cell)) {
+				builder.add(cell);
+			}
+		}
+		return builder.build();
 	}
 
 	/*
@@ -452,8 +464,8 @@ public class GameGrid extends JPanel implements MouseListener,
 	}
 
 	public void startGame(final GridSize size, final int mines) {
-		MineGenerator generator = new MineGenerator(mines, size.cells());
-		grid = Optional.of(BlankGrid.create(generator));
+		MineGenerator generator = new MineGenerator(mines);
+		grid = Optional.of(BlankGrid.create(size.cells(), generator));
 		// Stocke le nombre de mines de la grille.
 		// (utilis� pour la g�n�ration par la suite).
 		this.mines = mines;
