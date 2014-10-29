@@ -11,7 +11,6 @@ import minesweeper.model.Cell;
 import minesweeper.model.CellState;
 import minesweeper.model.MineGenerator;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
@@ -70,10 +69,9 @@ public class BlankGridTest {
 				.mark(CELL_1_1) instanceof BlankGrid);
 	}
 
-	@Ignore
 	@Test
 	public void mineGeneratorShouldReceiveCellListMinusCellToAvoid() {
-		MineGenerator generator = EMPTY_MINE_GENERATOR;
+		MineGenerator generator = emptyMineGenerator();
 
 		BlankGrid.create(ImmutableSet.of(CELL_1_1), generator).reveal(CELL_1_1);
 		verify(generator).getMines(ImmutableSet.<Cell> of());
