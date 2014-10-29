@@ -9,18 +9,22 @@ import com.google.common.collect.ImmutableSet;
 public class InGameGrid implements Grid {
 
 	private final ImmutableSet<Cell> mines;
+	private final ImmutableSet<Cell> hidden;
 	private final ImmutableSet<Cell> revealed;
 	private final MarkedCells marked;
 
 	public static InGameGrid create(final ImmutableSet<Cell> mines,
-			final MarkedCells marked) {
+			final ImmutableSet<Cell> cells, final MarkedCells marked) {
 		return new InGameGrid(Preconditions.checkNotNull(mines),
-				ImmutableSet.<Cell> of(), Preconditions.checkNotNull(marked));
+				Preconditions.checkNotNull(cells), ImmutableSet.<Cell> of(),
+				Preconditions.checkNotNull(marked));
 	}
 
 	private InGameGrid(final ImmutableSet<Cell> mines,
-			final ImmutableSet<Cell> revealed, final MarkedCells marked) {
+			final ImmutableSet<Cell> hidden, final ImmutableSet<Cell> revealed,
+			final MarkedCells marked) {
 		this.mines = mines;
+		this.hidden = hidden;
 		this.revealed = revealed;
 		this.marked = marked;
 	}
@@ -47,12 +51,12 @@ public class InGameGrid implements Grid {
 			return new HitGrid(cell, this);
 		}
 
-		return new InGameGrid(mines, newRevealedCells(cell), marked);
+		return new InGameGrid(mines, hidden, newRevealedCells(cell), marked);
 	}
 
 	@Override
 	public Grid mark(final Cell cell) {
-		return new InGameGrid(mines, revealed, marked.mark(cell));
+		return new InGameGrid(mines, hidden, revealed, marked.mark(cell));
 	}
 
 	private ImmutableSet<Cell> newRevealedCells(final Cell cell) {

@@ -46,7 +46,8 @@ public class BlankGrid implements Grid {
 
 	private InGameGrid withMines(final Cell cell) {
 		ImmutableSet<Cell> availableCells = getAvailableCellsForMines(cell);
-		return InGameGrid.create(generator.getMines(availableCells), marked);
+		return InGameGrid.create(generator.getMines(availableCells), cells,
+				marked);
 	}
 
 	private ImmutableSet<Cell> getAvailableCellsForMines(final Cell cellToAvoid) {
