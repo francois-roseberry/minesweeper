@@ -5,36 +5,36 @@ import minesweeper.model.CellState;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 class MarkedCells {
-	private final ImmutableList<Cell> marked;
-	private final ImmutableList<Cell> unsure;
+	private final ImmutableSet<Cell> marked;
+	private final ImmutableSet<Cell> unsure;
 
 	public static MarkedCells empty() {
-		return new MarkedCells(ImmutableList.<Cell> of(),
-				ImmutableList.<Cell> of());
+		return new MarkedCells(ImmutableSet.<Cell> of(),
+				ImmutableSet.<Cell> of());
 	}
 
-	private MarkedCells(final ImmutableList<Cell> marked,
-			final ImmutableList<Cell> unsure) {
+	private MarkedCells(final ImmutableSet<Cell> marked,
+			final ImmutableSet<Cell> unsure) {
 		this.marked = marked;
 		this.unsure = unsure;
 	}
 
 	public MarkedCells mark(final Cell cell) {
 		if (marked.contains(cell)) {
-			ImmutableList<Cell> marked = withoutCell(this.marked, cell);
-			ImmutableList<Cell> unsure = withCell(this.unsure, cell);
+			ImmutableSet<Cell> marked = withoutCell(this.marked, cell);
+			ImmutableSet<Cell> unsure = withCell(this.unsure, cell);
 			return new MarkedCells(marked, unsure);
 		}
 
 		if (unsure.contains(cell)) {
-			ImmutableList<Cell> unsure = withoutCell(this.unsure, cell);
+			ImmutableSet<Cell> unsure = withoutCell(this.unsure, cell);
 			return new MarkedCells(marked, unsure);
 		}
 
-		ImmutableList<Cell> marked = withCell(this.marked, cell);
+		ImmutableSet<Cell> marked = withCell(this.marked, cell);
 		return new MarkedCells(marked, unsure);
 	}
 
@@ -50,14 +50,14 @@ class MarkedCells {
 		return CellState.HIDDEN;
 	}
 
-	private static ImmutableList<Cell> withCell(
-			final ImmutableList<Cell> cells, final Cell cell) {
-		return ImmutableList.<Cell> builder().addAll(cells).add(cell).build();
+	private static ImmutableSet<Cell> withCell(final ImmutableSet<Cell> cells,
+			final Cell cell) {
+		return ImmutableSet.<Cell> builder().addAll(cells).add(cell).build();
 	}
 
-	private static ImmutableList<Cell> withoutCell(
-			final ImmutableList<Cell> cells, final Cell cell) {
-		return ImmutableList.copyOf(Collections2.filter(cells,
+	private static ImmutableSet<Cell> withoutCell(
+			final ImmutableSet<Cell> cells, final Cell cell) {
+		return ImmutableSet.copyOf(Collections2.filter(cells,
 				Predicates.not(Predicates.equalTo(cell))));
 	}
 }
